@@ -1,3 +1,13 @@
+/*
+* При переходе по адресу http://localhost:3000 собирает информацию о фильмах по дефолту отсортированных по рейтингу, создаются ссылки на эти фильмы
+* и при нажатии на любую из них передается айди фильма, который хранится в torrentHash вместе с необходимыми данными, потом
+* фильм скачивается и паралельно воспроизводится.
+*
+* torrentHash - список всех фильмов на странице и infoHash каждого из них.
+* savedVideos - путь для сохранения фильмов на сервере.
+*
+* */
+
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
@@ -17,7 +27,6 @@ let torrentHash = {};
 fs.exists(savedVideos, (exists) => {
     if (!exists) fs.mkdirSync(savedVideos);
 });
-
 
 app.get('/', function (req, res) {
     request('https://yts.am/api/v2/list_movies.json?sort_by=rating', function (movie_count, limit, movies, page_number) {

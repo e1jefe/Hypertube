@@ -1,7 +1,7 @@
 const magnetLink = require('magnet-link');
 const torrentStream = require('torrent-stream');
 const fs = require('fs');
-const pump = require('pump');
+const headers = require('./headers');
 
 
 let savedVideos = './videos';
@@ -19,7 +19,6 @@ module.exports = {
                         if (exists) {
                             console.log("file ", file.name, " exists");
                             const pathToVideo = 'videos/' + file.name;
-                            const stat = fs.statSync(pathToVideo);
                             let fileSize = file.length;
                             const range = req.headers.range;
 
@@ -27,32 +26,7 @@ module.exports = {
                             let end = fileSize - 1;
                             if (range) {
                                 console.log("file-size (exists) = ", fileSize);
-                                let range = req.headers.range;
-                                let parts = range.replace(/bytes=/, '').split('-');
-                                let newStart = parts[0];
-                                let newEnd = parts[1];
-                                start = parseInt(newStart, 10);
-
-                                if (!newEnd) {
-                                    end = start + 100000000 >= fileSize ? fileSize - 1 : start + 100000000;
-                                }
-                                else
-                                    end = parseint(newEnd, 10);
-                                let chunksize = end - start + 1;
-                                let head = {
-                                    'Content-Range': 'bytes ' + start + '-' + end + '/' + fileSize,
-                                    'Accept-Ranges': 'bytes',
-                                    'Content-Length': chunksize,
-                                    'Content-Type': 'video/mp4',
-                                    'Connection': 'keep-alive'
-                                };
-                                res.writeHead(206, head);
-
-                                let stream = file.createReadStream({
-                                    start: start,
-                                    end: end
-                                });
-                                pump(stream, res);
+                                headers.partialContent(req, res, start, end, fileSize, file);
                             } else {
                                 const head = {
                                     'Content-Length': fileSize,
@@ -81,31 +55,7 @@ module.exports = {
                                 console.log('Я зашел в папку с видео\nПуть к видеофайлу: ', pathToVideo, '\nРазмер файла:', fileSize, 'байт', '\nФормат видео: ', videoFormat);
                                 if (range) {
                                     console.log("file-size = ", fileSize)
-                                    let range = req.headers.range;
-                                    let parts = range.replace(/bytes=/, '').split('-');
-                                    let newStart = parts[0];
-                                    let newEnd = parts[1];
-                                    start = parseInt(newStart, 10);
-
-                                    if (!newEnd) {
-                                        end = start + 100000000 >= fileSize ? fileSize - 1 : start + 100000000;
-                                    }
-                                    else
-                                        end = parseint(newEnd, 10);
-                                    let chunksize = end - start + 1;
-                                    let head = {
-                                        'Content-Range': 'bytes ' + start + '-' + end + '/' + fileSize,
-                                        'Accept-Ranges': 'bytes',
-                                        'Content-Length': chunksize,
-                                        'Content-Type': 'video/mp4',
-                                        'Connection': 'keep-alive'
-                                    };
-                                    let stream = file.createReadStream({
-                                        start: start,
-                                        end: end
-                                    });
-                                    pump(stream, res);
-                                    res.writeHead(206, head);
+                                    headers.partialContent(req, res, start, end, fileSize, file);
                                 } else {
                                     console.log('play');
                                     const head = {
