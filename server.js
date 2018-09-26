@@ -15,19 +15,20 @@ const request = require('request');
 const stream = require('./stream');
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'public')))
-
-// app.get('/video/:id', function(req, res) {
-//     res.sendFile(path.join(__dirname + '/index.htm'))
-// })
+app.use(express.static(path.join(__dirname, 'videos')))
 
 let savedVideos = './videos';
 let torrentHash = {};
+let currentMovie = '';
 
 fs.exists(savedVideos, (exists) => {
     if (!exists) fs.mkdirSync(savedVideos);
 });
 
+/*
+* Подгружается список фильмов и выводится на страницу.
+*
+* */
 app.get('/', function (req, res) {
     request('https://yts.am/api/v2/list_movies.json?sort_by=rating', function (movie_count, limit, movies, page_number) {
         let message = JSON.parse(movies);
@@ -49,19 +50,25 @@ app.get('/', function (req, res) {
     });
 });
 
+/*
+* Когда переходим на страницу с видео мы должны подятнуть все данные об этом видео с внешнего ресура.
+*
+* */
 app.get('/video/:id', function (req, res) {
     if (!torrentHash[req.params.id]) {
         request('https://yts.am/api/v2/movie_details.json?movie_id=' + req.params.id, function (req, res) {
             if (res.body) {
                 let movieInfo = JSON.parse(res.body);
                 if (movieInfo.data.movie.torrents) {
+                    currentMovie = movieInfo.data.movie.torrents[0].url;
                     torrentHash[movieInfo.data.movie.id] = movieInfo.data.movie.torrents[0].url;
                 }
             }
         });
         setTimeout(function () {
             if (torrentHash[req.params.id]) {
-                stream.magnetUrl(req, res, torrentHash[req.params.id]);
+                currentMovie = torrentHash[req.params.id];
+                res.sendFile(path.join(__dirname + '/index.htm'))
             }
             else {
                 res.send("error");
@@ -69,8 +76,17 @@ app.get('/video/:id', function (req, res) {
         }, 1000)
     }
     else {
-        stream.magnetUrl(req, res, torrentHash[req.params.id]);
+        currentMovie = torrentHash[req.params.id];
+        res.sendFile(path.join(__dirname + '/index.htm'))
     }
+});
+
+/*
+* Когда подгрузился плеер мы передаем в него видеострим.
+*
+* */
+app.get('/videos', function (req, res) {
+    stream.magnetUrl(req, res, currentMovie);
 });
 
 app.listen(3000, function () {
