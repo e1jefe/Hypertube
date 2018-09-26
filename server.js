@@ -12,14 +12,17 @@ const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const request = require('request');
-const stream = require('./stream');
 const app = express();
+const stream = require('./stream');
+const subtitles = require('./subtitles');
+
 
 app.use(express.static(path.join(__dirname, 'videos')))
 
 let savedVideos = './videos';
 let torrentHash = {};
 let currentMovie = '';
+let currentIMDB = '';
 
 fs.exists(savedVideos, (exists) => {
     if (!exists) fs.mkdirSync(savedVideos);
@@ -38,11 +41,17 @@ app.get('/', function (req, res) {
         };
         message.data.movies.forEach(function (item) {
             if (films.length > 0) {
-                torrentHash[item.id] = item.torrents[0].url;
+                torrentHash[item.id] = {
+                    'url': item.torrents[0].url,
+                    'imdb': item.imdb_code
+                };
                 films = films + imgTemplate(item.medium_cover_image, item.id);
             }
             else {
-                torrentHash[item.id] = item.torrents[0].url;
+                torrentHash[item.id] = {
+                    'url': item.torrents[0].url,
+                    'imdb': item.imdb_code
+                };
                 films = imgTemplate(item.medium_cover_image, item.id);
             }
         });
@@ -61,13 +70,19 @@ app.get('/video/:id', function (req, res) {
                 let movieInfo = JSON.parse(res.body);
                 if (movieInfo.data.movie.torrents) {
                     currentMovie = movieInfo.data.movie.torrents[0].url;
-                    torrentHash[movieInfo.data.movie.id] = movieInfo.data.movie.torrents[0].url;
+                    currentIMDB = movieInfo.data.movie.imdb_code;
+
+                    torrentHash[movieInfo.data.movie.id] = {
+                        'url': movieInfo.data.movie.torrents[0].url,
+                        'imdb': movieInfo.data.movie.imdb_code
+                    };
                 }
             }
         });
         setTimeout(function () {
             if (torrentHash[req.params.id]) {
-                currentMovie = torrentHash[req.params.id];
+                currentMovie = torrentHash[req.params.id].url;
+                currentIMDB = torrentHash[req.params.id].imdb;
                 res.sendFile(path.join(__dirname + '/index.htm'))
             }
             else {
@@ -76,9 +91,19 @@ app.get('/video/:id', function (req, res) {
         }, 1000)
     }
     else {
-        currentMovie = torrentHash[req.params.id];
+        currentMovie = torrentHash[req.params.id].url;
+        currentIMDB = torrentHash[req.params.id].imdb;
         res.sendFile(path.join(__dirname + '/index.htm'))
     }
+});
+
+
+/*
+* Когда подгрузился плеер мы ищем, скачиваем и передаем в него субтитры.
+*
+* */
+app.get('/subtitles/', function (req, res) {
+    subtitles.getSubtitles(res, currentIMDB);
 });
 
 /*
@@ -88,6 +113,8 @@ app.get('/video/:id', function (req, res) {
 app.get('/videos', function (req, res) {
     stream.magnetUrl(req, res, currentMovie);
 });
+
+
 
 app.listen(3000, function () {
     console.log('Listening on port 3000!')
