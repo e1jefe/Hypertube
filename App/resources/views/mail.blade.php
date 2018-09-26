@@ -1,1 +1,1 @@
-Privetiki pistoletiki!
+Тестовое письмо!
