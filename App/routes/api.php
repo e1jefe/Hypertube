@@ -17,4 +17,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/profile/{user_id}', 'ProfileController@show');
+Route::post('register', 'API\PassportController@register');
+Route::post('login', 'API\PassportController@login');
+Route::group(['middleware' => 'auth:api'], function(){
+    Route::post('get-details', 'API\PassportController@getDetails');
+});
