@@ -1,8 +1,45 @@
 import React, { Component } from 'react';
-import './style/signup.css';
+import '../interface/style/signup.css';
 import { NavLink } from 'react-router-dom';
 
 class Signup extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            fname: "",
+            lname: "",
+            login: "",
+            pass: "",
+            email: "",
+            error: ""
+        };
+        this.onChange = this.onChange.bind(this);        
+        this.signupRequest = this.signupRequest.bind(this);
+    }
+
+    onChange(event) {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
+    }
+
+    signupRequest(event) {      
+        event.preventDefault();
+        const data = {
+            login: this.state.login,
+            pass: this.state.pass,
+            fname: this.state.fname,
+            lname: this.state.lname,
+            email: this.state.email,
+        };
+        console.log(data);
+        // fetch('/api/form-submit-url', {
+        //     method: 'POST',
+        //     body: data,
+        // });
+    }
+
     render() {
         return(
             <main className="signup-page">
@@ -11,6 +48,16 @@ class Signup extends Component {
                         <NavLink to="signin">
                             <img src="./pics/logo.png" alt="our logo" />
                             <p>hypertube</p>
+                        </NavLink>
+                    </div>
+                    <div className="language-holder">
+                        <span className="language-option">
+                            <NavLink role="button" to="EN" >
+                                EN
+                            </NavLink>
+                        </span>
+                        <NavLink role="button" to="RU" className="disabled">
+                            RU
                         </NavLink>
                     </div>
                     <div className="main-head-btn-holder">
@@ -38,31 +85,34 @@ class Signup extends Component {
                             <img src="./pics/bg-crop.png" alt="flat movie icons"/>
                         </aside>
                         <div className="signup-form">
-                            <form >
+                            <form onSubmit={this.signupRequest}>
                                 <div className="form-foreword">
                                     Register accoutn
                                 </div>
-                                <div className="form-error">
-                                </div>
+                                {
+                                    this.state.error && 
+                                    <div className="form-error">
+                                    </div>
+                                }
                                 <div className="row">
                                     <div className="input-holder">
-                                        <input type="text" placeholder="First Name" required id="name" />
+                                        <input type="text" placeholder="First Name" required id="fname" onChange={this.onChange} name="fname"/>
                                     </div>
                                     <div className="input-holder">
-                                        <input type="text" placeholder="Last Name" required id="lname" />
+                                        <input type="text" placeholder="Last Name" required id="lname" onChange={this.onChange} name="lname"/>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="input-holder tooltip">
                                         <span className="tooltiptext">Minimum 5 characters</span>
-                                        <input type="text" placeholder="Login" required id="login" />
+                                        <input type="text" placeholder="Login" required id="login" onChange={this.onChange} name="login"/>
                                         <label htmlFor="login">
                                             <i className="fa fa-user"></i>
                                         </label>
                                     </div>
                                     <div className="input-holder tooltip">
                                         <span className="tooltiptext pass">Minimum 7 characters, at least 1 number and uppercase letter</span>
-                                        <input type="password" placeholder="Password" required id="pass" />
+                                        <input type="password" placeholder="Password" required id="pass" onChange={this.onChange} name="pass"/>
                                         <label className="input-icon" htmlFor="pass">
                                             <i className="fa fa-key"></i>
                                         </label>
@@ -71,7 +121,7 @@ class Signup extends Component {
                                 <div className="row">
                                     <div className="input-holder input-email tooltip">
                                         <span className="tooltiptext email">Please provide a real one, we will send you a confirmation link</span>
-                                        <input type="email" placeholder="Email" required id="email" />
+                                        <input type="email" placeholder="Email" required id="email" onChange={this.onChange} name="email"/>
                                         <label className="input-icon" htmlFor="email">
                                             <i className="fa fa-envelope"></i>
                                         </label>

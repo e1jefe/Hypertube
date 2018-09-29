@@ -1,8 +1,39 @@
 import React, { Component } from 'react';
-import './style/signin.css';
+import '../interface/style/signin.css';
 import { NavLink } from 'react-router-dom';
 
 class Signin extends Component {
+    
+    constructor(props) {
+        super(props);
+        this.state = {
+            login: "",
+            pass: "",
+            error: ""
+        };
+        this.onChange = this.onChange.bind(this);        
+        this.signinRequest = this.signinRequest.bind(this);
+    }
+
+    signinRequest(event) {      
+        event.preventDefault();
+        const data = {
+            login: this.state.login,
+            pass: this.state.pass
+        };
+        console.log(data);
+        // fetch('/api/form-submit-url', {
+        //     method: 'POST',
+        //     body: data,
+        // });
+    }
+
+    onChange(event) {
+        this.setState({
+            [event.target.name]: event.target.value
+        })
+    }
+
     render() {
         return(
             <main className="signin-page">
@@ -48,15 +79,18 @@ class Signin extends Component {
                             <img src="./pics/bg-crop.png" alt="flat movie icons"/>
                         </aside>
                         <div className="signin-form">
-                            <form >
+                            <form onSubmit={this.signinRequest}>
                                 <div className="form-foreword">
                                     Sign in with login
                                 </div>
-                                <div className="form-error">
-                                </div>
+                                {
+                                    this.state.error && 
+                                    <div className="form-error">
+                                    </div>
+                                }
                                 <div className="row">
                                     <div className="input-holder">
-                                        <input type="text" placeholder="Login" required id="login" />
+                                        <input type="text" placeholder="Login" required id="login" name="login" onChange={this.onChange}/>
                                         <label htmlFor="login">
                                             <i className="fa fa-user"></i>
                                         </label>
@@ -64,7 +98,7 @@ class Signin extends Component {
                                 </div>
                                 <div className="row">
                                     <div className="input-holder">
-                                        <input type="password" placeholder="Password" required id="pass" />
+                                        <input type="password" placeholder="Password" required id="pass" name="pass" onChange={this.onChange}/>
                                         <label className="input-icon" htmlFor="pass">
                                             <i className="fa fa-key"></i>
                                         </label>

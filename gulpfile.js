@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 var gulp 			= require('gulp');
 var sass 			= require('gulp-sass');
 var autoprefixer 	= require('gulp-autoprefixer');
@@ -7,9 +7,9 @@ gulp.task('sass', function(){
  return gulp.src('client/src/interface/scss/*.+(scss|sass)')
  .pipe(sass())
  .pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], {cascade: true}))
- .pipe(gulp.dest('client/src/components/style/'))
+ .pipe(gulp.dest('client/src/interface/style/'))
 });
 
-gulp.task('watch', function(){
+gulp.task('serve', function(){
  gulp.watch('client/src/interface/scss/*.+(scss|sass)', ['sass']);
 });

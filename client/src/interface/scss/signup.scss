@@ -87,6 +87,36 @@ button {
 			}
 		}
 
+		.language-holder {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+
+			.language-option {
+				display: flex;
+				align-items: center;
+			}
+
+			.language-option:after {
+				content: '';
+				display: inline-block;
+				height: calc(16px + 6 * ((100vw - 320px) / 680));
+				width: 1px;
+				margin: 0 3px;
+				background-color: #e6e6e6;
+			}
+
+			a {
+				text-decoration: none;
+				color: #b184c3;
+
+				&.disabled {
+					color: #e6e6e6;
+				}
+			}
+		}
+
 		.main-head-btn-holder {
 			@include vertical-center;
 			justify-content: space-between;
@@ -400,7 +430,7 @@ button {
 						.fortytwo {
 							width: calc(21px + 6 * ((100vw - 320px) / 680));
 							height: calc(21px + 6 * ((100vw - 320px) / 680));
-							background-image: url('../pics/42.png');
+							background-image: url('./42.png');
 							background-size: cover;
 							background-position: 50%;
 							border-radius: 3px;
@@ -410,7 +440,27 @@ button {
 								width: 100%
 							}
 						}
-					}
+                    }
+                    
+                    .alternatieve {
+						@include vertical-center;
+						justify-content: space-between;
+						width: 100%;
+
+                        &:before,
+                        &:after {
+                            content: "";
+                            display: inline-block;
+                            height: 2px;
+                            width: 42%;
+                            background-color: #fff;
+                            vertical-align: middle;
+                        }
+
+                        h4 {
+                            display: inline-block;
+                        }
+                    }
 				}
 			}
 		}
@@ -538,7 +588,7 @@ button {
 				bottom: 0;
 				left: 0;
 				display: block;
-				background-image: url('public/pics/bg-small.jpg');
+				background-image: url('./bg-small.jpg');
 				background-size: cover;
 				background-repeat: no-repeat;
 				background-position-x: 50%;
@@ -573,13 +623,14 @@ button {
 					}
 
 					.row {
-						margin-top: 5px;
+						margin-top: 0;
 						flex-direction: column;
 						justify-content: stretch;
 						align-items: stretch;
 
 						.input-holder {
 							width: 100%;
+							margin: 0 0 5px 0;
 						}
 
 						&:first-child {
