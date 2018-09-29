@@ -1,3 +1,4 @@
+"use strict"
 var gulp 			= require('gulp');
 var sass 			= require('gulp-sass');
 var autoprefixer 	= require('gulp-autoprefixer');
@@ -7,9 +8,8 @@ gulp.task('sass', function(){
  .pipe(sass())
  .pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], {cascade: true}))
  .pipe(gulp.dest('client/src/components/style/'))
- .pipe(browserSync.reload({stream: true}));
 });
 
-gulp.task('watch', ['browser-sync'] , function(){
+gulp.task('watch', function(){
  gulp.watch('client/src/interface/scss/*.+(scss|sass)', ['sass']);
 });

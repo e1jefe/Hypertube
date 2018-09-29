@@ -13,6 +13,16 @@ class Signin extends Component {
                             <p>hypertube</p>
                         </NavLink>
                     </div>
+                    <div className="language-holder">
+                        <span className="language-option">
+                            <NavLink role="button" to="EN" >
+                                EN
+                            </NavLink>
+                        </span>
+                        <NavLink role="button" to="RU" className="disabled">
+                            RU
+                        </NavLink>
+                    </div>
                     <div className="main-head-btn-holder">
                         <p className="main-head-btn-description">
                             Need an account?
