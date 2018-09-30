@@ -3,8 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "lodash.throttle": "^4.1.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "react-html5video": "^2.5.1",
+    "react-infinite-scroller": "^1.2.1",
     "react-redux": "^5.0.7",
     "react-redux-multilingual": "^2.0.2",
     "react-router": "^4.3.1",
