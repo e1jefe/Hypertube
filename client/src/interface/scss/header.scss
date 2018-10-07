@@ -37,11 +37,14 @@
             width: 23px;
             height: 23px;
             box-sizing: border-box;
-            vertical-align: bottom;
+            vertical-align: middle;
+            margin-right: 2px;
 
             i {
                 color: #333333;
                 text-transform: uppercase;
+                font-size: 0.8em;
+                line-height: 1em;
             }
         }
 

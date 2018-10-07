@@ -15,6 +15,7 @@ class Main extends Component {
                     <Header />
                     <Switch>
                         <Route exact path='/' component={Library} />
+                        <Route exact path='/library' component={Library} />
                         <Route path='/movie/:id' component={SingleMovie} />
                     </Switch>
                     <Footer/>

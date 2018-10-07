@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../interface/style/singleMovie.css';
 import MyPlayer from './MyPlayer';
-import Comments from './Comments';
+import Comments from './Comments.jsx';
 
 class SingleMovie extends Component {
     constructor(props) {

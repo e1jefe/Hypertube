@@ -37,10 +37,13 @@
       height: 23px;
       -webkit-box-sizing: border-box;
               box-sizing: border-box;
-      vertical-align: bottom; }
+      vertical-align: middle;
+      margin-right: 2px; }
       .header .search-input label i {
         color: #333333;
-        text-transform: uppercase; }
+        text-transform: uppercase;
+        font-size: 0.8em;
+        line-height: 1em; }
     .header .search-input input {
       font-family: inherit;
       color: #bfbfbf;

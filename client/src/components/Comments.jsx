@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-// import InfiniteScroll from 'react-infinite-scroller';
-// import axios from "axios";
 
 class Comments extends Component {
 
@@ -17,30 +15,6 @@ class Comments extends Component {
     componentDidMount() {
         console.log("loaded coment component");
     }
-
-    //for infinity scroll get next portion
-    // loadItems(page) {
-    //     let self = this;
-    //     //need to do request with start index and how many load (always same nbr)
-    //     axios.get('comments.json')
-    //         .then((res) => {
-    //     console.log("res", res);
-
-    //             if (res.data !== undefined && res.data !== null) {
-    //                 let comments = [];
-    //                 res.data.map((item) => {
-    //                     comments.push(item);
-    //                 })
-    //                 self.setState({
-    //                     comments: comments
-    //                 })
-    //             } else {
-    //                 self.setState({
-    //                     hasMoreItems: false
-    //                 })
-    //             }
-    //         })
-    // }
 
     render() {
         // const loader = <div className="loader">Loading ...</div>;

@@ -1,0 +1,124 @@
+.library-container {
+  font-size: -webkit-calc(16px + 6 * ((100vw - 320px) / 680));
+  font-size: calc(16px + 6 * ((100vw - 320px) / 680));
+  margin: 15px auto;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
+  .library-container h1 {
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.5em; }
+  .library-container .control {
+    margin: 15px auto;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    font-size: 0.6em; }
+  .library-container .movies-all {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: space-evenly;
+    -webkit-justify-content: space-evenly;
+        -ms-flex-pack: space-evenly;
+            justify-content: space-evenly;
+    -webkit-box-align: stretch;
+    -webkit-align-items: stretch;
+        -ms-flex-align: stretch;
+            align-items: stretch;
+    -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap; }
+    .library-container .movies-all .movie-item {
+      width: 18%;
+      margin-top: 30px; }
+      .library-container .movies-all .movie-item .poster {
+        font-size: 0;
+        display: block;
+        width: 100%;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+        margin-bottom: 10px;
+        position: relative;
+        overflow: hidden; }
+        .library-container .movies-all .movie-item .poster a {
+          text-decoration: none;
+          display: block;
+          opacity: 0;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(51, 0, 51, 0.8);
+          color: #fff;
+          padding: 15px;
+          -webkit-transition: all 0.4s ease-in-out 0s;
+          -o-transition: all 0.4s ease-in-out 0s;
+          transition: all 0.4s ease-in-out 0s; }
+          .library-container .movies-all .movie-item .poster a p {
+            text-align: center;
+            font-size: inherit;
+            display: inline-block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            font-size: 40px; }
+        .library-container .movies-all .movie-item .poster img {
+          display: block;
+          width: 100%; }
+        .library-container .movies-all .movie-item .poster:hover a {
+          opacity: 1; }
+      .library-container .movies-all .movie-item .production {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -webkit-justify-content: space-between;
+            -ms-flex-pack: justify;
+                justify-content: space-between;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+            -ms-flex-align: center;
+                align-items: center;
+        font-size: 0.8em;
+        margin-bottom: 10px; }
+        .library-container .movies-all .movie-item .production .year,
+        .library-container .movies-all .movie-item .production .country {
+          display: inline-block;
+          color: #bfbfbf;
+          text-transform: uppercase; }
+      .library-container .movies-all .movie-item .title {
+        font-weight: bold;
+        font-size: 1.2em;
+        color: #000;
+        margin-bottom: 10px;
+        -webkit-transition: all 0.2s linear;
+        -o-transition: all 0.2s linear;
+        transition: all 0.2s linear; }
+        .library-container .movies-all .movie-item .title:hover {
+          color: #a460b9; }
+        .library-container .movies-all .movie-item .title a {
+          text-decoration: none;
+          color: inherit; }
+      .library-container .movies-all .movie-item .genre {
+        font-weight: 300;
+        color: #808080;
+        text-transform: capitalize;
+        font-size: 0.7em; }
