@@ -327,11 +327,12 @@ class Library extends Component {
                         <Dropdown placeholder='SORT BY' fluid selection options={this.state.sortParam} />
                     </div>
                 </div>
-                <div className="movies-all">
+                <div className="movies-all container">
+                    <div class="row">
                     {
                         this.state.movies.map((mov) => {
                             return(
-                                <div className="movie-item" key={mov.id}>
+                                <div className="movie-item col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12" key={mov.id}>
                                     <div className="poster">
                                         <img src={mov.poster} alt={mov.name}/>
                                         <a href={"/movie/" + mov.id}>
@@ -360,6 +361,7 @@ class Library extends Component {
                             )
                         })
                     }
+                    </div>
                 </div>
             </div>);
     }

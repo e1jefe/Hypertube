@@ -67,11 +67,11 @@ class Signin extends Component {
                     <div className="back-s-u"></div>
                     <h1>
                         Hello. 
-                        <NavLink to="signup">
-                            Try Hypertube.
+                        <NavLink to="signup" style={{marginLeft: "15px"}}>
+                            Try Hypertube. 
                         </NavLink>
                     </h1>
-                    <h3>
+                    <h3 >
                         The only legal online movie theatre in Unit Factory
                     </h3>
                     <div className="signin-form-holder">

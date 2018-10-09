@@ -55,7 +55,7 @@ button {
 }
 
 .signin-page {
-	font-size: calc(16px + 6 * ((100vw - 320px) / 680));
+	font-size: calc(16px + 6 * ((100vw - 1320px) / 680));
 	font-family: 'Open Sans', sans-serif;
 	color: rgb(255, 255, 255);
 	background-color: $main-bg;
@@ -78,6 +78,7 @@ button {
 				img {
 					display: inline-block;
 					width: 25%;
+					max-width: 90px;
 				}
 
 				p {
@@ -121,7 +122,7 @@ button {
 			@include vertical-center;
 			justify-content: space-between;
 			color: inherit;
-			width: 30%;
+			width: 20%;
 
 			.main-head-btn {
 				color: $btn-txt-col;
@@ -172,7 +173,7 @@ button {
 	.signin-page-content {
 		max-width: 960px;
 		text-align: center;
-		margin: 0 auto;
+		margin: 120px auto;
 
 		h1,
 		h3 {

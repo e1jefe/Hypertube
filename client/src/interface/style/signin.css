@@ -27,8 +27,8 @@ button {
     padding: 0; }
 
 .signin-page {
-  font-size: -webkit-calc(16px + 6 * ((100vw - 320px) / 680));
-  font-size: calc(16px + 6 * ((100vw - 320px) / 680));
+  font-size: -webkit-calc(16px + 6 * ((100vw - 1320px) / 680));
+  font-size: calc(16px + 6 * ((100vw - 1320px) / 680));
   font-family: 'Open Sans', sans-serif;
   color: white;
   background-color: #2e1536;
@@ -66,7 +66,8 @@ button {
         color: inherit; }
         .signin-page .main-head .main-head-logo a img {
           display: inline-block;
-          width: 25%; }
+          width: 25%;
+          max-width: 90px; }
         .signin-page .main-head .main-head-logo a p {
           display: inline-block;
           margin: 0; }
@@ -124,7 +125,7 @@ button {
           -ms-flex-pack: justify;
               justify-content: space-between;
       color: inherit;
-      width: 30%; }
+      width: 20%; }
       .signin-page .main-head .main-head-btn-holder .main-head-btn {
         color: #5d2d6c;
         text-decoration: none;
@@ -177,7 +178,7 @@ button {
   .signin-page .signin-page-content {
     max-width: 960px;
     text-align: center;
-    margin: 0 auto; }
+    margin: 120px auto; }
     .signin-page .signin-page-content h1,
     .signin-page .signin-page-content h3 {
       font-weight: 400;
