@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import '../interface/style/library.css';
 import { Dropdown } from 'semantic-ui-react';
-
+import InputRange from 'react-input-range';
+import "react-input-range/lib/css/index.css";
 class Library extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            value: {
+                min: 1980,
+                max: 2015,
+            },
             years: [
                 {
                     key: '1990',
@@ -278,6 +283,13 @@ class Library extends Component {
                 }
             ]
         };
+        this.changeYearRange = this.changeYearRange.bind(this);
+    }
+
+    changeYearRange(val) {
+        this.setState({
+            value: val
+        });
     }
 
     render() {
@@ -286,12 +298,34 @@ class Library extends Component {
                 <h1>
                     Library
                 </h1>
-                <div className="control">
-                    <Dropdown placeholder='YEAR' fluid search multiple selection options={this.state.years} />
-                    <Dropdown placeholder='COUNTRY' fluid search multiple selection options={this.state.country} />
-                    <Dropdown placeholder='IMDB RATING' fluid search selection options={this.state.imdb} />
-                    <Dropdown placeholder='GENRE' fluid search multiple selection options={this.state.genre} />
-                    <Dropdown placeholder='SORT BY' fluid selection options={this.state.sortParam} />
+                <div className="control need-space">
+                    <div className="search-input">
+                        <label>
+                            <i className="fas fa-search"></i>
+                        </label>
+                        <input type="text" placeholder="Search"/>
+                    </div>
+                    <InputRange
+                        allowSameValues
+                        draggableTrack
+                        maxValue={2018}
+                        minValue={1910}
+                        value={this.state.value}
+                        onChange={value => this.changeYearRange(value)} />
+                </div>
+                <div className="control column">
+                    <div className="param">
+                        <Dropdown placeholder='COUNTRY' fluid search multiple selection options={this.state.country} />
+                    </div>
+                    <div className="param">                    
+                        <Dropdown placeholder='IMDB RATING' fluid search selection options={this.state.imdb} />
+                    </div>
+                    <div className="param">                    
+                        <Dropdown placeholder='GENRE' fluid search multiple selection options={this.state.genre} />
+                    </div>
+                    <div className="param">                    
+                        <Dropdown placeholder='SORT BY' fluid selection options={this.state.sortParam} />
+                    </div>
                 </div>
                 <div className="movies-all">
                     {

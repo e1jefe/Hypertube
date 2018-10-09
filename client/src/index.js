@@ -7,7 +7,6 @@ import translations from './translations/global';
 import { IntlReducer as Intl, IntlProvider } from 'react-redux-multilingual';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-// import '../semantic/dist/semantic.min.css';
 
 let reducers = combineReducers(Object.assign({}, { Intl }));
 let store = createStore(reducers);

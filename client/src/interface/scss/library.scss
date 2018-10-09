@@ -1,7 +1,9 @@
 .library-container {
     font-size: calc(16px + 6 * ((100vw - 320px) / 680));
     margin: 15px auto;
+    padding: 0 10px;
     box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
 
     h1 {
         font-weight: bold;
@@ -13,9 +15,78 @@
         margin: 15px auto;
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
         font-size: 0.6em;
+        line-height: 1em;
+
+        .search-input {
+            width: 40%;
+            margin-right: 10%;
+            box-sizing: border-box;
+    
+            label,
+            input {
+                display: inline-block;
+            }
+    
+            label {
+                max-width: 23px;
+                box-sizing: border-box;
+                vertical-align: middle;
+                margin-right: 2px;
+    
+                i {
+                    color: #333333;
+                    text-transform: uppercase;
+                    font-size: 1em;
+                    line-height: 1em;
+                }
+            }
+    
+            input {
+                font-family: inherit;
+                color: #bfbfbf;
+                font-size: 14px;
+                font-weight: 300;
+                width: 72%;
+                border: none;
+                border-bottom: 1px solid;
+                transition: border-bottom .25 linear;
+    
+                &:focus {
+                    outline: none;
+                    border-bottom: 1px solid #a460b9;
+                }
+            }
+        }
+
+        .input-range {
+            width: 50%;
+
+            .input-range__track--background {
+                top: 101%;
+
+                .input-range__track--active {
+                    background: #9B63B4;
+                }
+            }
+        }
+        .input-range__slider {
+            background: #9B63B4 !important;
+            border-color: #9B63B4 !important;
+        }
+
+        .param {
+            width: 22%;
+        }
     }
+
+    .control.need-space {
+        margin-bottom: 30px;
+        padding-right: 16px;
+        box-sizing: border-box;
+    }
+
 
     .movies-all {
         display: flex;
@@ -118,6 +189,27 @@
                 text-transform: capitalize;
                 font-size: 0.7em;
             }
+        }
+    }
+}
+
+@media screen and (max-width: 415px) {
+    .library-container {
+        .control.column {
+            flex-direction: column;
+            
+            .param {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+        }
+
+        .control.need-space {
+            margin-top: 25px;
+        }
+        
+        .input-range__label-container {
+            font-size: 9px;
         }
     }
 }
