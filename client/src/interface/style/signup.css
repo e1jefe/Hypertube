@@ -177,7 +177,7 @@ button {
   .signup-page .signup-page-content {
     max-width: 960px;
     text-align: center;
-    margin: 0 auto; }
+    margin: 120px auto; }
     .signup-page .signup-page-content h1,
     .signup-page .signup-page-content h3 {
       font-weight: 400;
@@ -187,6 +187,8 @@ button {
       .signup-page .signup-page-content h3 a {
         text-decoration: none;
         color: #a55dbb; }
+    .signup-page .signup-page-content h3 {
+      margin-top: 15px; }
     .signup-page .signup-page-content .signup-form-holder {
       -webkit-box-align: center;
       -webkit-align-items: center;
@@ -199,7 +201,8 @@ button {
       -webkit-box-pack: center;
       -webkit-justify-content: center;
           -ms-flex-pack: center;
-              justify-content: center; }
+              justify-content: center;
+      margin-top: 25px; }
       .signup-page .signup-page-content .signup-form-holder aside {
         width: 40%; }
         .signup-page .signup-page-content .signup-form-holder aside img {
@@ -226,9 +229,9 @@ button {
             -ms-flex-align: center;
                 align-items: center;
         margin-top: 0.5em; }
-        .signup-page .signup-page-content .signup-form-holder .signup-form .row .tooltip {
+        .signup-page .signup-page-content .signup-form-holder .signup-form .row .tooltip-castom {
           position: relative; }
-          .signup-page .signup-page-content .signup-form-holder .signup-form .row .tooltip .tooltiptext {
+          .signup-page .signup-page-content .signup-form-holder .signup-form .row .tooltip-castom .tooltiptext {
             visibility: hidden;
             width: 100%;
             background-color: #737373;
@@ -239,37 +242,14 @@ button {
             border-radius: 3px;
             position: absolute;
             z-index: 1;
-            top: 120%;
+            top: 100%;
             left: 0;
             opacity: 0;
             -webkit-transition: opacity 0.3s;
             -o-transition: opacity 0.3s;
             transition: opacity 0.3s;
             font-size: 0.6em; }
-            .signup-page .signup-page-content .signup-form-holder .signup-form .row .tooltip .tooltiptext:after {
-              content: "";
-              position: absolute;
-              top: -20%;
-              left: 4%;
-              border-width: 5px;
-              border-style: solid;
-              border-color: transparent #737373 #737373 transparent; }
-            .signup-page .signup-page-content .signup-form-holder .signup-form .row .tooltip .tooltiptext:before {
-              content: "";
-              display: block;
-              position: absolute;
-              top: -20%;
-              left: 10%;
-              border-width: 5px;
-              border-style: solid;
-              border-color: transparent transparent #737373 #737373; }
-          .signup-page .signup-page-content .signup-form-holder .signup-form .row .tooltip .pass:after, .signup-page .signup-page-content .signup-form-holder .signup-form .row .tooltip .pass:before {
-            top: -9%; }
-          .signup-page .signup-page-content .signup-form-holder .signup-form .row .tooltip .email:after, .signup-page .signup-page-content .signup-form-holder .signup-form .row .tooltip .email:before {
-            top: -12%; }
-          .signup-page .signup-page-content .signup-form-holder .signup-form .row .tooltip .email:before {
-            left: 7%; }
-          .signup-page .signup-page-content .signup-form-holder .signup-form .row .tooltip:hover .tooltiptext {
+          .signup-page .signup-page-content .signup-form-holder .signup-form .row .tooltip-castom:hover .tooltiptext {
             visibility: visible;
             opacity: 1; }
         .signup-page .signup-page-content .signup-form-holder .signup-form .row .input-holder {
@@ -284,9 +264,10 @@ button {
             -webkit-box-sizing: border-box;
                     box-sizing: border-box;
             font-family: inherit;
+            font-size: 18px;
             width: 100%;
-            padding: 1em;
-            padding-left: 3em;
+            padding: 10px;
+            padding-left: 45px;
             line-height: 1.4;
             background-color: #f9f9f9;
             border: none;
@@ -376,8 +357,6 @@ button {
           width: 100%; }
         .signup-page .signup-page-content .signup-form-holder .signup-form .row .input-email {
           width: 100%; }
-          .signup-page .signup-page-content .signup-form-holder .signup-form .row .input-email input {
-            padding-left: 3.2em; }
           .signup-page .signup-page-content .signup-form-holder .signup-form .row .input-email input + label {
             left: 2%; }
             .signup-page .signup-page-content .signup-form-holder .signup-form .row .input-email input + label:after {
@@ -395,7 +374,8 @@ button {
               -ms-flex-pack: distribute;
                   justify-content: space-around;
           width: 100%;
-          font-size: 1.3em; }
+          font-size: 1.3em;
+          margin-top: 10px; }
           .signup-page .signup-page-content .signup-form-holder .signup-form .row .social-media div {
             display: inline-block; }
             .signup-page .signup-page-content .signup-form-holder .signup-form .row .social-media div:hover {
@@ -488,7 +468,7 @@ button {
             -ms-flex-pack: justify;
                 justify-content: space-between; }
         .signup-page .main-head .language-holder .language-option a {
-          color: inherit;
+          color: #b184c3;
           text-decoration: none;
           font-family: inherit;
           font-weight: bold; }
@@ -506,7 +486,8 @@ button {
       width: 100%;
       position: relative;
       height: -webkit-calc(100vh - 47px);
-      height: calc(100vh - 47px); }
+      height: calc(100vh - 47px);
+      margin: 0 auto; }
       .signup-page .signup-page-content h1,
       .signup-page .signup-page-content h3 {
         position: relative; }
@@ -544,7 +525,8 @@ button {
           .signup-page .signup-page-content .signup-form-holder .signup-form .form-foreword {
             color: #a55dbb;
             font-weight: bold;
-            font-size: 1.3em; }
+            font-size: 18px;
+            margin-bottom: 6px; }
           .signup-page .signup-page-content .signup-form-holder .signup-form .row {
             margin-top: 0;
             -webkit-box-orient: vertical;
@@ -563,11 +545,16 @@ button {
             .signup-page .signup-page-content .signup-form-holder .signup-form .row .input-holder {
               width: 100%;
               margin: 0 0 5px 0; }
+              .signup-page .signup-page-content .signup-form-holder .signup-form .row .input-holder input {
+                font-size: 14px;
+                line-height: 1; }
             .signup-page .signup-page-content .signup-form-holder .signup-form .row:first-child {
               margin-bottom: 10px; }
-            .signup-page .signup-page-content .signup-form-holder .signup-form .row .tooltip .tooltiptext {
+            .signup-page .signup-page-content .signup-form-holder .signup-form .row .tooltip-castom .tooltiptext {
               top: 100%; }
-              .signup-page .signup-page-content .signup-form-holder .signup-form .row .tooltip .tooltiptext::before, .signup-page .signup-page-content .signup-form-holder .signup-form .row .tooltip .tooltiptext::after {
-                display: none; }
-            .signup-page .signup-page-content .signup-form-holder .signup-form .row .input-email input + label:after {
-              right: -1px; } }
+            .signup-page .signup-page-content .signup-form-holder .signup-form .row .input-email input {
+              padding-left: 45px; }
+            .signup-page .signup-page-content .signup-form-holder .signup-form .row .input-email input + label {
+              left: 4%; }
+              .signup-page .signup-page-content .signup-form-holder .signup-form .row .input-email input + label:after {
+                right: -1px; } }

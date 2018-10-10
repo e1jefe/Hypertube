@@ -172,7 +172,7 @@ button {
 	.signup-page-content {
 		max-width: 960px;
 		text-align: center;
-		margin: 0 auto;
+		margin: 120px auto;
 
 		h1,
 		h3 {
@@ -186,9 +186,14 @@ button {
 			}
 		}
 
+		h3 {
+			margin-top: 15px;
+		}
+
 		.signup-form-holder {
 			@include vertical-center;
 			justify-content: center;
+			margin-top: 25px;
 
 			aside {
 				width: 40%;
@@ -215,7 +220,7 @@ button {
 					align-items: center;
 					margin-top: 0.5em;
 
-					.tooltip {
+					.tooltip-castom {
 						position: relative;
 						
 						.tooltiptext {
@@ -229,52 +234,13 @@ button {
 							border-radius: 3px;
 							position: absolute;
 							z-index: 1;
-							top: 120%;
+							top: 100%;
 							left: 0;
 							opacity: 0;
 							-webkit-transition: opacity 0.3s;
 							-o-transition: opacity 0.3s;
 							transition: opacity 0.3s;
 							font-size: 0.6em;
-							
-							&:after {
-								content: "";
-								position: absolute;
-								top: -20%;
-    							left: 4%;
-								border-width: 5px;
-								border-style: solid;
-								border-color: transparent #737373 #737373 transparent;
-							}
-
-							&:before {
-								content: "";
-								display: block;
-								position: absolute;
-								top: -20%;
-    							left: 10%;
-								border-width: 5px;
-								border-style: solid;
-								border-color: transparent transparent #737373 #737373;
-							}
-
-						}
-						
-						.pass {
-							&:after,
-							&:before {
-								top: -9%;
-							}
-						}
-
-						.email {
-							&:after,
-							&:before {
-								top: -12%;
-							}
-							&:before {
-								left: 7%;
-							}
 						}
 
 						&:hover {
@@ -299,9 +265,10 @@ button {
 						input {
 							box-sizing: border-box;
 							font-family: inherit;
+							font-size: 18px;
 							width: 100%;
-							padding: 1em;
-							padding-left: 3em;
+							padding: 10px;
+    						padding-left: 45px;
 							line-height: 1.4;
 							background-color: $input-bg;
 							border: none;
@@ -401,7 +368,7 @@ button {
 						width: 100%;
 
 						input {
-							padding-left: 3.2em;
+							
 						}
 
 						input + label {
@@ -418,6 +385,7 @@ button {
 						justify-content: space-around;
 						width: 100%;
 						font-size: 1.3em;
+						margin-top: 10px;
 
 						div {
 							display: inline-block;
@@ -539,7 +507,7 @@ button {
 				.language-option {
 
 					a {
-						color: inherit;
+						color: #b184c3;
 						text-decoration: none;
 						font-family: inherit;
 						font-weight: bold;
@@ -566,6 +534,7 @@ button {
 			width: 100%;
 			position: relative;
 			height: calc(100vh - 47px);
+			margin: 0 auto;
 
 			h1,
 			h3 {
@@ -618,7 +587,8 @@ button {
 					.form-foreword {
 						color: $txt-highlight;
 						font-weight: bold;
-						font-size: 1.3em;
+						font-size: 18px;
+    					margin-bottom: 6px;
 						// text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
 					}
 
@@ -631,26 +601,34 @@ button {
 						.input-holder {
 							width: 100%;
 							margin: 0 0 5px 0;
+
+							input {
+								font-size: 14px;
+								line-height: 1;
+							}
 						}
 
 						&:first-child {
 							margin-bottom: 10px;
 						}
 
-						.tooltip {
+						.tooltip-castom {
 						
 							.tooltiptext {
 								top: 100%;
-						
-								&::before,
-								&::after {
-									display: none;
-								}
 							}
 						}
 
 						.input-email {
-							input + label {	
+
+							input {
+								padding-left: 45px;
+							}
+							
+							input + label {
+
+								left: 4%;
+
 								&:after {
 									right: -1px;;
 								}

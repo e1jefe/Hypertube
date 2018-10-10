@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import '../interface/style/library.css';
 import { Dropdown } from 'semantic-ui-react';
-import InputRange from 'react-input-range';
+// import InputRange from 'react-input-range';
+import Slider from 'rc-slider';
 import "react-input-range/lib/css/index.css";
+import 'rc-slider/assets/index.css';
+
+const Range = Slider.createSliderWithTooltip(Slider.Range);
+
 class Library extends Component {
 
     constructor(props) {
@@ -287,9 +292,10 @@ class Library extends Component {
     }
 
     changeYearRange(val) {
-        this.setState({
-            value: val
-        });
+        // this.setState({
+        //     value: val
+        // });
+        console.log(val)
     }
 
     render() {
@@ -305,13 +311,16 @@ class Library extends Component {
                         </label>
                         <input type="text" placeholder="Search"/>
                     </div>
-                    <InputRange
+                    <div style={{width: "200px", height: "50px"}}>
+                        <Range min={0} max={20} defaultValue={[3, 10]} onAfterChange={(event) => this.changeYearRange(event)}/>
+                    </div>
+                    {/* <InputRange
                         allowSameValues
                         draggableTrack
                         maxValue={2018}
                         minValue={1910}
                         value={this.state.value}
-                        onChange={value => this.changeYearRange(value)} />
+                        onChange={value => this.changeYearRange(value)} /> */}
                 </div>
                 <div className="control column">
                     <div className="param">

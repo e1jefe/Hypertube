@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "lodash.throttle": "^4.1.1",
+    "rc-slider": "^8.6.3",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-html5video": "^2.5.1",
@@ -16,7 +17,8 @@
     "react-scripts": "1.1.5",
     "redux": "^4.0.0",
     "semantic-ui-css": "^2.4.0",
-    "semantic-ui-react": "^0.82.5"
+    "semantic-ui-react": "^0.82.5",
+    "superagent": "^4.0.0-beta.5"
   },
   "scripts": {
     "start": "react-scripts start",

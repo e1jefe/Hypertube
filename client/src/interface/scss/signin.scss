@@ -180,6 +180,7 @@ button {
 			font-weight: 400;
 			margin-top: 0;
 			margin-bottom: 0.3em;
+			font-size: 1.5em;
 
 			a {
 				text-decoration: none;
@@ -190,6 +191,7 @@ button {
 		.signin-form-holder {
 			@include vertical-center;
 			justify-content: center;
+			margin-top: 30px;
 
 			aside {
 				width: 40%;
@@ -229,10 +231,11 @@ button {
 						input {
 							box-sizing: border-box;
 							font-family: inherit;
+							font-size: 18px;
 							width: 100%;
-							padding: 1em;
-							padding-left: 4em;
-							line-height: 1.4;
+							padding: 15px;
+							padding-left: 45px;
+							line-height: 18px;
 							background-color: $input-bg;
 							border: none;
 							border-radius: 3px;
@@ -306,7 +309,7 @@ button {
 							color: $btn-txt-col;
 							text-decoration: none;
 							background-color: $input-bg;
-							padding: 0.5em;
+							padding: 15px;
 							border-radius: 3px;
 							position: relative;
 							overflow: hidden;
@@ -315,7 +318,8 @@ button {
 							-webkit-transition-duration: 0.2s;
 							transition-duration: 0.2s;
 							width: 100%;
-							font-size: 0.8em;
+							font-size: 18px;
+							line-height: 18px;
 
 							&:hover {
 								color: $btn-txt-col-hovered;
@@ -371,8 +375,8 @@ button {
 						}
 
 						.fortytwo {
-							width: calc(21px + 6 * ((100vw - 320px) / 680));
-							height: calc(21px + 6 * ((100vw - 320px) / 680));
+							width: calc(15px + 6 * ((100vw - 320px) / 680));
+							height: calc(14px + 6 * ((100vw - 320px) / 680));
 							background-image: url('./42.png');
 							background-size: cover;
 							background-position: 50%;
@@ -450,6 +454,7 @@ button {
 
 		.main-head {
 			padding: 0.2em;
+			font-size: 14px;
 
 			.main-head-btn-holder {
 				width: 22%;
@@ -478,10 +483,12 @@ button {
 			width: 100%;
 			position: relative;
 			height: calc(100vh - 47px);
+			margin: 0 auto;
 
 			h1,
 			h3 {
 				position: relative;
+				font-size: 18px;
 			}
 
 			h1 {
@@ -531,17 +538,43 @@ button {
 					.form-foreword {
 						color: $txt-highlight;
 						font-weight: bold;
-						font-size: 1.3em;
+						font-size: 22px;
+    					margin-bottom: 15px;
 						// text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
 					}
 
 					.row {
+
+						.input-holder {
+							input + label {
+								font-size: 14px;
+							}
+
+							.reset-pass {
+								font-size: 14px;
+							}
+						}
 						.input-email {
 							input + label {	
 								&:after {
 									right: -1px;;
 								}
 							}
+						}
+
+						.alternatieve {
+							margin-top: 20px;
+							font-size: 18px;
+						}
+						
+						h4 {
+							margin: 2px auto;
+							font-size: 14px;
+						}
+
+						.social-media {
+							margin-top: 10px;
+							font-size: 18px;
 						}
 					}
 				}

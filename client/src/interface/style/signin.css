@@ -183,7 +183,8 @@ button {
     .signin-page .signin-page-content h3 {
       font-weight: 400;
       margin-top: 0;
-      margin-bottom: 0.3em; }
+      margin-bottom: 0.3em;
+      font-size: 1.5em; }
       .signin-page .signin-page-content h1 a,
       .signin-page .signin-page-content h3 a {
         text-decoration: none;
@@ -200,7 +201,8 @@ button {
       -webkit-box-pack: center;
       -webkit-justify-content: center;
           -ms-flex-pack: center;
-              justify-content: center; }
+              justify-content: center;
+      margin-top: 30px; }
       .signin-page .signin-page-content .signin-form-holder aside {
         width: 40%; }
         .signin-page .signin-page-content .signin-form-holder aside img {
@@ -239,10 +241,11 @@ button {
             -webkit-box-sizing: border-box;
                     box-sizing: border-box;
             font-family: inherit;
+            font-size: 18px;
             width: 100%;
-            padding: 1em;
-            padding-left: 4em;
-            line-height: 1.4;
+            padding: 15px;
+            padding-left: 45px;
+            line-height: 18px;
             background-color: #f9f9f9;
             border: none;
             -webkit-border-radius: 3px;
@@ -317,7 +320,7 @@ button {
             color: #5d2d6c;
             text-decoration: none;
             background-color: #f9f9f9;
-            padding: 0.5em;
+            padding: 15px;
             -webkit-border-radius: 3px;
                     border-radius: 3px;
             position: relative;
@@ -329,7 +332,8 @@ button {
             -o-transition-duration: 0.2s;
                transition-duration: 0.2s;
             width: 100%;
-            font-size: 0.8em; }
+            font-size: 18px;
+            line-height: 18px; }
             .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-holder .form-btn-submit:hover {
               color: #2f1736;
               background: #ebdaf1;
@@ -369,10 +373,10 @@ button {
             .signin-page .signin-page-content .signin-form-holder .signin-form .row .social-media div:hover {
               cursor: pointer; }
           .signin-page .signin-page-content .signin-form-holder .signin-form .row .social-media .fortytwo {
-            width: -webkit-calc(21px + 6 * ((100vw - 320px) / 680));
-            width: calc(21px + 6 * ((100vw - 320px) / 680));
-            height: -webkit-calc(21px + 6 * ((100vw - 320px) / 680));
-            height: calc(21px + 6 * ((100vw - 320px) / 680));
+            width: -webkit-calc(15px + 6 * ((100vw - 320px) / 680));
+            width: calc(15px + 6 * ((100vw - 320px) / 680));
+            height: -webkit-calc(14px + 6 * ((100vw - 320px) / 680));
+            height: calc(14px + 6 * ((100vw - 320px) / 680));
             background-image: url("./42.png");
             -webkit-background-size: cover;
                     background-size: cover;
@@ -430,7 +434,8 @@ button {
   .signin-page {
     background-color: #e8c36f; }
     .signin-page .main-head {
-      padding: 0.2em; }
+      padding: 0.2em;
+      font-size: 14px; }
       .signin-page .main-head .main-head-btn-holder {
         width: 22%; }
         .signin-page .main-head .main-head-btn-holder p {
@@ -448,10 +453,12 @@ button {
       width: 100%;
       position: relative;
       height: -webkit-calc(100vh - 47px);
-      height: calc(100vh - 47px); }
+      height: calc(100vh - 47px);
+      margin: 0 auto; }
       .signin-page .signin-page-content h1,
       .signin-page .signin-page-content h3 {
-        position: relative; }
+        position: relative;
+        font-size: 18px; }
       .signin-page .signin-page-content h1 {
         font-weight: bold; }
       .signin-page .signin-page-content h3 {
@@ -488,6 +495,20 @@ button {
           .signin-page .signin-page-content .signin-form-holder .signin-form .form-foreword {
             color: #a55dbb;
             font-weight: bold;
-            font-size: 1.3em; }
+            font-size: 22px;
+            margin-bottom: 15px; }
+          .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-holder input + label {
+            font-size: 14px; }
+          .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-holder .reset-pass {
+            font-size: 14px; }
           .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-email input + label:after {
-            right: -1px; } }
+            right: -1px; }
+          .signin-page .signin-page-content .signin-form-holder .signin-form .row .alternatieve {
+            margin-top: 20px;
+            font-size: 18px; }
+          .signin-page .signin-page-content .signin-form-holder .signin-form .row h4 {
+            margin: 2px auto;
+            font-size: 14px; }
+          .signin-page .signin-page-content .signin-form-holder .signin-form .row .social-media {
+            margin-top: 10px;
+            font-size: 18px; } }
