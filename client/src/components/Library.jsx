@@ -292,6 +292,7 @@ class Library extends Component {
     }
 
     changeYearRange(val) {
+        //get value as array of ints [min, max]
         // this.setState({
         //     value: val
         // });
@@ -299,6 +300,10 @@ class Library extends Component {
     }
 
     render() {
+        const marks = {
+            1910: '1910',
+            2018: '2018'
+        };
         return (
             <div className="library-container">
                 <h1>
@@ -312,7 +317,7 @@ class Library extends Component {
                         <input type="text" placeholder="Search"/>
                     </div>
                     <div style={{width: "200px", height: "50px"}}>
-                        <Range min={0} max={20} defaultValue={[3, 10]} onAfterChange={(event) => this.changeYearRange(event)}/>
+                        <Range min={1910} max={2018} defaultValue={[1990, 2010]} marks={marks} onAfterChange={(event) => this.changeYearRange(event)}/>
                     </div>
                     {/* <InputRange
                         allowSameValues

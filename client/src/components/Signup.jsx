@@ -30,10 +30,11 @@ class Signup extends Component {
     signupRequest(event) {      
         event.preventDefault();
         const data = {
-            // login: this.state.login,
+            name: this.state.login,
             password: this.state.pass,
             password_confirmation: this.state.pass,
-            name: this.state.fname + " " + this.state.lname,
+            firstname: this.state.fname,
+            lastname: this.state.lname,
             email: this.state.email,
         };
         // console.log(data);
@@ -51,16 +52,16 @@ class Signup extends Component {
         //         }
         //         // Calling the end function will send the request
         //     });
-        // fetch('http://127.0.0.1:8000/api/auth/signup', {
-        //     method: 'POST',
-        //     body: JSON.stringify(data),
-        //     headers:{
-        //         'Content-Type': 'application/json',
-        //         'X-Requested-With': 'XMLHttpRequest'
-        //     }
-        // }).then((res) => res.json())
-        // .then((responce) => console.log(responce.body));
-        axios({ method: 'POST', url: 'http://127.0.0.1:8000/api/auth/signup', headers: {'Content-Type': "application/json", 'X-Requested-With': "XMLHttpRequest"}, data: data }).then((res) => console.log(res)).catch((errors) => console.log(errors));
+        fetch('http://127.0.0.1:8000/api/auth/signup', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers:{
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        }).then((res) => res.json())
+        .then((responce) => console.log(responce));
+        // axios({ method: 'POST', url: 'http://127.0.0.1:8000/api/auth/signup', headers: {'Content-Type': "application/json", 'X-Requested-With': "XMLHttpRequest"}, data: data }).then((res) => console.log(res)).catch((errors) => console.log(errors));
 
     }
 
