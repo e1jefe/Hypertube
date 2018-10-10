@@ -14,8 +14,10 @@ class AuthController extends Controller
 {
     /**
      * Register and create user
-     * @param  (prinimaet) [string] name
+     * @param  (prinimaet) [string] username
      * @param  [string] email
+     * @param  [string] firstname
+     * @param  [string] lastname
      * @param  [string] password
      * @param  [string] password_confirmation
      * @return (prinimaet)[string] message
@@ -23,19 +25,23 @@ class AuthController extends Controller
     public function signup(Request $request)
     {
         $request->validate([
-            'name' => 'required|string',
+            'username' => 'required|string',
+            'firstname' => 'required|string',
+            'lastname' => 'required|string',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|confirmed'
         ]);
         $user = new User([
             'name' => $request->name,
             'email' => $request->email,
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
             'password' => bcrypt($request->password),
             'activation_token' => str_random(60)
         ]);
         $user->save();
-        $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
-        Storage::put('avatars/'.$user->id.'/avatar.png', (string) $avatar);
+//        $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
+//        Storage::put('avatars/'.$user->id.'/avatar.png', (string) $avatar);
         $user->notify(new SignupActivate($user));
         return response()->json([
             'message' => 'Successfully created user!'
