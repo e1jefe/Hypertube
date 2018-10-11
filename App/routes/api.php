@@ -41,28 +41,23 @@ Route::group([
     Route::post('reset', 'PasswordResetController@reset');
 });
 
-/*Route::group([
-    'prefix' => 'cabinet',
-    'namespace' => 'Cabinet'
-], function () {
-    Route::post('login', 'AuthController@login');
-    Route::post('signup', 'AuthController@signup');
-    Route::get('signup/activate/{token}', 'AuthController@signupActivate');
-
-    Route::group([
-        'middleware' => 'cabinet:api'
-    ], function() {
-        Route::get('logout', 'AuthController@logout');
-        Route::get('user-info', 'CabinetController@userInfo');
-    });
-});*/
 Route::group([
     'namespace' => 'Cabinet',
     'middleware' => 'api',
     'prefix' => 'cabinet'
 ], function () {
     Route::get('user-info', 'CabinetController@userInfo');
-    Route::any('change-info', 'CabinetController@changeInfo')/*->name('change')*/;
-    Route::any('change-pass', 'CabinetController@changePass')/*->name('change')*/;
-    /*Route::match(['get', 'post'], '/', ['uses' => '', 'as'=> '']);*/
+    Route::post('change-info', 'CabinetController@changeInfo');
+    Route::post('change-pass', 'CabinetController@changePass');
+    Route::post('change-avatar', 'CabinetController@changeAvatar');
+});
+
+Route::group([
+    'namespace' => 'Comments',
+    'middleware' => 'api',
+    'prefix' => 'comments'
+], function () {
+    Route::post('all-comments', 'CommentsController@returnAllCommentsToFilm');
+    Route::post('create-comment', 'CommentsController@createUserCommentToFilm');
+    Route::post('delete-comment', 'CommentsController@deleteUserCommentToFilm');
 });

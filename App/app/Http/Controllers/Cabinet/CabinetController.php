@@ -24,7 +24,9 @@ class CabinetController extends Controller
     public $successStatus = 200;
 
     public function userInfo(){
-        return response()->json(auth()->guard('api')->user());
+        $user = auth()->guard('api')->user();
+        $user->avatar = 'data:image/' . "jpeg" . ';base64,' . base64_encode(file_get_contents($user->avatar));
+        return response()->json($user);
     }
 
     public function changeInfo(Request $request){
@@ -54,5 +56,32 @@ class CabinetController extends Controller
         $userBase->password = bcrypt($request->password);
         $userBase->save();
         return response()->json($userBase);
+    }
+
+    public function changeAvatar(Request $request){
+        $user = auth()->guard('api')->user();
+        $img = $request->avatar;
+        $avatarPath = 'users_avatar/' . $user->id;
+        if(!file_exists('users_avatar')){
+            mkdir('users_avatar');
+        }
+        if(!file_exists($avatarPath)) {
+            mkdir($avatarPath);
+        }
+        if(file_exists($user->avatar)) {
+            unlink($user->avatar);
+        }
+        $img = str_replace('data:image/png;base64,', '', $img);
+        $img = str_replace('data:image/jpeg;base64,', '', $img);
+        $img = str_replace(' ', '+', $img);
+        $img = base64_decode($img);
+        $img1 = imagecreatefromstring($img);
+        header('Content-type: image/jpeg');
+        $img = uniqid() . '.jpeg';
+        imagejpeg($img1, "$avatarPath/$img");
+        $avatar = $avatarPath . '/' . $img;
+        $user->avatar = $avatar;
+        $user->save();
+        return response()->json($user);
     }
 }
