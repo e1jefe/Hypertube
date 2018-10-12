@@ -29,7 +29,7 @@ class AuthController extends Controller
             'firstname' => 'required|string',
             'lastname' => 'required|string',
             'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|confirmed'
+            'password' => 'required|string|confirmed|min:7|regex:/^(?=.*[a-z])(?=.*\d)(?:[^A-Z\n\r]*[A-Z]){1}[^A-Z\n\r]*$/'
         ]);
         $user = new User([
             'name' => $request->name,
