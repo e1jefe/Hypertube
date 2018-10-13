@@ -23,7 +23,7 @@ class MyPlayer extends Component {
             <div className="player">
                 <Video autoPlay loop muted
                     controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
-                    poster="https://m.media-amazon.com/images/M/MV5BZmU5MGU4MjctNjA2OC00N2FhLWFhNWQtMzQyMGI2ZmQ0Y2YyL2ltYWdlXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg"
+                    poster={this.props.poster}
                     >
                     <source src="http://sourcefile.webm" type="video/webm" />
                     <track label="English" kind="subtitles" srcLang="en" src="http://source.vtt" default />

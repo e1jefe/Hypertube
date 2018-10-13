@@ -210,12 +210,13 @@ button {
           width: 100%; }
       .signin-page .signin-page-content .signin-form-holder .signin-form .form-error {
         margin-top: 0.4em;
-        padding: 0.3em;
+        padding: 15px;
+        font-size: 18px;
         -webkit-border-radius: 3px;
                 border-radius: 3px;
         background-color: #ffe6b3;
         color: #5d2d6c; }
-      .signin-page .signin-page-content .signin-form-holder .signin-form .row {
+      .signin-page .signin-page-content .signin-form-holder .signin-form .my-row {
         display: -webkit-box;
         display: -webkit-flex;
         display: -ms-flexbox;
@@ -229,15 +230,15 @@ button {
             -ms-flex-align: center;
                 align-items: center;
         margin-top: 0.5em; }
-        .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-holder {
+        .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-holder {
           width: 100%;
           position: relative; }
-          .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-holder:before {
+          .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-holder:before {
             content: "";
             display: table;
             -webkit-box-sizing: border-box;
                     box-sizing: border-box; }
-          .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-holder input {
+          .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-holder input {
             -webkit-box-sizing: border-box;
                     box-sizing: border-box;
             font-family: inherit;
@@ -250,19 +251,19 @@ button {
             border: none;
             -webkit-border-radius: 3px;
                     border-radius: 3px; }
-            .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-holder input:focus {
+            .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-holder input:focus {
               outline: none; }
-            .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-holder input:focus + label {
+            .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-holder input:focus + label {
               color: #a55dbb; }
-              .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-holder input:focus + label:after {
+              .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-holder input:focus + label:after {
                 background-color: #c393d2; }
-          .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-holder input + label {
+          .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-holder input + label {
             position: absolute;
             top: 50%;
             -webkit-transform: translateY(-50%);
                 -ms-transform: translateY(-50%);
                     transform: translateY(-50%);
-            width: 20px;
+            width: 25px;
             display: block;
             font-size: 0.7em;
             -webkit-box-sizing: border-box;
@@ -278,7 +279,7 @@ button {
             -webkit-transition: all 0.35s ease-in-out;
             -o-transition: all 0.35s ease-in-out;
             transition: all 0.35s ease-in-out; }
-            .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-holder input + label:after {
+            .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-holder input + label:after {
               position: absolute;
               top: 50%;
               -webkit-transform: translateY(-50%);
@@ -293,17 +294,17 @@ button {
               -webkit-transition: all 0.35s ease-in-out;
               -o-transition: all 0.35s ease-in-out;
               transition: all 0.35s ease-in-out; }
-            .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-holder input + label i {
+            .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-holder input + label i {
               position: absolute;
               top: 50%;
               -webkit-transform: translateY(-50%);
                   -ms-transform: translateY(-50%);
                       transform: translateY(-50%);
               left: 0; }
-          .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-holder .input-icon {
+          .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-holder .input-icon {
             position: absolute;
             top: 50%; }
-          .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-holder .reset-pass {
+          .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-holder .reset-pass {
             position: absolute;
             top: 50%;
             -webkit-transform: translateY(-50%);
@@ -314,9 +315,9 @@ button {
             text-decoration: none;
             color: #5d2d6c;
             font-size: 0.7em; }
-            .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-holder .reset-pass:hover {
+            .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-holder .reset-pass:hover {
               text-decoration: underline; }
-          .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-holder .form-btn-submit {
+          .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-holder .form-btn-submit {
             color: #5d2d6c;
             text-decoration: none;
             background-color: #f9f9f9;
@@ -334,27 +335,27 @@ button {
             width: 100%;
             font-size: 18px;
             line-height: 18px; }
-            .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-holder .form-btn-submit:hover {
+            .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-holder .form-btn-submit:hover {
               color: #2f1736;
               background: #ebdaf1;
               cursor: pointer; }
-        .signin-page .signin-page-content .signin-form-holder .signin-form .row .signin-reset-pass {
+        .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .signin-reset-pass {
           text-decoration: none;
           color: #a55dbb; }
-        .signin-page .signin-page-content .signin-form-holder .signin-form .row h4 {
+        .signin-page .signin-page-content .signin-form-holder .signin-form .my-row h4 {
           margin: 0 auto;
           font-weight: normal; }
-        .signin-page .signin-page-content .signin-form-holder .signin-form .row .form-button {
+        .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .form-button {
           width: 100%; }
-        .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-email {
+        .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-email {
           width: 100%; }
-          .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-email input {
+          .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-email input {
             padding-left: 3.2em; }
-          .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-email input + label {
+          .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-email input + label {
             left: 2%; }
-            .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-email input + label:after {
+            .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-email input + label:after {
               right: -4px; }
-        .signin-page .signin-page-content .signin-form-holder .signin-form .row .social-media {
+        .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .social-media {
           -webkit-box-align: center;
           -webkit-align-items: center;
               -ms-flex-align: center;
@@ -368,11 +369,11 @@ button {
                   justify-content: space-around;
           width: 100%;
           font-size: 1.3em; }
-          .signin-page .signin-page-content .signin-form-holder .signin-form .row .social-media div {
+          .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .social-media div {
             display: inline-block; }
-            .signin-page .signin-page-content .signin-form-holder .signin-form .row .social-media div:hover {
+            .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .social-media div:hover {
               cursor: pointer; }
-          .signin-page .signin-page-content .signin-form-holder .signin-form .row .social-media .fortytwo {
+          .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .social-media .fortytwo {
             width: -webkit-calc(15px + 6 * ((100vw - 320px) / 680));
             width: calc(15px + 6 * ((100vw - 320px) / 680));
             height: -webkit-calc(14px + 6 * ((100vw - 320px) / 680));
@@ -383,10 +384,10 @@ button {
             background-position: 50%;
             -webkit-border-radius: 3px;
                     border-radius: 3px; }
-            .signin-page .signin-page-content .signin-form-holder .signin-form .row .social-media .fortytwo img {
+            .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .social-media .fortytwo img {
               display: block;
               width: 100%; }
-        .signin-page .signin-page-content .signin-form-holder .signin-form .row .alternatieve {
+        .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .alternatieve {
           -webkit-box-align: center;
           -webkit-align-items: center;
               -ms-flex-align: center;
@@ -400,14 +401,14 @@ button {
               -ms-flex-pack: justify;
                   justify-content: space-between;
           width: 100%; }
-          .signin-page .signin-page-content .signin-form-holder .signin-form .row .alternatieve:before, .signin-page .signin-page-content .signin-form-holder .signin-form .row .alternatieve:after {
+          .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .alternatieve:before, .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .alternatieve:after {
             content: "";
             display: inline-block;
             height: 2px;
             width: 42%;
             background-color: #fff;
             vertical-align: middle; }
-          .signin-page .signin-page-content .signin-form-holder .signin-form .row .alternatieve h4 {
+          .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .alternatieve h4 {
             display: inline-block; }
 
 @media screen and (min-width: 1240px) {
@@ -497,18 +498,18 @@ button {
             font-weight: bold;
             font-size: 22px;
             margin-bottom: 15px; }
-          .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-holder input + label {
+          .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-holder input + label {
             font-size: 14px; }
-          .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-holder .reset-pass {
+          .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-holder .reset-pass {
             font-size: 14px; }
-          .signin-page .signin-page-content .signin-form-holder .signin-form .row .input-email input + label:after {
+          .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-email input + label:after {
             right: -1px; }
-          .signin-page .signin-page-content .signin-form-holder .signin-form .row .alternatieve {
+          .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .alternatieve {
             margin-top: 20px;
             font-size: 18px; }
-          .signin-page .signin-page-content .signin-form-holder .signin-form .row h4 {
+          .signin-page .signin-page-content .signin-form-holder .signin-form .my-row h4 {
             margin: 2px auto;
             font-size: 14px; }
-          .signin-page .signin-page-content .signin-form-holder .signin-form .row .social-media {
+          .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .social-media {
             margin-top: 10px;
             font-size: 18px; } }

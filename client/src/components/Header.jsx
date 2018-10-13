@@ -1,9 +1,35 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import '../interface/style/header.css';
+import { connect } from 'react-redux';
+
+// ACTIONS from redux reduser
+import { logout } from "../redux/actions";
 
 class Header extends Component {
+
+    constructor(props){
+        super(props);
+        this.state = {};
+        this.logout = this.logout.bind(this);
+    }
+
+    logout() {
+        fetch('http://127.0.0.1:8000/api/auth/logout', {
+            method: 'GET',
+            headers:{
+                'Authorization': 'Bearer ' + this.props.componentState.token
+            }
+        }).then((res) => res.json())
+        .then((responce) => {
+            this.props.logout();
+            this.props.history.push('/signin');
+        });
+    }
+
     render() {
+        console.log("header", this.props);
+
         return (
             <div>
                 <div className="header">
@@ -34,7 +60,7 @@ class Header extends Component {
                             </NavLink>
                         </div>
                         <div className="logout">
-                            <button>
+                            <button onClick={this.logout}>
                                 Log out
                             </button>
                         </div>
@@ -53,7 +79,7 @@ class Header extends Component {
                         <li><NavLink to="/library">Library</NavLink></li>
                         <li><NavLink to="/ru">RU</NavLink></li>
                         <li><NavLink to="/en">EN</NavLink></li>
-                        <li><NavLink to="/logout">Log out</NavLink></li>
+                        <li><button onClick={this.logout}>Log out</button></li>
                     </ul>
                 </header>
             </div>
@@ -61,4 +87,16 @@ class Header extends Component {
     }
 }
 
-export default Header;
+const mapStateToProps = state => {
+    return {
+        componentState: state
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        logout: () => dispatch(logout())
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

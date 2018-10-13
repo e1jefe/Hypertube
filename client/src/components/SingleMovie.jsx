@@ -2,85 +2,126 @@ import React, { Component } from 'react';
 import '../interface/style/singleMovie.css';
 import MyPlayer from './MyPlayer';
 import Comments from './Comments.jsx';
+import axios from 'axios';
+
 
 class SingleMovie extends Component {
     constructor(props) {
         super(props);
         this.state = {
             movieId: "",
-            error: ""
+            error: "",
+            data: {}
         };
     }
 
     componentDidMount() {
-        this.setState({
-            movieId: this.props.match.params
-        })
+        let self = this;
+        // this.setState({
+        //     movieId: this.props.match.params
+        // })
+        console.log("id", this.props.match.params.id);
+        axios.get('https://yts.am/api/v2/movie_details.json?movie_id=' + this.props.match.params.id)
+            .then(function (response) {
+
+                // handle success
+                if (response.data.data.movie !== undefined) {
+                    let imdb = response.data.data.movie.imdb_code;
+                    axios.get('http://www.omdbapi.com/?i=' + imdb + "&apikey=1b966a3b").then((res) => {
+                        self.setState({
+                            data: {
+                                title: response.data.data.movie.title_english,
+                                year: response.data.data.movie.year,
+                                runtime: response.data.data.movie.runtime,
+                                rating: response.data.data.movie.rating,
+                                plot: response.data.data.movie.description_full,
+                                poster: response.data.data.movie.large_cover_image,
+                                director: res.data.Director,
+                                actors: res.data.Actors,
+                                country: res.data.Country
+                            }
+                        })
+                    });
+                }
+              })
+              .catch(function (error) {
+                // handle error
+                console.log(error);
+              })
     }
 
     render() {
-        console.log("history", this.state.movieId)
+        // console.log("history", this.state.movieId)
+        console.log("state", this.state);
         return (
             <section className="single-movie-container">
                 <div className="description">
                     <h1 className="title">
-                        The Hitchhiker's Guide to the Galaxy
+                        {this.state.data.title}
                     </h1>
                     <div className="poster">
-                        <img src="https://m.media-amazon.com/images/M/MV5BZmU5MGU4MjctNjA2OC00N2FhLWFhNWQtMzQyMGI2ZmQ0Y2YyL2ltYWdlXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg" alt="The Hitchhiker's Guide to the Galaxy"/>
+                        <img src={this.state.data.poster} alt="The Hitchhiker's Guide to the Galaxy"/>
                     </div>
                     <div className="description-txt">
-                        <div className="row">
+                        <div className="my-row">
                             <div className="characteristic">
                                 Year:
                             </div>
                             <div className="txt">
-                                2005
+                                {this.state.data.year}
                             </div>
                         </div>
-                        <div className="row">
+                        <div className="my-row">
                             <div className="characteristic">
                                 Length:
                             </div>
                             <div className="txt">
-                                180
+                                {this.state.data.runtime}
                             </div>
                         </div>
-                        <div className="row">
+                        <div className="my-row">
                             <div className="characteristic">
                                 IMDb grade:
                             </div>
                             <div className="txt">
-                                6.8
+                                {this.state.data.rating} 
                             </div>
                         </div>
-                        <div className="row">
+                        <div className="my-row">
                             <div className="characteristic">
-                                Director
+                                Country:
                             </div>
                             <div className="txt">
-                                Garth Jennings
+                                {this.state.data.country}
                             </div>
                         </div>
-                        <div className="row">
+                        <div className="my-row">
+                            <div className="characteristic">
+                                Director:
+                            </div>
+                            <div className="txt">
+                                {this.state.data.director}
+                            </div>
+                        </div>
+                        <div className="my-row">
                             <div className="characteristic">
                                 Stars:
                             </div>
                             <div className="txt">
-                                Martin Freeman, Yasiin Bey, Sam Rockwell
+                                {this.state.data.actors}
                             </div>
                         </div>
-                        <div className="row">
+                        <div className="my-row">
                             <div className="characteristic">
                                 Summary:
                             </div>
                             <div className="txt">
-                                Mere seconds before the Earth is to be demolished by an alien construction crew, journeyman Arthur Dent is swept off the planet by his friend Ford Prefect, a researcher penning a new edition of "The Hitchhiker's Guide to the Galaxy."
+                                {this.state.data.plot}
                             </div>
                         </div>
                     </div>
                 </div>
-                <MyPlayer/>
+                <MyPlayer poster={this.state.data.poster} />
                 <Comments/>
             </section>
         );

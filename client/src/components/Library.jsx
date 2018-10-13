@@ -5,6 +5,7 @@ import { Dropdown } from 'semantic-ui-react';
 import Slider from 'rc-slider';
 import "react-input-range/lib/css/index.css";
 import 'rc-slider/assets/index.css';
+import axios from 'axios';
 
 const Range = Slider.createSliderWithTooltip(Slider.Range);
 
@@ -89,7 +90,7 @@ class Library extends Component {
             genre: [
                 {
                     key: 'love',
-                    value: 'love',
+                    value: 'romance',
                     text: 'Romance'
                 },
                 {
@@ -103,14 +104,39 @@ class Library extends Component {
                     text: 'Action'
                 },
                 {
-                    key: 'detective',
-                    value: 'detective',
-                    text: 'Detective'
+                    key: 'sci-fi',
+                    value: 'sci-fi',
+                    text: 'Sci-Fi'
                 },
                 {
                     key: 'horror',
                     value: 'horror',
                     text: 'Horror'
+                },
+                {
+                    key: 'thriller',
+                    value: 'thriller',
+                    text: 'Thriller'
+                },
+                {
+                    key: 'drama',
+                    value: 'drama',
+                    text: 'Drama'
+                },
+                {
+                    key: 'animation',
+                    value: 'animation',
+                    text: 'Animation'
+                },
+                {
+                    key: 'mystery',
+                    value: 'mystery',
+                    text: 'Mystery'
+                },
+                {
+                    key: 'fantasy',
+                    value: 'fantasy',
+                    text: 'Fantasy'
                 }
             ],
             sortParam: [
@@ -125,170 +151,46 @@ class Library extends Component {
                     text: 'Name'
                 }
             ],
-            movies: [
-                {
-                    poster: 'https://i.pinimg.com/originals/e4/23/0f/e4230f081dcb9c969c19d6a9bf2647f3.jpg',
-                    country: "USA",
-                    year: 1992,
-                    id: 9122998,
-                    name: "Colombo",
-                    genre: ["comedy", "action", "detective"]
-                },
-                {
-                    poster: 'https://m.media-amazon.com/images/M/MV5BMjAyNDEyMzc4Ml5BMl5BanBnXkFtZTgwMjEzNjM0NTM@._V1_.jpg',
-                    country: "USA",
-                    year: 2018,
-                    id: 91229977,
-                    name: "Ocean's 8",
-                    genre: ["comedy", "action", "thriller"]
-                },
-                {
-                    poster: 'https://i.pinimg.com/originals/5d/35/06/5d3506d54587120f531e61db0c106005.jpg',
-                    country: "USA",
-                    year: 2002,
-                    id: 1122966,
-                    name: "Catch me if you can",
-                    genre: ["comedy", "action"]
-                },
-                {
-                    poster: 'http://cdn.collider.com/wp-content/uploads/2018/05/mission-impossible-6-poster.jpg',
-                    country: "USA",
-                    year: 2018,
-                    id: 11229055,
-                    name: "Mission impossible",
-                    genre: ["comedy", "action"]
-                },
-                {
-                    poster: 'https://movieposters2.com/images/634831-b.jpg',
-                    country: "USA",
-                    year: 2006,
-                    id: 10229944,
-                    name: "Prestige",
-                    genre: ["drama", "action"]
-                },
-                {
-                    poster: 'https://i.pinimg.com/originals/e4/23/0f/e4230f081dcb9c969c19d6a9bf2647f3.jpg',
-                    country: "USA",
-                    year: 1992,
-                    id: 11209988,
-                    name: "Colombo",
-                    genre: ["comedy", "action", "detective"]
-                },
-                {
-                    poster: 'https://m.media-amazon.com/images/M/MV5BMjAyNDEyMzc4Ml5BMl5BanBnXkFtZTgwMjEzNjM0NTM@._V1_.jpg',
-                    country: "USA",
-                    year: 2018,
-                    id: 11229970,
-                    name: "Ocean's 8",
-                    genre: ["comedy", "action", "thriller"]
-                },
-                {
-                    poster: 'https://i.pinimg.com/originals/5d/35/06/5d3506d54587120f531e61db0c106005.jpg',
-                    country: "USA",
-                    year: 2002,
-                    id: 11229969,
-                    name: "Catch me if you can",
-                    genre: ["comedy", "action"]
-                },
-                {
-                    poster: 'http://cdn.collider.com/wp-content/uploads/2018/05/mission-impossible-6-poster.jpg',
-                    country: "USA",
-                    year: 2018,
-                    id: 13229955,
-                    name: "Mission impossible",
-                    genre: ["comedy", "action"]
-                },
-                {
-                    poster: 'https://movieposters2.com/images/634831-b.jpg',
-                    country: "USA",
-                    year: 2006,
-                    id: 15229944,
-                    name: "Prestige",
-                    genre: ["drama", "action"]
-                },
-                {
-                    poster: 'https://i.pinimg.com/originals/e4/23/0f/e4230f081dcb9c969c19d6a9bf2647f3.jpg',
-                    country: "USA",
-                    year: 1992,
-                    id: 11229948,
-                    name: "Colombo",
-                    genre: ["comedy", "action", "detective"]
-                },
-                {
-                    poster: 'https://m.media-amazon.com/images/M/MV5BMjAyNDEyMzc4Ml5BMl5BanBnXkFtZTgwMjEzNjM0NTM@._V1_.jpg',
-                    country: "USA",
-                    year: 2018,
-                    id: 11429977,
-                    name: "Ocean's 8",
-                    genre: ["comedy", "action", "thriller"]
-                },
-                {
-                    poster: 'https://i.pinimg.com/originals/5d/35/06/5d3506d54587120f531e61db0c106005.jpg',
-                    country: "USA",
-                    year: 2002,
-                    id: 11226966,
-                    name: "Catch me if you can",
-                    genre: ["comedy", "action"]
-                },
-                {
-                    poster: 'http://cdn.collider.com/wp-content/uploads/2018/05/mission-impossible-6-poster.jpg',
-                    country: "USA",
-                    year: 2018,
-                    id: 11229975,
-                    name: "Mission impossible",
-                    genre: ["comedy", "action"]
-                },
-                {
-                    poster: 'https://movieposters2.com/images/634831-b.jpg',
-                    country: "USA",
-                    year: 2006,
-                    id: 11729944,
-                    name: "Prestige",
-                    genre: ["drama", "action"]
-                },
-                {
-                    poster: 'https://i.pinimg.com/originals/e4/23/0f/e4230f081dcb9c969c19d6a9bf2647f3.jpg',
-                    country: "USA",
-                    year: 1992,
-                    id: 11259988,
-                    name: "Colombo",
-                    genre: ["comedy", "action", "detective"]
-                },
-                {
-                    poster: 'https://m.media-amazon.com/images/M/MV5BMjAyNDEyMzc4Ml5BMl5BanBnXkFtZTgwMjEzNjM0NTM@._V1_.jpg',
-                    country: "USA",
-                    year: 2018,
-                    id: 11229577,
-                    name: "Ocean's 8",
-                    genre: ["comedy", "action", "thriller"]
-                },
-                {
-                    poster: 'https://i.pinimg.com/originals/5d/35/06/5d3506d54587120f531e61db0c106005.jpg',
-                    country: "USA",
-                    year: 2002,
-                    id: 11229926,
-                    name: "Catch me if you can",
-                    genre: ["comedy", "action"]
-                },
-                {
-                    poster: 'http://cdn.collider.com/wp-content/uploads/2018/05/mission-impossible-6-poster.jpg',
-                    country: "USA",
-                    year: 2018,
-                    id: 12229955,
-                    name: "Mission impossible",
-                    genre: ["comedy", "action"]
-                },
-                {
-                    poster: 'https://movieposters2.com/images/634831-b.jpg',
-                    country: "USA",
-                    year: 2006,
-                    id: 11223944,
-                    name: "Prestige",
-                    genre: ["drama", "action"]
-                }
-            ]
+            movies: [],
+            hasMoreItems: true,
+            isLoading: false,
+            currentSortParam: "title",
+            order: "asc",
+            imdbMin: "",
+            currentGenre: "",
+            pageStart: 0,
+            error: ""
         };
+        // this.loadItems = this.loadItems.bind(this);
         this.changeYearRange = this.changeYearRange.bind(this);
+        this.changeSort = this.changeSort.bind(this);
+        this.changeRate = this.changeRate.bind(this);
+        this.changeGenre = this.changeGenre.bind(this);
+        window.onscroll = () => {
+            const {
+                loadItems,
+                state: {
+                    isLoading,
+                    hasMore
+                },
+            } = this;
+      
+            if ( isLoading || !hasMore) return;
+
+            // Checks that the page has scrolled to the bottom
+            if ( window.innerHeight + document.documentElement.scrollTop === document.documentElement.scrollHeight ) {
+                loadItems();
+            }
+          };
+    }
+
+    componentDidMount() {
+        console.log("component did mount");
+        const page = this.state.pageStart + 1;
+        this.loadItems();
+        this.setState({
+            pageStart: page
+        });
     }
 
     changeYearRange(val) {
@@ -296,7 +198,121 @@ class Library extends Component {
         // this.setState({
         //     value: val
         // });
-        console.log(val)
+    }
+
+    changeRate(val, data) {
+        if (data.value !== "any") {
+            this.setState({
+                imdbMin: data.value,
+                pageStart: 1,
+                movies: []
+            }, () => this.loadItems());
+        }
+        
+    }
+
+    changeGenre(event, data) {
+        console.log("val", data);
+    }
+
+    changeSort(event, data){
+        console.log("got new sort", data);
+        if (data.value === 'pop') {
+            this.setState({
+                currentSortParam: "rating",
+                order: "desc",
+                movies: [],
+                pageStart: 1
+            }, () => this.loadItems());
+        } else {
+            this.setState({
+                currentSortParam: "title",
+                order: "asc",
+                movies: [],
+                pageStart: 1
+            }, () => this.loadItems());
+        }
+    }
+
+    loadItems = () => {
+        console.log("movie at beggining", this.state.movies);
+
+        const baseUrl = "https://yts.am/api/v2/list_movies.json?";
+        const page = 'page=' + this.state.pageStart;
+        const sortParam = "&sort_by=" + this.state.currentSortParam;
+        const orderParam = "&order_by=" + this.state.order;
+        const rate = this.state.imdbMin !== "" ? "&minimum_rating=" + this.state.imdbMin : "";
+        const genre = this.state.currentGenre !== "" ? "&genre=" + this.state.currentGenre : "";
+        let requestUrl = baseUrl + page + rate + sortParam + orderParam;
+        console.log("request", requestUrl);
+
+        this.setState({ isLoading: true }, () => {
+            axios
+              .get(requestUrl)
+              .then((response) => {          
+                // Creates a massaged array of user data
+                const nextMovies = response.data.data.movies.map(mov => ({
+                    poster: mov.large_cover_image,
+                    country: mov.language,
+                    year: mov.year,
+                    id: mov.id,
+                    name: mov.title_english,
+                    genre: mov.genres
+                }));
+                let newPage = this.state.pageStart + 1;
+                // Merges the next users into our existing users
+                this.setState({
+                  // Note: Depending on the API you're using, this value may be
+                  // returned as part of the payload to indicate that there is no
+                  // additional data to be loaded
+                  hasMore: (this.state.movies.length < response.data.data.movie_count),
+                  isLoading: false,
+                  movies: [
+                    ...this.state.movies,
+                    ...nextMovies,
+                  ],
+                  pageStart: newPage
+                });
+              })
+              .catch((err) => {
+                this.setState({
+                  error: err.message,
+                  isLoading: false,
+                 });
+              })
+          });
+        // console.log("page", page);
+        // var self = this;
+        // let pageStart = this.state.pageStart;
+        // axios.get('https://yts.am/api/v2/list_movies.json?page=' + page + "&sort_by=" + this.state.currentSortParam + "&order_by=" + this.state.order)
+        //     .then(function (response) {
+        //         // handle success
+        //         if (response.data.data.movies !== undefined) {
+        //             let movies = self.state.movies;
+        //             response.data.data.movies.map((mov) => {
+        //                 movies.push({
+        //                     poster: mov.large_cover_image,
+        //                     country: mov.language,
+        //                     year: mov.year,
+        //                     id: mov.id,
+        //                     name: mov.title_english,
+        //                     genre: mov.genres
+        //                 })
+        //             })
+        //             self.setState({
+        //                 movies: movies,
+        //                 pageStart: pageStart + 1
+        //             })
+        //         } else {
+        //             this.setState({
+        //                 hasMoreItems: false
+        //             })
+        //         }
+        //       })
+        //       .catch(function (error) {
+        //         // handle error
+        //         console.log(error);
+        //       })
     }
 
     render() {
@@ -304,6 +320,7 @@ class Library extends Component {
             1910: '1910',
             2018: '2018'
         };
+
         return (
             <div className="library-container">
                 <h1>
@@ -319,30 +336,23 @@ class Library extends Component {
                     <div style={{width: "200px", height: "50px"}}>
                         <Range min={1910} max={2018} defaultValue={[1990, 2010]} marks={marks} onAfterChange={(event) => this.changeYearRange(event)}/>
                     </div>
-                    {/* <InputRange
-                        allowSameValues
-                        draggableTrack
-                        maxValue={2018}
-                        minValue={1910}
-                        value={this.state.value}
-                        onChange={value => this.changeYearRange(value)} /> */}
                 </div>
                 <div className="control column">
-                    <div className="param">
+                    {/* <div className="param">
                         <Dropdown placeholder='COUNTRY' fluid search multiple selection options={this.state.country} />
+                    </div> */}
+                    <div className="param">                    
+                        <Dropdown placeholder='IMDB RATING' fluid search selection options={this.state.imdb} onChange={this.changeRate}/>
                     </div>
                     <div className="param">                    
-                        <Dropdown placeholder='IMDB RATING' fluid search selection options={this.state.imdb} />
+                        <Dropdown placeholder='GENRE' fluid search multiple selection options={this.state.genre} onChange={this.changeGenre}/>
                     </div>
                     <div className="param">                    
-                        <Dropdown placeholder='GENRE' fluid search multiple selection options={this.state.genre} />
-                    </div>
-                    <div className="param">                    
-                        <Dropdown placeholder='SORT BY' fluid selection options={this.state.sortParam} />
+                        <Dropdown placeholder='SORT BY' fluid selection options={this.state.sortParam} onChange={this.changeSort}/>
                     </div>
                 </div>
                 <div className="movies-all container">
-                    <div class="row">
+                    <div className="row">
                     {
                         this.state.movies.map((mov) => {
                             return(
@@ -369,11 +379,14 @@ class Library extends Component {
                                         </a>
                                     </div>
                                     <div className="genre">
-                                        {mov.genre.join(", ")}
+                                        {mov.genre !== undefined ? mov.genre.join(", ") : " "}
                                     </div>
                                 </div>
                             )
                         })
+                    }
+                    {this.state.isLoading &&
+                        <div>Loading...</div>
                     }
                     </div>
                 </div>

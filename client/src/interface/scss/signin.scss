@@ -206,13 +206,14 @@ button {
 
 				.form-error {
 					margin-top: 0.4em;
-					padding: 0.3em;
+					padding: 15px;
+    				font-size: 18px;
 					border-radius: 3px;
 					background-color: #ffe6b3;
 					color: $btn-txt-col;
 				}
 
-				.row {
+				.my-row {
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
@@ -255,7 +256,7 @@ button {
 
 						input + label {
 							@include vert-ctr-abs;
-							width: 20px;
+							width: 25px;
 							display: block;
 							font-size: 0.7em;
 							box-sizing: border-box;
@@ -543,7 +544,7 @@ button {
 						// text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
 					}
 
-					.row {
+					.my-row {
 
 						.input-holder {
 							input + label {

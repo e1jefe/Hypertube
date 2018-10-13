@@ -54,7 +54,7 @@ button {
 	}
 }
 
-.signup-page {
+.reset-page {
 	font-size: calc(16px + 6 * ((100vw - 320px) / 680));
 	font-family: 'Open Sans', sans-serif;
 	color: rgb(255, 255, 255);
@@ -169,7 +169,7 @@ button {
 		}		
 	}
 
-	.signup-page-content {
+	.reset-page-content {
 		max-width: 960px;
 		text-align: center;
 		margin: 120px auto;
@@ -190,10 +190,12 @@ button {
 			margin-top: 15px;
 		}
 
-		.signup-form-holder {
+		.reset-form-holder {
 			@include vertical-center;
 			justify-content: center;
-			margin-top: 25px;
+            margin-top: 25px;
+            max-width: 300px;
+            margin: 0 auto;
 
 			aside {
 				width: 40%;
@@ -204,7 +206,7 @@ button {
 				}
 			}
 
-			.signup-form {
+			.reset-form {
 
 				.form-error {
 					margin: 0.4em 0;
@@ -218,7 +220,12 @@ button {
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
-					margin-top: 0.5em;
+                    margin-top: 0.5em;
+                    
+                    img {
+                        display: block;
+                        width: 100%;
+                    }
 
 					.tooltip-castom {
 						position: relative;
@@ -253,7 +260,7 @@ button {
 					}
 
 					.input-holder {
-						width: 47%;
+						width: 100%;
 						position: relative;
 
 						&:before {
@@ -289,7 +296,7 @@ button {
 
 						input + label {
 							@include vert-ctr-abs;
-							width: 20px;
+							width: 25px;
 							display: block;
 							font-size: 0.7em;
 							box-sizing: border-box;
@@ -350,7 +357,7 @@ button {
 
 					}
 					
-					.signin-reset-pass {
+					.reset-reset-pass {
 						text-decoration: none;
 						color: $txt-highlight;
 					}
@@ -433,18 +440,17 @@ button {
 			}
 		}
 	}
-
-}
-
-.ui.active.modal {
-	margin: 36% auto 0;
-	transform: translateY(-50%);
-	max-height: 515px;
+    
+    .ui.active.modal {
+        margin: 50% auto 0;
+        transform: translateY(0%);
+        max-height: 515px;
+    }
 }
 
 
 @media screen and (min-width: 1240px)  {
-	.signup-page-content {
+	.reset-page-content {
 		max-width: 1140px;
 	}
 }
@@ -453,13 +459,13 @@ button {
 	.main-head-btn-description {
 		font-size: 0.9em;
 	}
-	.signup-page-content {
+	.reset-page-content {
 		max-width: 720px;
 	}
 }
 
 @media screen and (max-width: 768px) {
-	.signup-page {
+	.reset-page {
 		.main-head {
 			padding: 0.2em;
 
@@ -467,10 +473,10 @@ button {
 				width: 35%;
 			}
 		}
-		.signup-page-content {
+		.reset-page-content {
 			max-width: 540px;
 			
-			.signup-form-holder {
+			.reset-form-holder {
 				margin-top: 4em;
 			}
 		}
@@ -478,7 +484,7 @@ button {
 }
 
 @media screen and (max-width: 415px) {
-	.signup-page {
+	.reset-page {
 		background-color: $bg-small;
 
 		.main-head {
@@ -538,11 +544,14 @@ button {
 			}
 		}
 
-		.signup-page-content {
+		.reset-page-content {
 			width: 100%;
 			position: relative;
 			height: calc(100vh - 47px);
-			margin: 0 auto;
+            margin: 0 auto;
+            background-image: url('./bg-small.jpg');
+            background-size: contain;
+            background-repeat: no-repeat;
 
 			h1,
 			h3 {
@@ -575,21 +584,15 @@ button {
 				display: none;
 			}
 
-			.signup-form-holder {
+			.reset-form-holder {
 				width: 100%;
 				margin-top: 20px;
-				padding: 3em 3em;
 				position: absolute;
-				top: 50%;
+				top: 35%;
 				left: 50%;
 				transform: translate(-50%, -50%);
 
-				// background-image: url(../pics/madagascar.png);
-				// -webkit-background-size: cover;
-				// background-repeat: no-repeat;
-				// background-position-y: -24%;
-
-				.signup-form {
+				.reset-form {
 					width: 85%;
 
 					.form-foreword {
@@ -597,7 +600,6 @@ button {
 						font-weight: bold;
 						font-size: 18px;
     					margin-bottom: 6px;
-						// text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
 					}
 
 					.my-row {
@@ -646,11 +648,5 @@ button {
 				}
 			}
 		}
-		
-	}
-	.ui.active.modal {
-		margin: 25% auto 0;
-		transform: translateY(0);
-		max-height: 430px;
 	}
 }

@@ -15,6 +15,9 @@
             font-family: inherit;
             margin-bottom: 20px;
             font-size: 24px;
+            font-weight: 700;
+            background-color: #a460b9;
+            padding: 0.5em;
         }
 
         .poster {
@@ -35,7 +38,7 @@
             vertical-align: top;
             font-size: calc(16px + 6 * ((100vw - 320px) / 680));
     
-            .row {
+            .my-row {
                 div {
                     display: inline-block;
                 }
@@ -154,7 +157,7 @@
             box-sizing: border-box;
             font-family: inherit;
 
-            .row {
+            .my-row {
                 display: flex;
                 justify-content: space-between;
                 align-items: flex-start;
@@ -197,7 +200,7 @@
                 }
             }
 
-            .row.my-comment {
+            .my-row.my-comment {
                 flex-direction: row-reverse;
                 justify-content: flex-start;
                 background-color: #eadcef;

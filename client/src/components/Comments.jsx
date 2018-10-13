@@ -58,7 +58,7 @@ class Comments extends Component {
                     </div>
                 </div>
                 <div className="all-comments">
-                    <div className="row">
+                    <div className="my-row">
                         <div className="avatar">
                             <img src="https://cdn.iconscout.com/icon/free/png-256/avatar-373-456325.png" alt="my avatar"/>
                         </div>
@@ -77,7 +77,7 @@ class Comments extends Component {
                         </div>
                     </div>
 
-                    <div className="row">
+                    <div className="my-row">
                         <div className="avatar">
                             <img src="https://cdn.iconscout.com/icon/free/png-256/avatar-373-456325.png" alt="my avatar"/>
                         </div>
@@ -96,7 +96,7 @@ class Comments extends Component {
                         </div>
                     </div>
 
-                    <div className="row my-comment">
+                    <div className="my-row my-comment">
                         <div className="avatar">
                             <img src="https://cdn.iconscout.com/icon/free/png-256/avatar-373-456325.png" alt="my avatar"/>
                         </div>
@@ -115,7 +115,7 @@ class Comments extends Component {
                         </div>
                     </div>
 
-                    <div className="row">
+                    <div className="my-row">
                         <div className="avatar">
                             <img src="https://cdn.iconscout.com/icon/free/png-256/avatar-373-456325.png" alt="my avatar"/>
                         </div>

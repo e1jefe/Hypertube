@@ -26,14 +26,14 @@ button {
     border: 0;
     padding: 0; }
 
-.signup-page {
+.reset-page {
   font-size: -webkit-calc(16px + 6 * ((100vw - 320px) / 680));
   font-size: calc(16px + 6 * ((100vw - 320px) / 680));
   font-family: 'Open Sans', sans-serif;
   color: white;
   background-color: #2e1536;
   height: 100vh; }
-  .signup-page .main-head {
+  .reset-page .main-head {
     -webkit-box-align: center;
     -webkit-align-items: center;
         -ms-flex-align: center;
@@ -47,9 +47,9 @@ button {
         -ms-flex-pack: justify;
             justify-content: space-between;
     padding: 0.3em; }
-    .signup-page .main-head .main-head-logo {
+    .reset-page .main-head .main-head-logo {
       width: 20%; }
-      .signup-page .main-head .main-head-logo a {
+      .reset-page .main-head .main-head-logo a {
         -webkit-box-align: center;
         -webkit-align-items: center;
             -ms-flex-align: center;
@@ -64,13 +64,13 @@ button {
                 justify-content: space-evenly;
         text-decoration: none;
         color: inherit; }
-        .signup-page .main-head .main-head-logo a img {
+        .reset-page .main-head .main-head-logo a img {
           display: inline-block;
           width: 25%; }
-        .signup-page .main-head .main-head-logo a p {
+        .reset-page .main-head .main-head-logo a p {
           display: inline-block;
           margin: 0; }
-    .signup-page .main-head .language-holder {
+    .reset-page .main-head .language-holder {
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
@@ -88,7 +88,7 @@ button {
       -webkit-justify-content: space-between;
           -ms-flex-pack: justify;
               justify-content: space-between; }
-      .signup-page .main-head .language-holder .language-option {
+      .reset-page .main-head .language-holder .language-option {
         display: -webkit-box;
         display: -webkit-flex;
         display: -ms-flexbox;
@@ -97,7 +97,7 @@ button {
         -webkit-align-items: center;
             -ms-flex-align: center;
                 align-items: center; }
-      .signup-page .main-head .language-holder .language-option:after {
+      .reset-page .main-head .language-holder .language-option:after {
         content: '';
         display: inline-block;
         height: -webkit-calc(16px + 6 * ((100vw - 320px) / 680));
@@ -105,12 +105,12 @@ button {
         width: 1px;
         margin: 0 3px;
         background-color: #e6e6e6; }
-      .signup-page .main-head .language-holder a {
+      .reset-page .main-head .language-holder a {
         text-decoration: none;
         color: #b184c3; }
-        .signup-page .main-head .language-holder a.disabled {
+        .reset-page .main-head .language-holder a.disabled {
           color: #e6e6e6; }
-    .signup-page .main-head .main-head-btn-holder {
+    .reset-page .main-head .main-head-btn-holder {
       -webkit-box-align: center;
       -webkit-align-items: center;
           -ms-flex-align: center;
@@ -125,7 +125,7 @@ button {
               justify-content: space-between;
       color: inherit;
       width: 30%; }
-      .signup-page .main-head .main-head-btn-holder .main-head-btn {
+      .reset-page .main-head .main-head-btn-holder .main-head-btn {
         color: #5d2d6c;
         text-decoration: none;
         background-color: #f9f9f9;
@@ -142,7 +142,7 @@ button {
         -webkit-transition-duration: 0.2s;
         -o-transition-duration: 0.2s;
            transition-duration: 0.2s; }
-        .signup-page .main-head .main-head-btn-holder .main-head-btn:before {
+        .reset-page .main-head .main-head-btn-holder .main-head-btn:before {
           content: "";
           position: absolute;
           z-index: -1;
@@ -168,28 +168,28 @@ button {
           -webkit-transition-timing-function: ease-out;
           -o-transition-timing-function: ease-out;
              transition-timing-function: ease-out; }
-        .signup-page .main-head .main-head-btn-holder .main-head-btn:hover {
+        .reset-page .main-head .main-head-btn-holder .main-head-btn:hover {
           color: #2f1736; }
-        .signup-page .main-head .main-head-btn-holder .main-head-btn:hover:before {
+        .reset-page .main-head .main-head-btn-holder .main-head-btn:hover:before {
           -webkit-transform: scale(2);
               -ms-transform: scale(2);
                   transform: scale(2); }
-  .signup-page .signup-page-content {
+  .reset-page .reset-page-content {
     max-width: 960px;
     text-align: center;
     margin: 120px auto; }
-    .signup-page .signup-page-content h1,
-    .signup-page .signup-page-content h3 {
+    .reset-page .reset-page-content h1,
+    .reset-page .reset-page-content h3 {
       font-weight: 400;
       margin-top: 0;
       margin-bottom: 0.3em; }
-      .signup-page .signup-page-content h1 a,
-      .signup-page .signup-page-content h3 a {
+      .reset-page .reset-page-content h1 a,
+      .reset-page .reset-page-content h3 a {
         text-decoration: none;
         color: #a55dbb; }
-    .signup-page .signup-page-content h3 {
+    .reset-page .reset-page-content h3 {
       margin-top: 15px; }
-    .signup-page .signup-page-content .signup-form-holder {
+    .reset-page .reset-page-content .reset-form-holder {
       -webkit-box-align: center;
       -webkit-align-items: center;
           -ms-flex-align: center;
@@ -202,20 +202,22 @@ button {
       -webkit-justify-content: center;
           -ms-flex-pack: center;
               justify-content: center;
-      margin-top: 25px; }
-      .signup-page .signup-page-content .signup-form-holder aside {
+      margin-top: 25px;
+      max-width: 300px;
+      margin: 0 auto; }
+      .reset-page .reset-page-content .reset-form-holder aside {
         width: 40%; }
-        .signup-page .signup-page-content .signup-form-holder aside img {
+        .reset-page .reset-page-content .reset-form-holder aside img {
           display: block;
           width: 100%; }
-      .signup-page .signup-page-content .signup-form-holder .signup-form .form-error {
+      .reset-page .reset-page-content .reset-form-holder .reset-form .form-error {
         margin: 0.4em 0;
         padding: 0.3em;
         -webkit-border-radius: 3px;
                 border-radius: 3px;
         background-color: #ffe6b3;
         color: #5d2d6c; }
-      .signup-page .signup-page-content .signup-form-holder .signup-form .my-row {
+      .reset-page .reset-page-content .reset-form-holder .reset-form .my-row {
         display: -webkit-box;
         display: -webkit-flex;
         display: -ms-flexbox;
@@ -229,9 +231,12 @@ button {
             -ms-flex-align: center;
                 align-items: center;
         margin-top: 0.5em; }
-        .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .tooltip-castom {
+        .reset-page .reset-page-content .reset-form-holder .reset-form .my-row img {
+          display: block;
+          width: 100%; }
+        .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .tooltip-castom {
           position: relative; }
-          .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .tooltip-castom .tooltiptext {
+          .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .tooltip-castom .tooltiptext {
             visibility: hidden;
             width: 100%;
             background-color: #737373;
@@ -249,18 +254,18 @@ button {
             -o-transition: opacity 0.3s;
             transition: opacity 0.3s;
             font-size: 0.6em; }
-          .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .tooltip-castom:hover .tooltiptext {
+          .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .tooltip-castom:hover .tooltiptext {
             visibility: visible;
             opacity: 1; }
-        .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder {
-          width: 47%;
+        .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder {
+          width: 100%;
           position: relative; }
-          .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder:before {
+          .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder:before {
             content: "";
             display: table;
             -webkit-box-sizing: border-box;
                     box-sizing: border-box; }
-          .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder input {
+          .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder input {
             -webkit-box-sizing: border-box;
                     box-sizing: border-box;
             font-family: inherit;
@@ -273,19 +278,19 @@ button {
             border: none;
             -webkit-border-radius: 3px;
                     border-radius: 3px; }
-            .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder input:focus {
+            .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder input:focus {
               outline: none; }
-            .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder input:focus + label {
+            .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder input:focus + label {
               color: #a55dbb; }
-              .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder input:focus + label:after {
+              .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder input:focus + label:after {
                 background-color: #c393d2; }
-          .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder input + label {
+          .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder input + label {
             position: absolute;
             top: 50%;
             -webkit-transform: translateY(-50%);
                 -ms-transform: translateY(-50%);
                     transform: translateY(-50%);
-            width: 20px;
+            width: 25px;
             display: block;
             font-size: 0.7em;
             -webkit-box-sizing: border-box;
@@ -301,7 +306,7 @@ button {
             -webkit-transition: all 0.35s ease-in-out;
             -o-transition: all 0.35s ease-in-out;
             transition: all 0.35s ease-in-out; }
-            .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder input + label:after {
+            .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder input + label:after {
               position: absolute;
               top: 50%;
               -webkit-transform: translateY(-50%);
@@ -316,17 +321,17 @@ button {
               -webkit-transition: all 0.35s ease-in-out;
               -o-transition: all 0.35s ease-in-out;
               transition: all 0.35s ease-in-out; }
-            .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder input + label i {
+            .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder input + label i {
               position: absolute;
               top: 50%;
               -webkit-transform: translateY(-50%);
                   -ms-transform: translateY(-50%);
                       transform: translateY(-50%);
               left: 0; }
-          .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder .input-icon {
+          .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder .input-icon {
             position: absolute;
             top: 50%; }
-          .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder .form-btn-submit {
+          .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder .form-btn-submit {
             color: #5d2d6c;
             text-decoration: none;
             background-color: #f9f9f9;
@@ -343,25 +348,25 @@ button {
                transition-duration: 0.2s;
             width: 100%;
             font-size: 0.8em; }
-            .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder .form-btn-submit:hover {
+            .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder .form-btn-submit:hover {
               color: #2f1736;
               background: #ebdaf1;
               cursor: pointer; }
-        .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .signin-reset-pass {
+        .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .reset-reset-pass {
           text-decoration: none;
           color: #a55dbb; }
-        .signup-page .signup-page-content .signup-form-holder .signup-form .my-row h4 {
+        .reset-page .reset-page-content .reset-form-holder .reset-form .my-row h4 {
           margin: 0 auto;
           font-weight: normal; }
-        .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .form-button {
+        .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .form-button {
           width: 100%; }
-        .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-email {
+        .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-email {
           width: 100%; }
-          .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-email input + label {
+          .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-email input + label {
             left: 2%; }
-            .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-email input + label:after {
+            .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-email input + label:after {
               right: -4px; }
-        .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .social-media {
+        .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .social-media {
           -webkit-box-align: center;
           -webkit-align-items: center;
               -ms-flex-align: center;
@@ -376,11 +381,11 @@ button {
           width: 100%;
           font-size: 1.3em;
           margin-top: 10px; }
-          .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .social-media div {
+          .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .social-media div {
             display: inline-block; }
-            .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .social-media div:hover {
+            .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .social-media div:hover {
               cursor: pointer; }
-          .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .social-media .fortytwo {
+          .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .social-media .fortytwo {
             width: -webkit-calc(21px + 6 * ((100vw - 320px) / 680));
             width: calc(21px + 6 * ((100vw - 320px) / 680));
             height: -webkit-calc(21px + 6 * ((100vw - 320px) / 680));
@@ -391,10 +396,10 @@ button {
             background-position: 50%;
             -webkit-border-radius: 3px;
                     border-radius: 3px; }
-            .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .social-media .fortytwo img {
+            .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .social-media .fortytwo img {
               display: block;
               width: 100%; }
-        .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .alternatieve {
+        .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .alternatieve {
           -webkit-box-align: center;
           -webkit-align-items: center;
               -ms-flex-align: center;
@@ -408,62 +413,61 @@ button {
               -ms-flex-pack: justify;
                   justify-content: space-between;
           width: 100%; }
-          .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .alternatieve:before, .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .alternatieve:after {
+          .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .alternatieve:before, .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .alternatieve:after {
             content: "";
             display: inline-block;
             height: 2px;
             width: 42%;
             background-color: #fff;
             vertical-align: middle; }
-          .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .alternatieve h4 {
+          .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .alternatieve h4 {
             display: inline-block; }
-
-.ui.active.modal {
-  margin: 36% auto 0;
-  -webkit-transform: translateY(-50%);
-      -ms-transform: translateY(-50%);
-          transform: translateY(-50%);
-  max-height: 515px; }
+  .reset-page .ui.active.modal {
+    margin: 50% auto 0;
+    -webkit-transform: translateY(0%);
+        -ms-transform: translateY(0%);
+            transform: translateY(0%);
+    max-height: 515px; }
 
 @media screen and (min-width: 1240px) {
-  .signup-page-content {
+  .reset-page-content {
     max-width: 1140px; } }
 
 @media screen and (min-width: 768px) and (max-width: 992px) {
   .main-head-btn-description {
     font-size: 0.9em; }
-  .signup-page-content {
+  .reset-page-content {
     max-width: 720px; } }
 
 @media screen and (max-width: 768px) {
-  .signup-page .main-head {
+  .reset-page .main-head {
     padding: 0.2em; }
-    .signup-page .main-head .main-head-btn-holder {
+    .reset-page .main-head .main-head-btn-holder {
       width: 35%; }
-  .signup-page .signup-page-content {
+  .reset-page .reset-page-content {
     max-width: 540px; }
-    .signup-page .signup-page-content .signup-form-holder {
+    .reset-page .reset-page-content .reset-form-holder {
       margin-top: 4em; } }
 
 @media screen and (max-width: 415px) {
-  .signup-page {
+  .reset-page {
     background-color: #e8c36f; }
-    .signup-page .main-head {
+    .reset-page .main-head {
       padding: 0.2em; }
-      .signup-page .main-head .main-head-btn-holder {
+      .reset-page .main-head .main-head-btn-holder {
         width: 22%; }
-        .signup-page .main-head .main-head-btn-holder p {
+        .reset-page .main-head .main-head-btn-holder p {
           display: none; }
-      .signup-page .main-head .main-head-logo a {
+      .reset-page .main-head .main-head-logo a {
         -webkit-box-pack: initial;
         -webkit-justify-content: initial;
             -ms-flex-pack: initial;
                 justify-content: initial; }
-        .signup-page .main-head .main-head-logo a p {
+        .reset-page .main-head .main-head-logo a p {
           display: none; }
-        .signup-page .main-head .main-head-logo a img {
+        .reset-page .main-head .main-head-logo a img {
           width: 50%; }
-      .signup-page .main-head .language-holder {
+      .reset-page .main-head .language-holder {
         color: #5d2d6c;
         display: -webkit-box;
         display: -webkit-flex;
@@ -474,36 +478,40 @@ button {
         -webkit-justify-content: space-between;
             -ms-flex-pack: justify;
                 justify-content: space-between; }
-        .signup-page .main-head .language-holder .language-option a {
+        .reset-page .main-head .language-holder .language-option a {
           color: #b184c3;
           text-decoration: none;
           font-family: inherit;
           font-weight: bold; }
-        .signup-page .main-head .language-holder .language-option a.disabled {
+        .reset-page .main-head .language-holder .language-option a.disabled {
           color: #737373;
           font-weight: normal; }
-        .signup-page .main-head .language-holder .language-option:first-child::after {
+        .reset-page .main-head .language-holder .language-option:first-child::after {
           margin-left: 7px;
           width: 1px;
           height: 12px;
           background: #737373;
           content: '';
           display: inline-block; }
-    .signup-page .signup-page-content {
+    .reset-page .reset-page-content {
       width: 100%;
       position: relative;
       height: -webkit-calc(100vh - 47px);
       height: calc(100vh - 47px);
-      margin: 0 auto; }
-      .signup-page .signup-page-content h1,
-      .signup-page .signup-page-content h3 {
+      margin: 0 auto;
+      background-image: url("./bg-small.jpg");
+      -webkit-background-size: contain;
+              background-size: contain;
+      background-repeat: no-repeat; }
+      .reset-page .reset-page-content h1,
+      .reset-page .reset-page-content h3 {
         position: relative; }
-      .signup-page .signup-page-content h1 {
+      .reset-page .reset-page-content h1 {
         font-weight: bold; }
-      .signup-page .signup-page-content h3 {
+      .reset-page .reset-page-content h3 {
         color: #737373;
         background: rgba(255, 255, 255, 0.6); }
-      .signup-page .signup-page-content .back-s-u {
+      .reset-page .reset-page-content .back-s-u {
         position: absolute;
         top: 0;
         right: 0;
@@ -515,26 +523,25 @@ button {
                 background-size: cover;
         background-repeat: no-repeat;
         background-position-x: 50%; }
-      .signup-page .signup-page-content aside {
+      .reset-page .reset-page-content aside {
         display: none; }
-      .signup-page .signup-page-content .signup-form-holder {
+      .reset-page .reset-page-content .reset-form-holder {
         width: 100%;
         margin-top: 20px;
-        padding: 3em 3em;
         position: absolute;
-        top: 50%;
+        top: 35%;
         left: 50%;
         -webkit-transform: translate(-50%, -50%);
             -ms-transform: translate(-50%, -50%);
                 transform: translate(-50%, -50%); }
-        .signup-page .signup-page-content .signup-form-holder .signup-form {
+        .reset-page .reset-page-content .reset-form-holder .reset-form {
           width: 85%; }
-          .signup-page .signup-page-content .signup-form-holder .signup-form .form-foreword {
+          .reset-page .reset-page-content .reset-form-holder .reset-form .form-foreword {
             color: #a55dbb;
             font-weight: bold;
             font-size: 18px;
             margin-bottom: 6px; }
-          .signup-page .signup-page-content .signup-form-holder .signup-form .my-row {
+          .reset-page .reset-page-content .reset-form-holder .reset-form .my-row {
             margin-top: 0;
             -webkit-box-orient: vertical;
             -webkit-box-direction: normal;
@@ -549,25 +556,19 @@ button {
             -webkit-align-items: stretch;
                 -ms-flex-align: stretch;
                     align-items: stretch; }
-            .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder {
+            .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder {
               width: 100%;
               margin: 0 0 5px 0; }
-              .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder input {
+              .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder input {
                 font-size: 14px;
                 line-height: 1; }
-            .signup-page .signup-page-content .signup-form-holder .signup-form .my-row:first-child {
+            .reset-page .reset-page-content .reset-form-holder .reset-form .my-row:first-child {
               margin-bottom: 10px; }
-            .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .tooltip-castom .tooltiptext {
+            .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .tooltip-castom .tooltiptext {
               top: 100%; }
-            .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-email input {
+            .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-email input {
               padding-left: 45px; }
-            .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-email input + label {
+            .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-email input + label {
               left: 4%; }
-              .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-email input + label:after {
-                right: -1px; }
-  .ui.active.modal {
-    margin: 25% auto 0;
-    -webkit-transform: translateY(0);
-        -ms-transform: translateY(0);
-            transform: translateY(0);
-    max-height: 430px; } }
+              .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-email input + label:after {
+                right: -1px; } }

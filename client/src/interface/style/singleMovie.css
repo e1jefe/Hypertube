@@ -13,7 +13,10 @@
       text-align: left;
       font-family: inherit;
       margin-bottom: 20px;
-      font-size: 24px; }
+      font-size: 24px;
+      font-weight: 700;
+      background-color: #a460b9;
+      padding: 0.5em; }
     .single-movie-container .description .poster {
       display: inline-block;
       width: 30%;
@@ -28,9 +31,9 @@
       vertical-align: top;
       font-size: -webkit-calc(16px + 6 * ((100vw - 320px) / 680));
       font-size: calc(16px + 6 * ((100vw - 320px) / 680)); }
-      .single-movie-container .description .description-txt .row div {
+      .single-movie-container .description .description-txt .my-row div {
         display: inline-block; }
-      .single-movie-container .description .description-txt .row .characteristic {
+      .single-movie-container .description .description-txt .my-row .characteristic {
         font-weight: bold;
         margin-right: 5px; }
   .single-movie-container .player {
@@ -135,7 +138,7 @@
       -webkit-box-sizing: border-box;
               box-sizing: border-box;
       font-family: inherit; }
-      .single-movie-container .comments .all-comments .row {
+      .single-movie-container .comments .all-comments .my-row {
         display: -webkit-box;
         display: -webkit-flex;
         display: -ms-flexbox;
@@ -153,14 +156,14 @@
         -webkit-border-radius: 3px;
                 border-radius: 3px;
         padding: 5px; }
-        .single-movie-container .comments .all-comments .row .avatar {
+        .single-movie-container .comments .all-comments .my-row .avatar {
           width: 10%; }
-          .single-movie-container .comments .all-comments .row .avatar img {
+          .single-movie-container .comments .all-comments .my-row .avatar img {
             display: block;
             width: 100%; }
-        .single-movie-container .comments .all-comments .row .details {
+        .single-movie-container .comments .all-comments .my-row .details {
           width: 88%; }
-          .single-movie-container .comments .all-comments .row .details .info {
+          .single-movie-container .comments .all-comments .my-row .details .info {
             display: -webkit-box;
             display: -webkit-flex;
             display: -ms-flexbox;
@@ -173,15 +176,15 @@
             -webkit-align-items: center;
                 -ms-flex-align: center;
                     align-items: center; }
-            .single-movie-container .comments .all-comments .row .details .info .author {
+            .single-movie-container .comments .all-comments .my-row .details .info .author {
               font-weight: bold;
               color: #7F8C8D; }
-            .single-movie-container .comments .all-comments .row .details .info .time-stamp {
+            .single-movie-container .comments .all-comments .my-row .details .info .time-stamp {
               font-weight: 300;
               color: #BDC3C7; }
-          .single-movie-container .comments .all-comments .row .details .content {
+          .single-movie-container .comments .all-comments .my-row .details .content {
             color: #7F8C8D; }
-      .single-movie-container .comments .all-comments .row.my-comment {
+      .single-movie-container .comments .all-comments .my-row.my-comment {
         -webkit-box-orient: horizontal;
         -webkit-box-direction: reverse;
         -webkit-flex-direction: row-reverse;
@@ -192,13 +195,13 @@
             -ms-flex-pack: start;
                 justify-content: flex-start;
         background-color: #eadcef; }
-        .single-movie-container .comments .all-comments .row.my-comment .details .info {
+        .single-movie-container .comments .all-comments .my-row.my-comment .details .info {
           -webkit-box-orient: horizontal;
           -webkit-box-direction: reverse;
           -webkit-flex-direction: row-reverse;
               -ms-flex-direction: row-reverse;
                   flex-direction: row-reverse; }
-          .single-movie-container .comments .all-comments .row.my-comment .details .info .author {
+          .single-movie-container .comments .all-comments .my-row.my-comment .details .info .author {
             visibility: hidden; }
 
 @media screen and (max-width: 415px) {

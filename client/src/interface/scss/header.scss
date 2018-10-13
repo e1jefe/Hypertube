@@ -172,7 +172,8 @@
             background-color: #DFB2EB;
         }
         
-        li a {
+        li a,
+        li button {
             display: block;
             padding: 10px 20px;
             text-decoration: none;
@@ -183,7 +184,9 @@
         }
         
         li a:hover,
+        li button:hover,
         .menu-btn:hover {
+            cursor: pointer;
             background-color: #D181E6;
             color: #fff;
         }

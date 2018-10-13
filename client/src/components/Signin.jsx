@@ -1,40 +1,70 @@
 import React, { Component } from 'react';
 import '../interface/style/signin.css';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import FacebookAuth from 'react-facebook-auth';
+
+// ACTIONS from redux reduser
+import { recordToken } from "../redux/actions";
+
+const MyFacebookButton = ({ onClick }) => (
+    <button onClick={onClick}>
+        <i className="fab fa-facebook-square"></i>
+    </button>
+);
 
 class Signin extends Component {
     
     constructor(props) {
         super(props);
         this.state = {
-            login: "",
+            email: "",
             pass: "",
-            error: ""
+            errors: ""
         };
         this.onChange = this.onChange.bind(this);        
         this.signinRequest = this.signinRequest.bind(this);
+        this.signinFacebook = this.signinFacebook.bind(this);
     }
 
     signinRequest(event) {      
         event.preventDefault();
         const data = {
-            login: this.state.login,
-            pass: this.state.pass
+            email: this.state.email,
+            password: this.state.pass
         };
-        console.log(data);
-        // fetch('/api/form-submit-url', {
-        //     method: 'POST',
-        //     body: data,
-        // });
+        fetch('http://127.0.0.1:8000/api/auth/login', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers:{
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        }).then((res) => res.json())
+        .then((responce) => {
+            if (responce.message === "Unauthorized") {
+                this.setState({
+                    errors: "Something wrong with email or password"
+                });
+            } else {
+                this.props.recordToken(responce.access_token);
+                this.props.history.push('/');
+            }
+        });
+    }
+
+    signinFacebook(responce) {
+        console.log("from FB: ", responce);
     }
 
     onChange(event) {
         this.setState({
             [event.target.name]: event.target.value
-        })
+        });
     }
 
     render() {
+        console.log("history signin", this.props);
         return(
             <main className="signin-page">
                 <header className="main-head">
@@ -84,19 +114,20 @@ class Signin extends Component {
                                     Sign in with login
                                 </div>
                                 {
-                                    this.state.error && 
-                                    <div className="form-error">
-                                    </div>
+                                    this.state.errors.length !== 0 && 
+                                        <div className="form-error">
+                                            {this.state.errors}
+                                        </div>
                                 }
-                                <div className="row">
+                                <div className="my-row">
                                     <div className="input-holder">
-                                        <input type="text" placeholder="Login" required id="login" name="login" onChange={this.onChange}/>
+                                        <input type="text" placeholder="Email" required id="email" name="email" onChange={this.onChange}/>
                                         <label htmlFor="login">
-                                            <i className="fa fa-user"></i>
+                                            <i className="fa fa-envelope"></i>
                                         </label>
                                     </div>
                                 </div>
-                                <div className="row">
+                                <div className="my-row">
                                     <div className="input-holder">
                                         <input type="password" placeholder="Password" required id="pass" name="pass" onChange={this.onChange}/>
                                         <label className="input-icon" htmlFor="pass">
@@ -107,27 +138,31 @@ class Signin extends Component {
                                         </NavLink>
                                     </div>
                                 </div>
-                                <div className="row">
+                                <div className="my-row">
                                     <div className="input-holder form-button">
                                         <button className="form-btn-submit">Sign in</button>
                                     </div>
                                 </div>
-                                <div className="row">
+                                <div className="my-row">
                                     <div className="alternatieve">
                                         <h4>
                                             OR
                                         </h4>
                                     </div>
                                 </div>
-                                <div className="row">
+                                <div className="my-row">
                                     <h4>
                                         Sign in with social network
                                     </h4>
                                 </div>
-                                <div className="row">
+                                <div className="my-row">
                                     <div className="social-media">
                                         <div>
-                                            <i className="fab fa-facebook-square"></i>
+                                            <FacebookAuth
+                                                appId="292030674968220"
+                                                callback={(res) => this.signinFacebook(res)}
+                                                component={MyFacebookButton}
+                                                />
                                         </div>
                                         <div>
                                             <i className="fab fa-twitter-square"></i>
@@ -144,4 +179,16 @@ class Signin extends Component {
     }
 }
 
-export default Signin;
+const mapStateToProps = state => {
+    return {
+        componentState: state
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        recordToken: str => dispatch(recordToken(str))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signin);

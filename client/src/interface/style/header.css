@@ -163,7 +163,8 @@
       list-style: none;
       overflow: hidden;
       background-color: #DFB2EB; }
-    .header-mob li a {
+    .header-mob li a,
+    .header-mob li button {
       display: block;
       padding: 10px 20px;
       text-decoration: none;
@@ -175,7 +176,9 @@
       font-size: -webkit-calc(16px + 6 * ((50vw - 1320px) / 1880));
       font-size: calc(16px + 6 * ((50vw - 1320px) / 1880)); }
     .header-mob li a:hover,
+    .header-mob li button:hover,
     .header-mob .menu-btn:hover {
+      cursor: pointer;
       background-color: #D181E6;
       color: #fff; }
     .header-mob .logo {
