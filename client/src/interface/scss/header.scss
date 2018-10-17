@@ -81,21 +81,26 @@
             justify-content: space-between;
             align-items: center;
 
-            a {
+            button {
                 color: #bebebe;
+                cursor: pointer;
             }
 
-            a.active {
+            button.active {
                 color: #a460b9;
             }
 
-            a:first-child::after {
+            button:first-child::after {
                 margin: 0 7px;
                 width: 1px;
                 height: 16px;
                 background: #bebebe;
                 content: '';
                 display: inline-block;
+            }
+
+            button:focus {
+                outline: none;
             }
         }
 
@@ -175,6 +180,7 @@
         li a,
         li button {
             display: block;
+            width: 100%;
             padding: 10px 20px;
             text-decoration: none;
             color: #000;

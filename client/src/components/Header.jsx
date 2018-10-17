@@ -2,16 +2,25 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import '../interface/style/header.css';
 import { connect } from 'react-redux';
+import { addLocaleData, FormattedMessage } from 'react-intl';
+import ruLocaleData from 'react-intl/locale-data/ru';
+import { updateIntl } from 'react-intl-redux';
 
 // ACTIONS from redux reduser
 import { logout } from "../redux/actions";
+
+addLocaleData([...ruLocaleData]);
+
 
 class Header extends Component {
 
     constructor(props){
         super(props);
-        this.state = {};
+        this.state = {
+            lang: "en"
+        };
         this.logout = this.logout.bind(this);
+        this.changeLanguage = this.changeLanguage.bind(this);
     }
 
     logout() {
@@ -27,9 +36,34 @@ class Header extends Component {
         });
     }
 
-    render() {
-        console.log("header", this.props);
+    changeLanguage(str) {
+        if (str === 'ru') {
+            this.props.updateIntl({
+                locale: "ru",
+                messages: {
+                    'header.profile': 'Кабинет',
+                    'header.library': 'Фильмы',
+                    'header.logout': 'Выход',
+                    'library.title': 'Фильмы',
+                },
+            });
+        } else {
+            this.props.updateIntl({
+                locale: "en",
+                messages: {
+                    'header.profile': 'Profile',
+                    'header.library': 'Library',
+                    'header.logout': 'Log out',
+                    'library.title': 'Library',
+                },
+            });
+        }
+        this.setState({
+            lang: str
+        })
+    }
 
+    render() {
         return (
             <div>
                 <div className="header">
@@ -42,26 +76,26 @@ class Header extends Component {
                         <div className="links">
                             <div>
                                 <NavLink to="/myProfile" >
-                                    Profile
+                                    <FormattedMessage id="header.profile" defaultMessage="Profile" />
                                 </NavLink>
                             </div>
                             <div>
                                 <NavLink to="/library" >
-                                    Library
+                                    <FormattedMessage id="header.library" defaultMessage="Library" />
                                 </NavLink>
                             </div>
                         </div>
                         <div className="languages">
-                            <NavLink to="/ru">
+                            <button onClick={() => this.changeLanguage('ru')} className={this.state.lang === 'ru' ? "active" : null}>
                                 RU
-                            </NavLink>
-                            <NavLink to="/en" className="active">
+                            </button>
+                            <button onClick={() => this.changeLanguage('en')} className={this.state.lang === 'en' ? "active" : null}>
                                 EN
-                            </NavLink>
+                            </button>
                         </div>
                         <div className="logout">
                             <button onClick={this.logout}>
-                                Log out
+                                <FormattedMessage id="header.logout" defaultMessage="Log out" />
                             </button>
                         </div>
                     </div>
@@ -75,11 +109,31 @@ class Header extends Component {
                     <input className="menu-btn" type="checkbox" id="menu-btn" />
                     <label className="menu-icon" htmlFor="menu-btn"><span className="navicon"></span></label>
                     <ul className="menu">
-                        <li><NavLink to="/myProfile">Profile</NavLink></li>
-                        <li><NavLink to="/library">Library</NavLink></li>
-                        <li><NavLink to="/ru">RU</NavLink></li>
-                        <li><NavLink to="/en">EN</NavLink></li>
-                        <li><button onClick={this.logout}>Log out</button></li>
+                        <li>
+                            <NavLink to="/myProfile">
+                                <FormattedMessage id="header.profile" defaultMessage="Profile" />
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/library">
+                                <FormattedMessage id="header.library" defaultMessage="Library" />
+                            </NavLink>
+                        </li>
+                        <li>
+                            <button onClick={() => this.changeLanguage('ru')}>
+                                RU
+                            </button>
+                        </li>
+                        <li>
+                            <button onClick={() => this.changeLanguage('en')}>
+                                EN
+                            </button>
+                        </li>
+                        <li>
+                            <button onClick={this.logout}>
+                                <FormattedMessage id="header.logout" defaultMessage="Log out" />
+                            </button>
+                        </li>
                     </ul>
                 </header>
             </div>
@@ -95,7 +149,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        logout: () => dispatch(logout())
+        logout: () => dispatch(logout()),
+        updateIntl: obj => dispatch(updateIntl(obj))
     };
 };
 

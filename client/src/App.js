@@ -7,20 +7,23 @@ import history from './history/history';
 import Main from './Main';
 import { connect } from 'react-redux';
 import Reset from './components/Reset';
+import { IntlProvider } from 'react-intl'
 
 class App extends Component {
   render() {
-    console.log("token?", this.props.componentState.token);
+    console.log("token?", this.props.componentState);
     return (
-      <Router history={history}>
-        <Switch>
-          <Route exact path="/signin" component={Signin}/>
-          <Route path="/signup" component={Signup}/>
-          <Route path="/resetpass" component={Reset}/>
-          {/* <Route path="/" component={this.props.componentState.token.length !== 0 ? Main : Signin}/> */}
-          <Route path="/" component={Main}/>
-        </Switch>
-      </Router>
+      <IntlProvider locale={this.props.componentState.intl.locale} messages={this.props.componentState.intl.messages}>
+        <Router history={history}>
+          <Switch>
+            <Route exact path="/signin" component={Signin}/>
+            <Route path="/signup" component={Signup}/>
+            <Route path="/resetpass" component={Reset}/>
+            {/* <Route path="/" component={this.props.componentState.token.length !== 0 ? Main : Signin}/> */}
+            <Route path="/" component={Main}/>
+          </Switch>
+        </Router>
+      </IntlProvider>
     );
   }
 }

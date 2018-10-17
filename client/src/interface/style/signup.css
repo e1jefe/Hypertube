@@ -105,11 +105,14 @@ button {
         width: 1px;
         margin: 0 3px;
         background-color: #e6e6e6; }
-      .signup-page .main-head .language-holder a {
+      .signup-page .main-head .language-holder button {
         text-decoration: none;
-        color: #b184c3; }
-        .signup-page .main-head .language-holder a.disabled {
+        color: #b184c3;
+        cursor: pointer; }
+        .signup-page .main-head .language-holder button.disabled {
           color: #e6e6e6; }
+      .signup-page .main-head .language-holder button:focus {
+        outline: none; }
     .signup-page .main-head .main-head-btn-holder {
       -webkit-box-align: center;
       -webkit-align-items: center;

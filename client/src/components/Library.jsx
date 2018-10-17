@@ -6,6 +6,10 @@ import Slider from 'rc-slider';
 import "react-input-range/lib/css/index.css";
 import 'rc-slider/assets/index.css';
 import axios from 'axios';
+import { FormattedMessage } from 'react-intl';
+// import ruLocaleData from 'react-intl/locale-data/ru';
+import { connect } from 'react-redux';
+import { updateIntl } from 'react-intl-redux';
 
 const Range = Slider.createSliderWithTooltip(Slider.Range);
 
@@ -151,6 +155,18 @@ class Library extends Component {
                     text: 'Name'
                 }
             ],
+            sortParamRU: [
+                {
+                    key: 'pop',
+                    value: 'pop',
+                    text: 'По популярности'
+                },
+                {
+                    key: 'name',
+                    value: 'name',
+                    text: 'По названию'
+                }
+            ],
             movies: [],
             hasMoreItems: true,
             isLoading: false,
@@ -185,7 +201,7 @@ class Library extends Component {
     }
 
     componentDidMount() {
-        console.log("component did mount");
+        // console.log("component did mount");
         const page = this.state.pageStart + 1;
         this.loadItems();
         this.setState({
@@ -216,7 +232,7 @@ class Library extends Component {
     }
 
     changeSort(event, data){
-        console.log("got new sort", data);
+        // console.log("got new sort", data);
         if (data.value === 'pop') {
             this.setState({
                 currentSortParam: "rating",
@@ -235,7 +251,7 @@ class Library extends Component {
     }
 
     loadItems = () => {
-        console.log("movie at beggining", this.state.movies);
+        // console.log("movie at beggining", this.state.movies);
 
         const baseUrl = "https://yts.am/api/v2/list_movies.json?";
         const page = 'page=' + this.state.pageStart;
@@ -244,7 +260,7 @@ class Library extends Component {
         const rate = this.state.imdbMin !== "" ? "&minimum_rating=" + this.state.imdbMin : "";
         const genre = this.state.currentGenre !== "" ? "&genre=" + this.state.currentGenre : "";
         let requestUrl = baseUrl + page + rate + sortParam + orderParam;
-        console.log("request", requestUrl);
+        // console.log("request", requestUrl);
 
         this.setState({ isLoading: true }, () => {
             axios
@@ -280,39 +296,7 @@ class Library extends Component {
                   isLoading: false,
                  });
               })
-          });
-        // console.log("page", page);
-        // var self = this;
-        // let pageStart = this.state.pageStart;
-        // axios.get('https://yts.am/api/v2/list_movies.json?page=' + page + "&sort_by=" + this.state.currentSortParam + "&order_by=" + this.state.order)
-        //     .then(function (response) {
-        //         // handle success
-        //         if (response.data.data.movies !== undefined) {
-        //             let movies = self.state.movies;
-        //             response.data.data.movies.map((mov) => {
-        //                 movies.push({
-        //                     poster: mov.large_cover_image,
-        //                     country: mov.language,
-        //                     year: mov.year,
-        //                     id: mov.id,
-        //                     name: mov.title_english,
-        //                     genre: mov.genres
-        //                 })
-        //             })
-        //             self.setState({
-        //                 movies: movies,
-        //                 pageStart: pageStart + 1
-        //             })
-        //         } else {
-        //             this.setState({
-        //                 hasMoreItems: false
-        //             })
-        //         }
-        //       })
-        //       .catch(function (error) {
-        //         // handle error
-        //         console.log(error);
-        //       })
+        });
     }
 
     render() {
@@ -324,31 +308,29 @@ class Library extends Component {
         return (
             <div className="library-container">
                 <h1>
-                    Library
+                    <FormattedMessage id="library.title" defaultMessage="Library" />
                 </h1>
                 <div className="control need-space">
                     <div className="search-input">
                         <label>
                             <i className="fas fa-search"></i>
                         </label>
-                        <input type="text" placeholder="Search"/>
+                        <input type="text" placeholder={this.props.componentState.intl.locale === 'en' ? "Search" : "Поиск"}/>
                     </div>
-                    <div style={{width: "200px", height: "50px"}}>
+                    <div className="year-select">
                         <Range min={1910} max={2018} defaultValue={[1990, 2010]} marks={marks} onAfterChange={(event) => this.changeYearRange(event)}/>
                     </div>
                 </div>
                 <div className="control column">
-                    {/* <div className="param">
-                        <Dropdown placeholder='COUNTRY' fluid search multiple selection options={this.state.country} />
-                    </div> */}
+
                     <div className="param">                    
-                        <Dropdown placeholder='IMDB RATING' fluid search selection options={this.state.imdb} onChange={this.changeRate}/>
+                        <Dropdown placeholder={this.props.componentState.intl.locale === 'en' ? 'IMDB RATING' : 'IMDB рейтинг'} fluid search selection options={this.state.imdb} onChange={this.changeRate}/>
                     </div>
                     <div className="param">                    
-                        <Dropdown placeholder='GENRE' fluid search multiple selection options={this.state.genre} onChange={this.changeGenre}/>
+                        <Dropdown placeholder={this.props.componentState.intl.locale === 'en' ? 'GENRE' : 'Жанр'} fluid search multiple selection options={this.state.genre} onChange={this.changeGenre}/>
                     </div>
                     <div className="param">                    
-                        <Dropdown placeholder='SORT BY' fluid selection options={this.state.sortParam} onChange={this.changeSort}/>
+                        <Dropdown placeholder={this.props.componentState.intl.locale === 'en' ? 'SORT BY' : 'Сортировать'} fluid selection options={this.props.componentState.intl.locale === 'en' ? this.state.sortParam : this.state.sortParamRU} onChange={this.changeSort}/>
                     </div>
                 </div>
                 <div className="movies-all container">
@@ -386,12 +368,29 @@ class Library extends Component {
                         })
                     }
                     {this.state.isLoading &&
-                        <div>Loading...</div>
+                        <span style={{textAlign: 'center', width: '320px', display: "block", margin: "10px auto"}}>
+                            {this.props.componentState.intl.locale === 'en' ? "Loading..." : "Пажжи, грузим..."}
+                        </span>
                     }
                     </div>
                 </div>
-            </div>);
+            </div>
+        );
     }
 }
 
-export default Library;
+const mapStateToProps = state => {
+    return {
+        componentState: state
+    };
+  };
+
+const mapDispatchToProps = dispatch => {
+    return {
+        updateIntl: obj => dispatch(updateIntl(obj))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Library);
+
+// export default connect()(Library);

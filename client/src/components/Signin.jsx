@@ -3,6 +3,8 @@ import '../interface/style/signin.css';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import FacebookAuth from 'react-facebook-auth';
+import { FormattedMessage } from 'react-intl';
+import { updateIntl } from 'react-intl-redux';
 
 // ACTIONS from redux reduser
 import { recordToken } from "../redux/actions";
@@ -20,11 +22,66 @@ class Signin extends Component {
         this.state = {
             email: "",
             pass: "",
-            errors: ""
+            errors: "",
+            lang: props.componentState.intl.locale
         };
+        this.changeLanguage = this.changeLanguage.bind(this);
         this.onChange = this.onChange.bind(this);        
         this.signinRequest = this.signinRequest.bind(this);
         this.signinFacebook = this.signinFacebook.bind(this);
+    }
+
+    changeLanguage(str) {
+        if (str === 'ru') {
+            this.props.updateIntl({
+                locale: "ru",
+                messages: {
+                    'signup.account': 'Есть аккаунт?',
+                    'signup.signin': 'Вход',
+                    'signup.greeting': 'Привет. ',
+                    'signup.try': ' Попробуй Hypertube.',
+                    'signup.legal': 'Единственный не наказуемый способ смотреть фильмы в Юните',
+                    'signup.title': 'Зарегестрироваться',
+                    'signup.btn': 'Регистрация',
+                    'signup.or': 'ИЛИ',
+                    'signup.social': 'Войти через социальную сеть',
+                    'signin.account': 'Еще нет аккаунта?',
+                    'signin.signup': 'Регистрация',
+                    'signin.greeting': 'Привет. ',
+                    'signin.try': ' Попробуй Hypertube.',
+                    'signin.legal': 'Единственный не наказуемый способ смотреть фильмы в Юните',
+                    'signin.title': 'Войти по email',
+                    'signin.reset': 'Забыл?',
+                    'signin.btn': 'Войти',
+                    'signin.or': 'ИЛИ',
+                    'signin.social': 'Войти через социальную сеть',
+                    'reset.account': 'Есть аккаунт?',
+                    'reset.signin': 'Вход',
+                    'reset.title': 'Восстановить пароль',
+                    'reset.btn': 'Восстановить',
+                },
+                // messages: this.props.componentState.intl.messages
+            });
+        } else {
+            this.props.updateIntl({
+                locale: "en",
+                messages: {
+                    'signin.account': 'Need an account?',
+                    'signin.signup': 'Sign up',
+                    'signin.greeting': 'Hello. ',
+                    'signin.try': ' Try Hypertube.',
+                    'signin.legal': 'The only legal online movie theatre in Unit Factory',
+                    'signin.title': 'Sign in with email',
+                    'signin.reset': 'Forgot?',
+                    'signin.btn': 'Sign in',
+                    'signin.or': 'OR',
+                    'signin.social': 'Sign in with social network'
+                },
+            });
+        }
+        this.setState({
+            lang: str
+        })
     }
 
     signinRequest(event) {      
@@ -64,7 +121,9 @@ class Signin extends Component {
     }
 
     render() {
-        console.log("history signin", this.props);
+        // console.log("history signin", this.props);
+        console.log("props login", this.props);
+
         return(
             <main className="signin-page">
                 <header className="main-head">
@@ -76,33 +135,33 @@ class Signin extends Component {
                     </div>
                     <div className="language-holder">
                         <span className="language-option">
-                            <NavLink role="button" to="EN" >
-                                EN
-                            </NavLink>
+                            <button onClick={() => this.changeLanguage('ru')} className={this.state.lang !== 'ru' ? "disabled" : null}>
+                                RU
+                            </button>
                         </span>
-                        <NavLink role="button" to="RU" className="disabled">
-                            RU
-                        </NavLink>
+                        <button onClick={() => this.changeLanguage('en')} className={this.state.lang !== 'en' ? "disabled" : null}>
+                            EN
+                        </button>
                     </div>
                     <div className="main-head-btn-holder">
                         <p className="main-head-btn-description">
-                            Need an account?
+                            <FormattedMessage id="signin.account" defaultMessage="Need an account?" />
                         </p>
                         <NavLink role="button" to="signup" className="main-head-btn">
-                            Sign up
+                            <FormattedMessage id="signin.signup" defaultMessage="Sign up" />
                         </NavLink>
                     </div>
                 </header>
                 <section className="signin-page-content">
                     <div className="back-s-u"></div>
                     <h1>
-                        Hello. 
+                        <FormattedMessage id="signin.greeting" defaultMessage="Hello. " />
                         <NavLink to="signup" style={{marginLeft: "15px"}}>
-                            Try Hypertube. 
+                            <FormattedMessage id="signin.try" defaultMessage=" Try Hypertube." />
                         </NavLink>
                     </h1>
                     <h3 >
-                        The only legal online movie theatre in Unit Factory
+                        <FormattedMessage id="signin.legal" defaultMessage="The only legal online movie theatre in Unit Factory" />
                     </h3>
                     <div className="signin-form-holder">
                         <aside>
@@ -111,48 +170,50 @@ class Signin extends Component {
                         <div className="signin-form">
                             <form onSubmit={this.signinRequest}>
                                 <div className="form-foreword">
-                                    Sign in with login
+                                    <FormattedMessage id="signin.title" defaultMessage="Sign in with email" />
                                 </div>
                                 {
                                     this.state.errors.length !== 0 && 
                                         <div className="form-error">
-                                            {this.state.errors}
+                                            {this.state.lang === 'en' ? this.state.errors : 'Проверь email или пароль'}
                                         </div>
                                 }
                                 <div className="my-row">
                                     <div className="input-holder">
                                         <input type="text" placeholder="Email" required id="email" name="email" onChange={this.onChange}/>
-                                        <label htmlFor="login">
+                                        <label htmlFor="email">
                                             <i className="fa fa-envelope"></i>
                                         </label>
                                     </div>
                                 </div>
                                 <div className="my-row">
                                     <div className="input-holder">
-                                        <input type="password" placeholder="Password" required id="pass" name="pass" onChange={this.onChange}/>
+                                        <input type="password" placeholder={this.state.lang === 'en' ? "Password" : "Пароль"} required id="pass" name="pass" onChange={this.onChange}/>
                                         <label className="input-icon" htmlFor="pass">
                                             <i className="fa fa-key"></i>
                                         </label>
                                         <NavLink to="resetpass" className="reset-pass">
-                                            Forgot?
+                                            <FormattedMessage id="signin.reset" defaultMessage="Forgot?" />
                                         </NavLink>
                                     </div>
                                 </div>
                                 <div className="my-row">
                                     <div className="input-holder form-button">
-                                        <button className="form-btn-submit">Sign in</button>
+                                        <button className="form-btn-submit">
+                                            <FormattedMessage id="signin.btn" defaultMessage="Sign in" />
+                                        </button>
                                     </div>
                                 </div>
                                 <div className="my-row">
                                     <div className="alternatieve">
                                         <h4>
-                                            OR
+                                            <FormattedMessage id="signin.or" defaultMessage="OR" />
                                         </h4>
                                     </div>
                                 </div>
                                 <div className="my-row">
                                     <h4>
-                                        Sign in with social network
+                                        <FormattedMessage id="signin.social" defaultMessage="Sign in with social network" />
                                     </h4>
                                 </div>
                                 <div className="my-row">
@@ -187,7 +248,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        recordToken: str => dispatch(recordToken(str))
+        recordToken: str => dispatch(recordToken(str)),
+        updateIntl: obj => dispatch(updateIntl(obj))
     };
 };
 

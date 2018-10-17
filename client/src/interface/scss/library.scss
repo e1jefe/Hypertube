@@ -60,6 +60,11 @@
             }
         }
 
+        .year-select {
+            width: 200px;
+            height: 50px;
+        }
+
         .input-range {
             width: 50%;
 
@@ -206,7 +211,25 @@
         }
 
         .control.need-space {
+            display: flex;
+            flex-direction: column;
             margin-top: 25px;
+            padding-right: 0px;
+
+            .search-input {
+                width: 100%;
+                margin-right: 0;
+
+                input {
+                    width: 96%;
+                }
+            }
+
+            .year-select {
+                margin:  20px auto 0px;
+                padding-right: 16px;
+                height: 20px;
+            }
         }
         
         .input-range__label-container {

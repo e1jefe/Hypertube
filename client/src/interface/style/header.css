@@ -87,17 +87,20 @@
       -webkit-align-items: center;
           -ms-flex-align: center;
               align-items: center; }
-      .header .header-items .languages a {
-        color: #bebebe; }
-      .header .header-items .languages a.active {
+      .header .header-items .languages button {
+        color: #bebebe;
+        cursor: pointer; }
+      .header .header-items .languages button.active {
         color: #a460b9; }
-      .header .header-items .languages a:first-child::after {
+      .header .header-items .languages button:first-child::after {
         margin: 0 7px;
         width: 1px;
         height: 16px;
         background: #bebebe;
         content: '';
         display: inline-block; }
+      .header .header-items .languages button:focus {
+        outline: none; }
     .header .header-items .logout {
       padding: 9px 21px;
       color: #a460b9;
@@ -166,6 +169,7 @@
     .header-mob li a,
     .header-mob li button {
       display: block;
+      width: 100%;
       padding: 10px 20px;
       text-decoration: none;
       color: #000;

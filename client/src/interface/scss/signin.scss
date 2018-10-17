@@ -108,13 +108,18 @@ button {
 				background-color: #e6e6e6;
 			}
 
-			a {
+			button {
 				text-decoration: none;
 				color: #b184c3;
+				cursor: pointer;
 
 				&.disabled {
 					color: #e6e6e6;
 				}
+			}
+
+			button:focus {
+				outline: none;
 			}
 		}
 
@@ -126,6 +131,7 @@ button {
 
 			.main-head-btn {
 				color: $btn-txt-col;
+				word-wrap: break-word;
 				text-decoration: none;
 				background-color: $input-bg;
 				padding: 0.5em;

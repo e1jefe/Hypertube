@@ -59,6 +59,9 @@
         .library-container .control .search-input input:focus {
           outline: none;
           border-bottom: 1px solid #a460b9; }
+    .library-container .control .year-select {
+      width: 200px;
+      height: 50px; }
     .library-container .control .input-range {
       width: 50%; }
       .library-container .control .input-range .input-range__track--background {
@@ -184,6 +187,25 @@
       width: 100%;
       margin-bottom: 5px; }
   .library-container .control.need-space {
-    margin-top: 25px; }
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    margin-top: 25px;
+    padding-right: 0px; }
+    .library-container .control.need-space .search-input {
+      width: 100%;
+      margin-right: 0; }
+      .library-container .control.need-space .search-input input {
+        width: 96%; }
+    .library-container .control.need-space .year-select {
+      margin: 20px auto 0px;
+      padding-right: 16px;
+      height: 20px; }
   .library-container .input-range__label-container {
     font-size: 9px; } }

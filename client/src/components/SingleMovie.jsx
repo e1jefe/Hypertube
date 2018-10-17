@@ -20,7 +20,7 @@ class SingleMovie extends Component {
         // this.setState({
         //     movieId: this.props.match.params
         // })
-        console.log("id", this.props.match.params.id);
+        // console.log("id", this.props.match.params.id);
         axios.get('https://yts.am/api/v2/movie_details.json?movie_id=' + this.props.match.params.id)
             .then(function (response) {
 
@@ -52,7 +52,7 @@ class SingleMovie extends Component {
 
     render() {
         // console.log("history", this.state.movieId)
-        console.log("state", this.state);
+        // console.log("state", this.state);
         return (
             <section className="single-movie-container">
                 <div className="description">

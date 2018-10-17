@@ -2,11 +2,17 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Button, Header, Icon, Modal } from 'semantic-ui-react';
+import { addLocaleData, FormattedMessage } from 'react-intl';
+import ruLocaleData from 'react-intl/locale-data/ru';
+import { updateIntl } from 'react-intl-redux';
 
 import '../interface/style/reset.css';
 
 // ACTIONS from redux reduser
 import { recordToken } from "../redux/actions";
+
+addLocaleData([...ruLocaleData]);
+
 
 class Reset extends Component {
 
@@ -15,11 +21,59 @@ class Reset extends Component {
         this.state = {
             email: "",
             errors: {},
-            showModal: false
+            showModal: false,
+            lang: props.componentState.intl.locale
         };
+        this.changeLanguage = this.changeLanguage.bind(this);
         this.resetRequest = this.resetRequest.bind(this);
         this.onChange = this.onChange.bind(this);
         this.closeModal = this.closeModal.bind(this);
+    }
+
+    changeLanguage(str) {
+        if (str === 'ru') {
+            this.props.updateIntl({
+                locale: "ru",
+                messages: {
+                    'signup.account': 'Есть аккаунт?',
+                    'signup.signin': 'Вход',
+                    'signup.greeting': 'Привет. ',
+                    'signup.try': ' Попробуй Hypertube.',
+                    'signup.legal': 'Единственный не наказуемый способ смотреть фильмы в Юните',
+                    'signup.title': 'Зарегестрироваться',
+                    'signup.btn': 'Регистрация',
+                    'signup.or': 'ИЛИ',
+                    'signup.social': 'Войти через социальную сеть',
+                    'signin.account': 'Еще нет аккаунта?',
+                    'signin.signup': 'Регистрация',
+                    'signin.greeting': 'Привет. ',
+                    'signin.try': ' Попробуй Hypertube.',
+                    'signin.legal': 'Единственный не наказуемый способ смотреть фильмы в Юните',
+                    'signin.title': 'Войти по email',
+                    'signin.reset': 'Забыл?',
+                    'signin.btn': 'Войти',
+                    'signin.or': 'ИЛИ',
+                    'signin.social': 'Войти через социальную сеть',
+                    'reset.account': 'Есть аккаунт?',
+                    'reset.signin': 'Вход',
+                    'reset.title': 'Восстановить пароль',
+                    'reset.btn': 'Восстановить'
+                },
+            });
+        } else {
+            this.props.updateIntl({
+                locale: "en",
+                messages: {
+                    'reset.account': 'Already registered?',
+                    'reset.signin': 'Sign in',
+                    'reset.title': 'Reset password',
+                    'reset.btn': 'Reset'
+                },
+            });
+        }
+        this.setState({
+            lang: str
+        })
     }
 
     resetRequest(event) {
@@ -63,6 +117,8 @@ class Reset extends Component {
     }
 
     render() {
+        console.log("props reset", this.props);
+
         return (
             <main className="reset-page">
                 <header className="main-head">
@@ -74,20 +130,20 @@ class Reset extends Component {
                     </div>
                     <div className="language-holder">
                         <span className="language-option">
-                            <NavLink role="button" to="EN" >
-                                EN
-                            </NavLink>
+                            <button onClick={() => this.changeLanguage('ru')} className={this.state.lang !== 'ru' ? "disabled" : null}>
+                                RU
+                            </button>
                         </span>
-                        <NavLink role="button" to="RU" className="disabled">
-                            RU
-                        </NavLink>
+                        <button onClick={() => this.changeLanguage('en')} className={this.state.lang !== 'en' ? "disabled" : null}>
+                            EN
+                        </button>
                     </div>
                     <div className="main-head-btn-holder">
                         <p className="main-head-btn-description">
-                            Already registered?
+                            <FormattedMessage id="reset.account" defaultMessage="Already registered?" />
                         </p>
                         <NavLink role="button" to="signin" className="main-head-btn">
-                            Sign in
+                            <FormattedMessage id="reset.signin" defaultMessage="Sign in" />
                         </NavLink>
                     </div>
                 </header>
@@ -99,7 +155,7 @@ class Reset extends Component {
                                     <img src="./pics/madagascar.png" alt="flat movie icons"/>
                                 </div>
                                 <div className="form-foreword">
-                                    Reset password
+                                    <FormattedMessage id="reset.title" defaultMessage="Reset password" />
                                 </div>
                                 <div className="my-row">
                                     <div className="input-holder">
@@ -111,7 +167,9 @@ class Reset extends Component {
                                 </div>
                                 <div className="my-row">
                                     <div className="input-holder form-button">
-                                        <button className="form-btn-submit">Reset password</button>
+                                        <button className="form-btn-submit">
+                                            <FormattedMessage id="reset.btn" defaultMessage="Reset" />
+                                        </button>
                                     </div>
                                 </div>
                             </form>
@@ -119,15 +177,15 @@ class Reset extends Component {
                     </div>
                     <div>
                         <Modal open={this.state.showModal} onClose={this.closeModal} basic size='small'>
-                            <Header icon='unlock alternate' content='Reset password' />
+                            <Header icon='unlock alternate' content={this.state.lang === 'en' ? "Reset password" : "Восстановление пароля"} />
                             <Modal.Content>
                                 <p>
-                                    We have sent you a link to restore your password.
+                                    {this.state.lang === 'en' ? "We have sent you a link to restore your password." : "Мы отправили ссылку для восстановления пароля."}
                                 </p>
                             </Modal.Content>
                             <Modal.Actions>
                                 <Button color='green' inverted onClick={this.closeModal}>
-                                    <Icon name='checkmark' /> Got it
+                                    <Icon name='checkmark' /> {this.state.lang === 'en' ? "Got it" : "Понял"}
                                 </Button>
                             </Modal.Actions>
                         </Modal>
@@ -146,7 +204,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        recordToken: str => dispatch(recordToken(str))
+        recordToken: str => dispatch(recordToken(str)),
+        updateIntl: obj => dispatch(updateIntl(obj))
     };
 };
 

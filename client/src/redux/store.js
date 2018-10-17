@@ -1,9 +1,9 @@
 import {createStore} from 'redux';
-import rootReduser from './rootReduser';
+import resultReduser from './rootReduser';
 
 export const componentStore = () => {
     const store = createStore(
-        rootReduser, 
+        resultReduser, 
         window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
     );
 

@@ -5,6 +5,8 @@ import { Button, Header, Image, Modal } from 'semantic-ui-react';
 import FacebookAuth from 'react-facebook-auth';
 import { connect } from 'react-redux';
 import { recordToken } from "../redux/actions";
+import { FormattedMessage } from 'react-intl';
+import { updateIntl } from 'react-intl-redux';
 
 const MyFacebookButton = ({ onClick }) => (
     <button onClick={onClick}>
@@ -23,12 +25,66 @@ class Signup extends Component {
             pass: "",
             email: "",
             errors: [],
-            showModal: false
+            showModal: false,
+            lang: props.componentState.intl.locale
         };
+        this.changeLanguage = this.changeLanguage.bind(this);
         this.onChange = this.onChange.bind(this);        
         this.signupRequest = this.signupRequest.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.signupFacebook = this.signupFacebook.bind(this);
+    }
+
+    changeLanguage(str) {
+        if (str === 'ru') {
+            this.props.updateIntl({
+                locale: "ru",
+                messages: {
+                    'signup.account': 'Есть аккаунт?',
+                    'signup.signin': 'Вход',
+                    'signup.greeting': 'Привет. ',
+                    'signup.try': ' Попробуй Hypertube.',
+                    'signup.legal': 'Единственный не наказуемый способ смотреть фильмы в Юните',
+                    'signup.title': 'Зарегестрироваться',
+                    'signup.btn': 'Регистрация',
+                    'signup.or': 'ИЛИ',
+                    'signup.social': 'Войти через социальную сеть',
+                    'signin.account': 'Еще нет аккаунта?',
+                    'signin.signup': 'Регистрация',
+                    'signin.greeting': 'Привет. ',
+                    'signin.try': ' Попробуй Hypertube.',
+                    'signin.legal': 'Единственный не наказуемый способ смотреть фильмы в Юните',
+                    'signin.title': 'Войти по email',
+                    'signin.reset': 'Забыл?',
+                    'signin.btn': 'Войти',
+                    'signin.or': 'ИЛИ',
+                    'signin.social': 'Войти через социальную сеть',
+                    'reset.account': 'Есть аккаунт?',
+                    'reset.signin': 'Вход',
+                    'reset.title': 'Восстановить пароль',
+                    'reset.btn': 'Восстановить',
+                },
+                // messages: this.props.componentState.intl.messages
+            });
+        } else {
+            this.props.updateIntl({
+                locale: "en",
+                messages: {
+                    'signup.account': 'Already registered?',
+                    'signup.signin': 'Sign in',
+                    'signup.greeting': 'Hello. ',
+                    'signup.try': ' Try Hypertube.',
+                    'signup.legal': 'The only legal online movie theatre in Unit Factory',
+                    'signup.title': 'Register accoutn',
+                    'signup.btn': 'Sign up',
+                    'signup.or': 'OR',
+                    'signup.social': 'Sign up with social network'
+                },
+            });
+        }
+        this.setState({
+            lang: str
+        })
     }
 
     onChange(event) {
@@ -37,8 +93,11 @@ class Signup extends Component {
         });
     }
 
-    signupRequest(event) {      
+    signupRequest(event) {
         event.preventDefault();
+        this.setState({
+            errors: []
+        });
         const data = {
             name: this.state.login,
             password: this.state.pass,
@@ -57,9 +116,20 @@ class Signup extends Component {
         }).then((res) => res.json())
         .then((responce) => {
             if (responce.errors !== undefined) {
-                this.setState({
-                    errors: responce.errors
-                });
+                let lang = this.state.lang;
+                if (lang === 'en') {
+                    this.setState({
+                        errors: responce.errors
+                    });
+                } else {
+                    let errorsRU = {};
+                    for (let err in responce.errors) {
+                        errorsRU[err] = err === 'email' ? "Этот email уже занят" : err === 'password' ? "Не валидный пароль" : responce.errors[err];
+                    };
+                    this.setState({
+                        errors: errorsRU
+                    });
+                }
             } else {
                 this.setState({
                     showModal: true,
@@ -116,33 +186,33 @@ class Signup extends Component {
                     </div>
                     <div className="language-holder">
                         <span className="language-option">
-                            <NavLink role="button" to="EN" >
-                                EN
-                            </NavLink>
+                            <button onClick={() => this.changeLanguage('ru')} className={this.state.lang !== 'ru' ? "disabled" : null}>
+                                RU
+                            </button>
                         </span>
-                        <NavLink role="button" to="RU" className="disabled">
-                            RU
-                        </NavLink>
+                        <button onClick={() => this.changeLanguage('en')} className={this.state.lang !== 'en' ? "disabled" : null}>
+                            EN
+                        </button>
                     </div>
                     <div className="main-head-btn-holder">
                         <p className="main-head-btn-description">
-                            Already registered?
+                            <FormattedMessage id="signup.account" defaultMessage="Already registered?" />
                         </p>
                         <NavLink role="button" to="signin" className="main-head-btn">
-                            Sign in
+                            <FormattedMessage id="signup.signin" defaultMessage="Sign in" />
                         </NavLink>
                     </div>
                 </header>
                 <section className="signup-page-content">
                     <div className="back-s-u"></div>
                     <h1>
-                        Hello. 
-                        <NavLink to="signin">
-                             Try Hypertube.
+                        <FormattedMessage id="signup.greeting" defaultMessage="Hello. " />
+                        <NavLink to="signin" style={{marginLeft: "15px"}}>
+                            <FormattedMessage id="signup.try" defaultMessage=" Try Hypertube." />
                         </NavLink>
                     </h1>
                     <h3>
-                        The only legal online movie theatre in Unit Factory
+                        <FormattedMessage id="signup.legal" defaultMessage="The only legal online movie theatre in Unit Factory" />
                     </h3>
                     <div className="signup-form-holder">
                         <aside>
@@ -151,7 +221,7 @@ class Signup extends Component {
                         <div className="signup-form">
                             <form onSubmit={this.signupRequest}>
                                 <div className="form-foreword">
-                                    Register accoutn
+                                    <FormattedMessage id="signup.title" defaultMessage="Register accoutn" />
                                 </div>
                                 {
                                     this.state.errors.length !== 0 && 
@@ -169,23 +239,25 @@ class Signup extends Component {
                                 }
                                 <div className="my-row">
                                     <div className="input-holder">
-                                        <input type="text" placeholder="First Name" required id="fname" onChange={this.onChange} name="fname"/>
+                                        <input type="text" placeholder={this.state.lang === 'en' ? "First Name" : "Имя"} required id="fname" onChange={this.onChange} name="fname"/>
                                     </div>
                                     <div className="input-holder">
-                                        <input type="text" placeholder="Last Name" required id="lname" onChange={this.onChange} name="lname"/>
+                                        <input type="text" placeholder={this.state.lang === 'en' ? "Last Name" : "Фамилия"} required id="lname" onChange={this.onChange} name="lname"/>
                                     </div>
                                 </div>
                                 <div className="my-row">
                                     <div className="input-holder tooltip-castom">
-                                        <span className="tooltiptext">Minimum 5 characters</span>
-                                        <input type="text" placeholder="Login" required id="login" onChange={this.onChange} name="login"/>
+                                        <span className="tooltiptext">
+                                            {this.state.lang === 'en' ? "Minimum 5 characters" : "Минимум 5 символов"}</span>
+                                        <input type="text" placeholder={this.state.lang === 'en' ? "Login" : "Имя пользователя"} required id="login" onChange={this.onChange} name="login"/>
                                         <label htmlFor="login">
                                             <i className="fa fa-user"></i>
                                         </label>
                                     </div>
                                     <div className="input-holder tooltip-castom">
-                                        <span className="tooltiptext pass">Minimum 7 characters, at least 1 number and uppercase letter</span>
-                                        <input type="password" placeholder="Password" required id="pass" onChange={this.onChange} name="pass"/>
+                                        <span className="tooltiptext pass">
+                                            {this.state.lang === 'en' ? "Minimum 7 characters, at least 1 number and uppercase letter" : "Минимум 7 символов, хотя бы 1 цифра и большая буква" }</span>
+                                        <input type="password" placeholder={this.state.lang === 'en' ? "Password" : "Пароль"} required id="pass" onChange={this.onChange} name="pass"/>
                                         <label className="input-icon" htmlFor="pass">
                                             <i className="fa fa-key"></i>
                                         </label>
@@ -193,7 +265,8 @@ class Signup extends Component {
                                 </div>
                                 <div className="my-row">
                                     <div className="input-holder input-email tooltip-castom">
-                                        <span className="tooltiptext email">Please provide a real one, we will send you a confirmation link</span>
+                                        <span className="tooltiptext email">
+                                            {this.state.lang === 'en' ? "Please provide a real one, we will send you a confirmation link" : "Настоящий, пожалуйста, мы от правим ссылку для подтверждения аккаунта"}</span>
                                         <input type="email" placeholder="Email" required id="email" onChange={this.onChange} name="email"/>
                                         <label className="input-icon" htmlFor="email">
                                             <i className="fa fa-envelope"></i>
@@ -202,19 +275,21 @@ class Signup extends Component {
                                 </div>
                                 <div className="my-row">
                                     <div className="input-holder form-button">
-                                        <button className="form-btn-submit">Sign up</button>
+                                        <button className="form-btn-submit">
+                                            <FormattedMessage id="signup.btn" defaultMessage="Sign up" />
+                                        </button>
                                     </div>
                                 </div>
                                 <div className="my-row">
                                     <div className="alternatieve">
                                         <h4>
-                                            OR
+                                            <FormattedMessage id="signup.or" defaultMessage="OR" />
                                         </h4>
                                     </div>
                                 </div>
                                 <div className="my-row">
                                     <h4>
-                                        Sign up with social network
+                                        <FormattedMessage id="signup.social" defaultMessage="Sign up with social network" />
                                     </h4>
                                 </div>
                                 <div className="my-row">
@@ -238,13 +313,21 @@ class Signup extends Component {
                 </section>
                 <div>
                     <Modal dimmer="blurring" open={this.state.showModal} onClose={this.closeModal}>
-                    <Modal.Header>Success</Modal.Header>
+                    <Modal.Header>
+                        {this.state.lang === 'en' ? "Success" : "Успех"}
+                    </Modal.Header>
                     <Modal.Content image>
                         <Image wrapped size={window.innerWidth < 416 ? 'small' : 'medium'} src='./pics/projector-camera.png' />
                         <Modal.Description>
-                        <Header>Your account was registered</Header>
-                        <p>We sent you an activation link to given email.</p>
-                        <p>Please, follow it to activate your account.</p>
+                        <Header>
+                            {this.state.lang === 'en' ? "Your account was registered" : "Ваш аккаунт зарегестрирован"}
+                        </Header>
+                        <p>
+                            {this.state.lang === 'en' ? "We sent you an activation link to given email." : "Мы отправили ссылку для активации аккаунта на указаный email."}
+                        </p>
+                        <p>
+                            {this.state.lang === 'en' ? "Please, follow it to activate your account." : "Пожалуйста, перейдите по ней"}
+                        </p>
                         </Modal.Description>
                     </Modal.Content>
                     <Modal.Actions>
@@ -252,7 +335,7 @@ class Signup extends Component {
                             positive
                             icon='checkmark'
                             labelPosition='right'
-                            content="Got it"
+                            content={this.state.lang === 'en' ? "Got it" : "Понял"}
                             onClick={this.closeModal}
                         />
                     </Modal.Actions>
@@ -271,7 +354,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        recordToken: str => dispatch(recordToken(str))
+        recordToken: str => dispatch(recordToken(str)),
+        updateIntl: obj => dispatch(updateIntl(obj))
     };
 };
 

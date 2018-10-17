@@ -106,11 +106,14 @@ button {
         width: 1px;
         margin: 0 3px;
         background-color: #e6e6e6; }
-      .signin-page .main-head .language-holder a {
+      .signin-page .main-head .language-holder button {
         text-decoration: none;
-        color: #b184c3; }
-        .signin-page .main-head .language-holder a.disabled {
+        color: #b184c3;
+        cursor: pointer; }
+        .signin-page .main-head .language-holder button.disabled {
           color: #e6e6e6; }
+      .signin-page .main-head .language-holder button:focus {
+        outline: none; }
     .signin-page .main-head .main-head-btn-holder {
       -webkit-box-align: center;
       -webkit-align-items: center;
@@ -128,6 +131,7 @@ button {
       width: 20%; }
       .signin-page .main-head .main-head-btn-holder .main-head-btn {
         color: #5d2d6c;
+        word-wrap: break-word;
         text-decoration: none;
         background-color: #f9f9f9;
         padding: 0.5em;
