@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Comments;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
-use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
-use App\Notifications\SignupActivate;
 use App\CommentsToFilm;
 
 

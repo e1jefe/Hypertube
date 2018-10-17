@@ -13,11 +13,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use Validator;
-use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
-use App\Notifications\SignupActivate;
 use Avatar;
 use Storage;
+use App\WatchedFilmsUser;
 
 class CabinetController extends Controller
 {
@@ -83,5 +81,27 @@ class CabinetController extends Controller
         $user->avatar = $avatar;
         $user->save();
         return response()->json($user);
+    }
+
+    public function watchedFilmsUsersReturn(){
+        $user = auth()->guard('api')->user();
+        $filmsArray = WatchedFilmsUser::where('id_user', $user->id)->get();
+        return response()->json($filmsArray);
+    }
+
+    public function watchedFilmsUsersCreate(Request $request){
+        $film = WatchedFilmsUser::where('id_film', $request->id_film)->first();
+        $user = auth()->guard('api')->user();
+        if(!empty($film)){
+            die;
+        }
+        if(empty($request->id_film)){
+            die;
+        }
+        $films = new WatchedFilmsUser;
+        $films->id_film = $request->id_film;
+        $films->id_user = $user->id;
+        $films->save();
+        return response()->json($films);
     }
 }

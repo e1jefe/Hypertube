@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.2
+-- version 4.7.9
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Sep 29, 2018 at 11:45 AM
--- Server version: 5.7.23
--- PHP Version: 7.1.20
+-- Host: localhost:3307
+-- Generation Time: Sep 28, 2018 at 09:17 AM
+-- Server version: 5.7.21
+-- PHP Version: 7.1.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -41,13 +41,13 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(36, '2014_10_12_000000_create_users_table', 1),
-(37, '2014_10_12_100000_create_password_resets_table', 1),
-(38, '2016_06_01_000001_create_oauth_auth_codes_table', 1),
-(39, '2016_06_01_000002_create_oauth_access_tokens_table', 1),
-(40, '2016_06_01_000003_create_oauth_refresh_tokens_table', 1),
-(41, '2016_06_01_000004_create_oauth_clients_table', 1),
-(42, '2016_06_01_000005_create_oauth_personal_access_clients_table', 1);
+(22, '2014_10_12_000000_create_users_table', 1),
+(23, '2014_10_12_100000_create_password_resets_table', 1),
+(24, '2016_06_01_000001_create_oauth_auth_codes_table', 1),
+(25, '2016_06_01_000002_create_oauth_access_tokens_table', 1),
+(26, '2016_06_01_000003_create_oauth_refresh_tokens_table', 1),
+(27, '2016_06_01_000004_create_oauth_clients_table', 1),
+(28, '2016_06_01_000005_create_oauth_personal_access_clients_table', 1);
 
 -- --------------------------------------------------------
 
@@ -134,19 +134,10 @@ CREATE TABLE `oauth_refresh_tokens` (
 --
 
 CREATE TABLE `password_resets` (
-  `id` int(10) UNSIGNED NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `password_resets`
---
-
-INSERT INTO `password_resets` (`id`, `email`, `token`, `created_at`, `updated_at`) VALUES
-(1, 'dmitry.sheptun@gmail.com', 'ZwryU8TsS0He2VBLmDRQDogIxp9sQKIzio6j1QpqU5nWqhH2TYkHWPURW7yZ', '2018-09-29 13:52:34', '2018-09-29 13:52:34');
 
 -- --------------------------------------------------------
 
@@ -168,15 +159,6 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `avatar`, `active`, `activation_token`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(10, 'dima', 'dmitry.sheptun@gmail.com', NULL, '$2y$10$bPH/vdl6Jj3MLtYNhmCC3ukCuZ/mMwk9J3qYL0CDAf4rjXnEKb7Nu', 'avatar.png', 0, 'pukKi8D3tKwz0MaGajXnH8zb0DPKLuJk3wnXVqsBuHSYkbgDteb1VufQeJ9T', NULL, '2018-09-29 13:11:57', '2018-09-29 13:11:57', NULL),
-(11, 'dima', 'dmitry.sptun@gmail.com', NULL, '$2y$10$k.6a3nl9R5dL6/IB3moLJO3Etm/fV52RjhjVOCP9j72a7dcrq5BSy', 'avatar.png', 0, 'QwFh7wAT1dPHUoMhALOZ48k1JAYcVm3E1b1eWOxUKyBnlOOphc29NIEczYSS', NULL, '2018-09-29 13:55:55', '2018-09-29 13:55:55', NULL),
-(12, 'dima', 'dmitry.sptun@gnmail.com', NULL, '$2y$10$dXAx.30p6K7oMUoTvQ5A3O7dCDjLgS3KmMqPvIEyicy4y1K8AUbee', 'avatar.png', 0, 'z28ZP1PDbzXTKrsUXppk16YUmoVe10o7lVG4DVg0YSvhp2Qc1WqA9GWLoTMD', NULL, '2018-09-29 15:30:54', '2018-09-29 15:30:54', NULL);
 
 --
 -- Indexes for dumped tables
@@ -226,7 +208,6 @@ ALTER TABLE `oauth_refresh_tokens`
 -- Indexes for table `password_resets`
 --
 ALTER TABLE `password_resets`
-  ADD PRIMARY KEY (`id`),
   ADD KEY `password_resets_email_index` (`email`);
 
 --
@@ -244,7 +225,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `oauth_clients`
@@ -259,16 +240,10 @@ ALTER TABLE `oauth_personal_access_clients`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `password_resets`
---
-ALTER TABLE `password_resets`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
