@@ -1,9 +1,6 @@
 const pump = require('pump');
+const fs = require('fs');
 
-/*
-* Когда клиент запрашивает Range bytes мы расчитываем этот диапазон и отправляем ответ сервера 206.
-*
-* */
 let partialContent = function (req, res, start, end, fileSize, file) {
     let range = req.headers.range;
     let parts = range.replace(/bytes=/, '').split('-');
@@ -42,10 +39,6 @@ let notPartialContent = function (req, res, fileSize, pathToVideo) {
     res.writeHead(200, head);
 };
 
-/*
-* Когда клиент не запрашивает диапазон мы отдаем весь файл и ответ сервера 200.
-*
-* */
 module.exports = {
     partialContent,
     notPartialContent

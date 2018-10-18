@@ -1,0 +1,15 @@
+{
+    "en":
+    {
+        "locale": "en-US",
+        "messages": {
+            "hello": "how are you {name}"
+        }
+    },
+    "ru": {
+        "locale": "ru",
+        "messages": {
+            "hello": "Привет Медвед"
+        }
+    }
+}
