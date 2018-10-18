@@ -30,6 +30,12 @@ class Reset extends Component {
         this.closeModal = this.closeModal.bind(this);
     }
 
+    componentDidMount() {
+        if (localStorage.getItem('token') !== null) {
+            this.props.history.push('/');
+        }
+    }
+
     changeLanguage(str) {
         if (str === 'ru') {
             this.props.updateIntl({

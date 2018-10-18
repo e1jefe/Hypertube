@@ -17,21 +17,23 @@ class Header extends Component {
     constructor(props){
         super(props);
         this.state = {
-            lang: "en"
+            lang: props.componentState.intl.locale
         };
         this.logout = this.logout.bind(this);
         this.changeLanguage = this.changeLanguage.bind(this);
     }
 
     logout() {
+        const token = localStorage.getItem('token');
         fetch('http://127.0.0.1:8000/api/auth/logout', {
             method: 'GET',
             headers:{
-                'Authorization': 'Bearer ' + this.props.componentState.token
+                'Authorization': 'Bearer ' + token
             }
         }).then((res) => res.json())
         .then((responce) => {
             this.props.logout();
+            localStorage.removeItem('token');
             this.props.history.push('/signin');
         });
     }
@@ -40,12 +42,13 @@ class Header extends Component {
         if (str === 'ru') {
             this.props.updateIntl({
                 locale: "ru",
-                messages: {
+                messages: Object.assign({
                     'header.profile': 'Кабинет',
                     'header.library': 'Фильмы',
                     'header.logout': 'Выход',
                     'library.title': 'Фильмы',
-                },
+                    'footer.msg': 'Запилили: ',
+                }, this.props.componentState.intl.mesagies),
             });
         } else {
             this.props.updateIntl({

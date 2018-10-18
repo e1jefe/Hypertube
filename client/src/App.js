@@ -11,7 +11,6 @@ import { IntlProvider } from 'react-intl'
 
 class App extends Component {
   render() {
-    console.log("token?", this.props.componentState);
     return (
       <IntlProvider locale={this.props.componentState.intl.locale} messages={this.props.componentState.intl.messages}>
         <Router history={history}>

@@ -31,6 +31,12 @@ class Signin extends Component {
         this.signinFacebook = this.signinFacebook.bind(this);
     }
 
+    componentDidMount() {
+        if (localStorage.getItem('token') !== null) {
+            this.props.history.push('/');
+        }
+    }
+
     changeLanguage(str) {
         if (str === 'ru') {
             this.props.updateIntl({
@@ -59,8 +65,12 @@ class Signin extends Component {
                     'reset.signin': 'Вход',
                     'reset.title': 'Восстановить пароль',
                     'reset.btn': 'Восстановить',
+                    'header.profile': 'Кабинет',
+                    'header.library': 'Фильмы',
+                    'header.logout': 'Выход',
+                    'library.title': 'Фильмы',
+                    'footer.msg': 'Запилили: ',
                 },
-                // messages: this.props.componentState.intl.messages
             });
         } else {
             this.props.updateIntl({
@@ -100,11 +110,18 @@ class Signin extends Component {
         }).then((res) => res.json())
         .then((responce) => {
             if (responce.message === "Unauthorized") {
-                this.setState({
-                    errors: "Something wrong with email or password"
-                });
+                if (this.state.lang === 'en') {
+                    this.setState({
+                        errors: "Something wrong with email or password"
+                    });
+                } else {
+                    this.setState({
+                        errors: "Проверьте email или пароль"
+                    });
+                }
             } else {
                 this.props.recordToken(responce.access_token);
+                localStorage.setItem('token', responce.access_token);
                 this.props.history.push('/');
             }
         });

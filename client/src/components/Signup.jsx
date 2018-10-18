@@ -35,6 +35,12 @@ class Signup extends Component {
         this.signupFacebook = this.signupFacebook.bind(this);
     }
 
+    componentDidMount() {
+        if (localStorage.getItem('token') !== null) {
+            this.props.history.push('/');
+        }
+    }
+
     changeLanguage(str) {
         if (str === 'ru') {
             this.props.updateIntl({

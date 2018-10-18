@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import '../interface/style/library.css';
-import { Dropdown } from 'semantic-ui-react';
-// import InputRange from 'react-input-range';
+import { Dropdown, Button, Icon, Input } from 'semantic-ui-react';
 import Slider from 'rc-slider';
 import "react-input-range/lib/css/index.css";
 import 'rc-slider/assets/index.css';
 import axios from 'axios';
 import { FormattedMessage } from 'react-intl';
-// import ruLocaleData from 'react-intl/locale-data/ru';
 import { connect } from 'react-redux';
 import { updateIntl } from 'react-intl-redux';
 
@@ -18,27 +16,10 @@ class Library extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: {
-                min: 1980,
-                max: 2015,
+            yearGap: {
+                min: 1910,
+                max: 2018
             },
-            years: [
-                {
-                    key: '1990',
-                    value: '1990',
-                    text: '1990'
-                },
-                {
-                    key: '1991',
-                    value: '1991',
-                    text: '1991'
-                },
-                {
-                    key: '1992',
-                    value: '1992',
-                    text: '1992'
-                }
-            ],
             country: [
                 { key: 'usa', value: 'usa', flag: 'us', text: 'USA' },
                 { key: 'gb', value: 'gb', flag: 'gb', text: 'Britain' },
@@ -49,6 +30,53 @@ class Library extends Component {
                     key: 'any',
                     value: 'any',
                     text: 'any'
+                },
+                {
+                    key: '1',
+                    value: '1',
+                    text: '1+'
+                },
+                {
+                    key: '2',
+                    value: '2',
+                    text: '2+'
+                },
+                {
+                    key: '3',
+                    value: '3',
+                    text: '3+'
+                },
+                {
+                    key: '4',
+                    value: '4',
+                    text: '4+'
+                },{
+                    key: '5',
+                    value: '5',
+                    text: '5+'
+                },{
+                    key: '6',
+                    value: '6',
+                    text: '6+'
+                },{
+                    key: '7',
+                    value: '7',
+                    text: '7+'
+                },{
+                    key: '8',
+                    value: '8',
+                    text: '8+'
+                },{
+                    key: '9',
+                    value: '9',
+                    text: '9+'
+                }
+            ],
+            imdbRU: [
+                {
+                    key: 'any',
+                    value: 'any',
+                    text: 'Любой'
                 },
                 {
                     key: '1',
@@ -170,18 +198,25 @@ class Library extends Component {
             movies: [],
             hasMoreItems: true,
             isLoading: false,
-            currentSortParam: "title",
-            order: "asc",
+            currentSortParam: "rating",
+            order: "desc",
             imdbMin: "",
-            currentGenre: "",
-            pageStart: 0,
-            error: ""
+            currentGenre: [],
+            pageStart: 1,
+            error: "",
+            movieTitle: ""
         };
-        // this.loadItems = this.loadItems.bind(this);
         this.changeYearRange = this.changeYearRange.bind(this);
         this.changeSort = this.changeSort.bind(this);
         this.changeRate = this.changeRate.bind(this);
         this.changeGenre = this.changeGenre.bind(this);
+        this.sendGenre = this.sendGenre.bind(this);
+        this.recordSearchTitle = this.recordSearchTitle.bind(this);
+        this.sendMovTitle = this.sendMovTitle.bind(this);
+        this.sendYear = this.sendYear.bind(this);
+        this.changeMinYear = this.changeMinYear.bind(this);
+        this.changeMaxYear = this.changeMaxYear.bind(this);
+
         window.onscroll = () => {
             const {
                 loadItems,
@@ -201,38 +236,97 @@ class Library extends Component {
     }
 
     componentDidMount() {
-        // console.log("component did mount");
-        const page = this.state.pageStart + 1;
+        if (localStorage.getItem('token') === null) {
+            this.props.history.push('/signin');
+        }
+        // const page = this.state.pageStart + 1;
         this.loadItems();
-        this.setState({
-            pageStart: page
-        });
+        // this.setState({
+        //     pageStart: page
+        // });
     }
 
     changeYearRange(val) {
         //get value as array of ints [min, max]
-        // this.setState({
-        //     value: val
-        // });
+        // console.log("in change year mov", val)
+        // if (this.state.yearGap[0] !== val[0] || this.state.yearGap[1] !== val[1]) {
+        //     this.setState({
+        //         yearGap: val,
+        //         movies: [],
+        //         pageStart: 0
+        //     }, () => this.loadItems());
+        // }
+        this.setState({
+            yearGap: val,
+            movies: [],
+            pageStart: 1
+        });
+        this.loadItems();
+    }
+
+    changeMinYear(event, data) {
+        console.log("min", data.value)
+        let yearGap = this.state.yearGap;
+        yearGap.min = data.value;
+        this.setState({
+            yearGap
+        })
+    }
+
+    changeMaxYear(event, data) {
+        console.log("max", data.value)
+
+        let yearGap = this.state.yearGap;
+        yearGap.max = data.value;
+        this.setState({
+            yearGap
+        })
+    }
+
+    sendYear(){
+        this.setState({
+            pageStart: 1,
+            movies: [],
+            currentSortParam: "title",
+            order: "asc",
+        });
+        console.log("send year", this.state)
+
+        this.loadItems();
     }
 
     changeRate(val, data) {
         if (data.value !== "any") {
             this.setState({
+                currentSortParam: "title",
+                order: "asc",
                 imdbMin: data.value,
                 pageStart: 1,
                 movies: []
             }, () => this.loadItems());
         }
-        
     }
 
     changeGenre(event, data) {
-        console.log("val", data);
+        const currentLength = this.state.currentGenre.length;
+        this.setState({
+            currentGenre: data.value,
+        })
+        if (currentLength > data.value.length) {
+            this.sendGenre(event, data);
+        }
+    }
+
+    sendGenre(event, data) {
+        this.setState({
+            currentSortParam: "title",
+            order: "asc",
+            movies: [],
+            pageStart: 1
+        }, () => this.loadItems());
     }
 
     changeSort(event, data){
-        // console.log("got new sort", data);
         if (data.value === 'pop') {
             this.setState({
                 currentSortParam: "rating",
@@ -251,52 +345,84 @@ class Library extends Component {
     }
 
     loadItems = () => {
-        // console.log("movie at beggining", this.state.movies);
+        console.log("movies in load ", this.state.movies);
+        console.log("page ", this.state.pageStart);
+
 
         const baseUrl = "https://yts.am/api/v2/list_movies.json?";
         const page = 'page=' + this.state.pageStart;
         const sortParam = "&sort_by=" + this.state.currentSortParam;
         const orderParam = "&order_by=" + this.state.order;
         const rate = this.state.imdbMin !== "" ? "&minimum_rating=" + this.state.imdbMin : "";
-        const genre = this.state.currentGenre !== "" ? "&genre=" + this.state.currentGenre : "";
-        let requestUrl = baseUrl + page + rate + sortParam + orderParam;
-        // console.log("request", requestUrl);
+        const title = this.state.movieTitle !== "" ? "&query_term=" + this.state.movieTitle : "";
+        let allGenres = "";
+        if (this.state.currentGenre.length !== 0) {
+            this.state.currentGenre.forEach((genre) => {
+                allGenres = allGenres.concat("&genre=" + genre);
+            })
+        }
+        let requestUrl = baseUrl + page + rate + sortParam + orderParam + allGenres + title;
+        console.log("requestUrl ", requestUrl);
 
         this.setState({ isLoading: true }, () => {
-            axios
-              .get(requestUrl)
-              .then((response) => {          
-                // Creates a massaged array of user data
-                const nextMovies = response.data.data.movies.map(mov => ({
-                    poster: mov.large_cover_image,
-                    country: mov.language,
-                    year: mov.year,
-                    id: mov.id,
-                    name: mov.title_english,
-                    genre: mov.genres
-                }));
-                let newPage = this.state.pageStart + 1;
-                // Merges the next users into our existing users
+            axios.get(requestUrl)
+                .then((response) => {          
+                    // Creates a massaged array of user data
+        // console.log("response ", response.data.data.movies[0]);
+
+                    const nextMovPack = response.data.data.movies.map((mov) => {
+                        if (this.state.yearGap.min <= mov.year && mov.year <= this.state.yearGap.max) {
+                            return ({
+                                poster: mov.large_cover_image,
+                                country: mov.language,
+                                year: mov.year,
+                                id: mov.id,
+                                name: mov.title_english,
+                                genre: mov.genres
+                            })
+                        }
+                    });
+                    let filteredMovies = nextMovPack.filter(function(el) { return el; });
+                    let newPage = this.state.pageStart + 1;
+                    // Merges the next users into our existing users
+                    this.setState({
+                        // Note: Depending on the API you're using, this value may be
+                        // returned as part of the payload to indicate that there is no
+                        // additional data to be loaded
+                        hasMore: (this.state.movies.length < response.data.data.movie_count),
+                        isLoading: false,
+                        movies: [
+                        ...this.state.movies,
+                        ...filteredMovies,
+                        ],
+                        pageStart: newPage
+                    });
+        console.log("load mov ", this.state.movies);
+
+                })
+                .catch((err) => {
                 this.setState({
-                  // Note: Depending on the API you're using, this value may be
-                  // returned as part of the payload to indicate that there is no
-                  // additional data to be loaded
-                  hasMore: (this.state.movies.length < response.data.data.movie_count),
-                  isLoading: false,
-                  movies: [
-                    ...this.state.movies,
-                    ...nextMovies,
-                  ],
-                  pageStart: newPage
-                });
-              })
-              .catch((err) => {
-                this.setState({
-                  error: err.message,
-                  isLoading: false,
-                 });
-              })
-        });
+                    error: err.message,
+                    isLoading: false,
+                    });
+                })
+            });
+    }
+
+    recordSearchTitle(e){
+        this.setState({
+            movieTitle: e.target.value
+        })
+    }
+
+    sendMovTitle(){
+        this.setState({
+            currentSortParam: "name",
+            order: "asc",
+            movies: [],
+            pageStart: 1,
+            currentGenre: []
+        }, () => this.loadItems());
     }
 
     render() {
@@ -315,19 +441,34 @@ class Library extends Component {
                         <label>
                             <i className="fas fa-search"></i>
                         </label>
-                        <input type="text" placeholder={this.props.componentState.intl.locale === 'en' ? "Search" : "Поиск"}/>
+                        <input type="text" placeholder={this.props.componentState.intl.locale === 'en' ? "Search" : "Поиск"} onChange={this.recordSearchTitle}/>
+                        <Button animated color='purple' onClick={() => this.sendMovTitle()}>
+                            <Button.Content visible>{this.props.componentState.intl.locale === 'en' ? "Go" : "Вперед"}</Button.Content>
+                            <Button.Content hidden>
+                                <Icon name='arrow right' />
+                            </Button.Content>
+                        </Button>       
                     </div>
                     <div className="year-select">
-                        <Range min={1910} max={2018} defaultValue={[1990, 2010]} marks={marks} onAfterChange={(event) => this.changeYearRange(event)}/>
+                        <FormattedMessage id="library.year" defaultMessage="Year from" />
+                        <Input placeholder='From...' onChange={this.changeMinYear}/>
+                        <Input placeholder='To...' onChange={this.changeMaxYear}/>
+                        <Button animated color='purple' onClick={() => this.sendYear()}>
+                            <Button.Content visible>{this.props.componentState.intl.locale === 'en' ? "Go" : "Вперед"}</Button.Content>
+                            <Button.Content hidden>
+                                <Icon name='arrow right' />
+                            </Button.Content>
+                        </Button>
+                        {/* <Range min={1910} max={2018} defaultValue={[1910, 2018]} marks={marks} onAfterChange={(event) => this.changeYearRange(event)}/> */}
                     </div>
                 </div>
                 <div className="control column">
 
                     <div className="param">                    
-                        <Dropdown placeholder={this.props.componentState.intl.locale === 'en' ? 'IMDB RATING' : 'IMDB рейтинг'} fluid search selection options={this.state.imdb} onChange={this.changeRate}/>
+                        <Dropdown placeholder={this.props.componentState.intl.locale === 'en' ? 'IMDB RATING' : 'IMDB рейтинг'} fluid search selection options={this.props.componentState.intl.locale === 'en' ? this.state.imdb : this.state.imdbRU} onChange={this.changeRate}/>
                     </div>
                     <div className="param">                    
-                        <Dropdown placeholder={this.props.componentState.intl.locale === 'en' ? 'GENRE' : 'Жанр'} fluid search multiple selection options={this.state.genre} onChange={this.changeGenre}/>
+                        <Dropdown placeholder={this.props.componentState.intl.locale === 'en' ? 'GENRE' : 'Жанр'} fluid search multiple selection options={this.state.genre} onChange={this.changeGenre} onClose={this.sendGenre} />
                     </div>
                     <div className="param">                    
                         <Dropdown placeholder={this.props.componentState.intl.locale === 'en' ? 'SORT BY' : 'Сортировать'} fluid selection options={this.props.componentState.intl.locale === 'en' ? this.state.sortParam : this.state.sortParamRU} onChange={this.changeSort}/>

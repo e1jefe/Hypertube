@@ -30,7 +30,15 @@
       width: 40%;
       margin-right: 10%;
       -webkit-box-sizing: border-box;
-              box-sizing: border-box; }
+              box-sizing: border-box;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: end;
+      -webkit-align-items: flex-end;
+          -ms-flex-align: end;
+              align-items: flex-end; }
       .library-container .control .search-input label,
       .library-container .control .search-input input {
         display: inline-block; }
@@ -43,14 +51,17 @@
         .library-container .control .search-input label i {
           color: #333333;
           text-transform: uppercase;
-          font-size: 1em;
+          font-size: 22px;
           line-height: 1em; }
       .library-container .control .search-input input {
-        font-family: inherit;
-        color: #bfbfbf;
-        font-size: 14px;
-        font-weight: 300;
+        padding-bottom: 3px;
+        margin-right: 5px;
         width: 72%;
+        color: #bfbfbf;
+        font-family: inherit;
+        font-size: 18px;
+        font-weight: 300;
+        line-height: 18px;
         border: none;
         border-bottom: 1px solid;
         -webkit-transition: border-bottom .25 linear;
@@ -59,9 +70,6 @@
         .library-container .control .search-input input:focus {
           outline: none;
           border-bottom: 1px solid #a460b9; }
-    .library-container .control .year-select {
-      width: 200px;
-      height: 50px; }
     .library-container .control .input-range {
       width: 50%; }
       .library-container .control .input-range .input-range__track--background {
@@ -176,6 +184,12 @@
         text-transform: capitalize;
         font-size: 0.7em; }
 
+@media screen and (max-width: 769px) {
+  .library-container .control.need-space .search-input button {
+    height: 30px;
+    padding: 5px;
+    font-size: 14px; } }
+
 @media screen and (max-width: 415px) {
   .library-container .control.column {
     -webkit-box-orient: vertical;
@@ -201,6 +215,8 @@
     .library-container .control.need-space .search-input {
       width: 100%;
       margin-right: 0; }
+      .library-container .control.need-space .search-input label i {
+        font-size: 14px; }
       .library-container .control.need-space .search-input input {
         width: 96%; }
     .library-container .control.need-space .year-select {

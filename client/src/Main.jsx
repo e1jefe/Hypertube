@@ -25,6 +25,11 @@ class Main extends Component {
         //   options: { renderToStaticMarkup }
         // });
     // }
+    componentDidMount() {
+        if (localStorage.getItem('token') === null) {
+            this.props.history.push('/signin');
+        }
+    }
 
     render() {
         return (
@@ -33,7 +38,7 @@ class Main extends Component {
                     <Header history={history}/>
                     <Switch>
                         <Route exact path='/' component={Library} />
-                        <Route exact path="/library" component={Library} />
+                        <Route exact path='/library' component={Library} />
                         <Route path='/movie/:id' component={SingleMovie} />
                     </Switch>
                     <Footer/>
