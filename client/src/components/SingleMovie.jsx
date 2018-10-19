@@ -4,6 +4,8 @@ import MyPlayer from './MyPlayer';
 import Comments from './Comments.jsx';
 import axios from 'axios';
 import { FormattedMessage } from 'react-intl';
+import Trailer from "./Trailer";
+import { Button } from 'semantic-ui-react';
 
 class SingleMovie extends Component {
     constructor(props) {
@@ -11,16 +13,28 @@ class SingleMovie extends Component {
         this.state = {
             movieId: "",
             error: "",
-            data: {}
+            data: {},
+            quality: null,
+            trailerUrl: null
         };
+    }
+
+    changeQuality(resolution) {
+        this.setState({
+            quality: resolution
+        });
+            document.getElementById('1080').disabled = "disabled";
+            document.getElementById('720').disabled = "disabled";
     }
 
     componentDidMount() {
         let self = this;
-        // this.setState({
-        //     movieId: this.props.match.params
-        // })
-        // console.log("id", this.props.match.params.id);
+        // axios.get('http://localhost:3001/youtube/' + this.props.match.params.id)
+        //     .then((response) => {
+        //         this.setState({
+        //             trailerUrl: response.data.url
+        //         })
+        //     });
         axios.get('https://yts.am/api/v2/movie_details.json?movie_id=' + this.props.match.params.id)
             .then(function (response) {
 
@@ -120,9 +134,24 @@ class SingleMovie extends Component {
                                 {this.state.data.plot}
                             </div>
                         </div>
+                        <div className="my-row">
+                            <div className="characteristic">
+                                Quality:
+                            </div>
+                            <Button color='purple' id="720" onClick={() => this.changeQuality(720)}>720p</Button>
+                            <Button color='purple' id="1080" onClick={() => this.changeQuality(1080)}>1080p</Button>
+                        </div>
                     </div>
                 </div>
-                <MyPlayer poster={this.state.data.poster} />
+                {
+                    this.state.quality ? 
+                        <MyPlayer id={this.props.match.params.id} quality={this.state.quality}/> 
+                        :
+                        this.state.trailerUrl !== null ?
+                            <Trailer id={this.props.match.params.id} url={this.state.trailerUrl}/>
+                            :
+                            null
+                }
                 <Comments/>
             </section>
         );

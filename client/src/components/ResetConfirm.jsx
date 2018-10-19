@@ -12,6 +12,7 @@ class Reset extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            newPass: "",
             email: "",
             errors: {},
             showModal: false,
@@ -19,7 +20,7 @@ class Reset extends Component {
             processing: false
         };
         this.changeLanguage = this.changeLanguage.bind(this);
-        this.resetRequest = this.resetRequest.bind(this);
+        this.setNewPass = this.setNewPass.bind(this);
         this.onChange = this.onChange.bind(this);
         this.closeModal = this.closeModal.bind(this);
     }
@@ -28,6 +29,7 @@ class Reset extends Component {
         if (localStorage.getItem('token') !== null) {
             this.props.history.push('/');
         }
+        
     }
 
     changeLanguage(str) {
@@ -76,15 +78,17 @@ class Reset extends Component {
         })
     }
 
-    resetRequest(event) {
+    setNewPass(event) {
         event.preventDefault();
         const data = {
             email: this.state.email,
+            password: this.state.newPass,
+            token: this.props.match.params.token
         };
         this.setState({
             processing: true
         })
-        fetch('http://127.0.0.1:8000/api/password/create', {
+        fetch('http://127.0.0.1:8000/api/password/reset', {
             method: 'POST',
             body: JSON.stringify(data),
             headers:{
@@ -173,6 +177,16 @@ class Reset extends Component {
                                         </label>
                                     </div>
                                 </div>
+                                <div>
+                                    <div className="input-holder tooltip-castom">
+                                        <span className="tooltiptext pass">
+                                            {this.state.lang === 'en' ? "Minimum 7 characters, at least 1 number, upper and lovercase letter" : "Минимум 7 символов, хотя бы 1 цифра, большая и маленькая буква" }</span>
+                                        <input type="password" placeholder={this.state.lang === 'en' ? "Password" : "Пароль"} required id="pass" onChange={this.onChange} name="newPass"/>
+                                        <label className="input-icon" htmlFor="pass">
+                                            <i className="fa fa-key"></i>
+                                        </label>
+                                    </div>
+                                </div>
                                 <div className="my-row">
                                     <div className="input-holder form-button">
                                         <button className="form-btn-submit">
@@ -186,17 +200,17 @@ class Reset extends Component {
                     <div>
                         <Dimmer active={this.state.processing}>
                             <Loader active>
-                                {this.state.lang === 'en' ? "Hacking your email |ω･)ﾉ" : "Пожалуйста, подождите"}
+                                {this.state.lang === 'en' ? "Setting a new password for you" : "Пожалуйста, подождите"}
                             </Loader>
                         </Dimmer>
                     </div>
                     <div>
                         <Modal open={this.state.showModal} onClose={this.closeModal} basic size='small'>
-                            <Header icon='unlock alternate' content={this.state.lang === 'en' ? "Reset password" : "Восстановление пароля"} />
+                        <Header icon='unlock alternate' content={this.state.lang === 'en' ? "Success" : "Успех"} />
                             <Modal.Content>
-                                <p>
-                                    {this.state.lang === 'en' ? "We have sent you a link to restore your password." : "Мы отправили ссылку для восстановления пароля."}
-                                </p>
+                                <h3>
+                                    {this.state.lang === 'en' ? "We set a new password for your account" : "Мы установили новый пароль для вашего аккаунта"}
+                                </h3>
                             </Modal.Content>
                             <Modal.Actions>
                                 <Button color='green' inverted onClick={this.closeModal}>

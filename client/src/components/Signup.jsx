@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../interface/style/signup.css';
 import { NavLink } from 'react-router-dom';
-import { Button, Header, Image, Modal } from 'semantic-ui-react';
+import { Button, Header, Image, Modal, Dimmer, Loader } from 'semantic-ui-react';
 import FacebookAuth from 'react-facebook-auth';
 import { connect } from 'react-redux';
 import { recordToken } from "../redux/actions";
@@ -26,7 +26,8 @@ class Signup extends Component {
             email: "",
             errors: [],
             showModal: false,
-            lang: props.componentState.intl.locale
+            lang: props.componentState.intl.locale,
+            processing: false
         };
         this.changeLanguage = this.changeLanguage.bind(this);
         this.onChange = this.onChange.bind(this);        
@@ -102,7 +103,8 @@ class Signup extends Component {
     signupRequest(event) {
         event.preventDefault();
         this.setState({
-            errors: []
+            errors: [],
+            processing: true
         });
         const data = {
             name: this.state.login,
@@ -125,7 +127,8 @@ class Signup extends Component {
                 let lang = this.state.lang;
                 if (lang === 'en') {
                     this.setState({
-                        errors: responce.errors
+                        errors: responce.errors,
+                        processing: false
                     });
                 } else {
                     let errorsRU = {};
@@ -133,12 +136,14 @@ class Signup extends Component {
                         errorsRU[err] = err === 'email' ? "Этот email уже занят" : err === 'password' ? "Не валидный пароль" : responce.errors[err];
                     };
                     this.setState({
-                        errors: errorsRU
+                        errors: errorsRU,
+                        processing: false
                     });
                 }
             } else {
                 this.setState({
                     showModal: true,
+                    processing: false,
                     errors: []
                 });
             }
@@ -262,7 +267,7 @@ class Signup extends Component {
                                     </div>
                                     <div className="input-holder tooltip-castom">
                                         <span className="tooltiptext pass">
-                                            {this.state.lang === 'en' ? "Minimum 7 characters, at least 1 number and uppercase letter" : "Минимум 7 символов, хотя бы 1 цифра и большая буква" }</span>
+                                            {this.state.lang === 'en' ? "Minimum 7 characters, at least 1 number, upper and lovercase letter" : "Минимум 7 символов, хотя бы 1 цифра, большая и маленькая буква" }</span>
                                         <input type="password" placeholder={this.state.lang === 'en' ? "Password" : "Пароль"} required id="pass" onChange={this.onChange} name="pass"/>
                                         <label className="input-icon" htmlFor="pass">
                                             <i className="fa fa-key"></i>
@@ -346,6 +351,13 @@ class Signup extends Component {
                         />
                     </Modal.Actions>
                     </Modal>
+                </div>
+                <div>
+                    <Dimmer active={this.state.processing}>
+                        <Loader active>
+                            {this.state.lang === 'en' ? "(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ Baiking coockies" : "Пожалуйста, подождите"}
+                        </Loader>
+                    </Dimmer>
                 </div>
             </main>
         )

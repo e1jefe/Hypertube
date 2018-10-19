@@ -39,9 +39,12 @@
             font-size: calc(16px + 6 * ((100vw - 320px) / 680));
     
             .my-row {
+                margin-top: 10px;
+
                 div {
                     display: inline-block;
                 }
+                
                 .characteristic {
                     font-weight: bold;
                     margin-right: 5px;

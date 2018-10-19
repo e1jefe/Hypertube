@@ -7,7 +7,8 @@ import history from './history/history';
 import Main from './Main';
 import { connect } from 'react-redux';
 import Reset from './components/Reset';
-import { IntlProvider } from 'react-intl'
+import ResetConfirm from './components/ResetConfirm';
+import { IntlProvider } from 'react-intl';
 
 class App extends Component {
   render() {
@@ -18,7 +19,7 @@ class App extends Component {
             <Route exact path="/signin" component={Signin}/>
             <Route path="/signup" component={Signup}/>
             <Route path="/resetpass" component={Reset}/>
-            {/* <Route path="/" component={this.props.componentState.token.length !== 0 ? Main : Signin}/> */}
+            <Route path="/resetConfirm/:token" component={ResetConfirm}/>
             <Route path="/" component={Main}/>
           </Switch>
         </Router>
