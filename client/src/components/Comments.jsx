@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import OtherUserProfile from './OtherUserProfile';
+import { FormattedMessage } from 'react-intl';
 
 class Comments extends Component {
 
@@ -7,13 +9,31 @@ class Comments extends Component {
         this.state = {
             comments: [],
             hasMoreItems: true,
-            nextHref: null
+            nextHref: null,
+            showOtherUserProfile: false,
+            otherId: ""
         };
         // this.loadItems = this.loadItems.bind(this);
+        this.showOtherUser = this.showOtherUser.bind(this);
+        this.closeModal = this.closeModal.bind(this);
     }
 
     componentDidMount() {
         console.log("loaded coment component");
+    }
+
+    showOtherUser(event) {
+        console.log("userId", event.currentTarget.getAttribute('userid'));
+        this.setState({
+            showOtherUserProfile: true,
+            otherId: event.currentTarget.getAttribute('userid')
+        })
+    }
+
+    closeModal() {
+        this.setState({
+            showOtherUserProfile: false
+        })
     }
 
     render() {
@@ -41,10 +61,15 @@ class Comments extends Component {
         //         </div>
         //     );
         // });
+        const userId = 11;
         return(
             <div className="comments">
+                {
+                    this.state.showOtherUserProfile &&
+                    <OtherUserProfile id={this.state.otherId} show={this.state.showOtherUserProfile} closeModal={this.closeModal}/>
+                }
                 <h2>
-                    Comments
+                    <FormattedMessage id="сomments.title" defaultMessage="Comments" />
                 </h2>
                 <div className="comment-action-box">
                     <div className="avatar">
@@ -53,18 +78,18 @@ class Comments extends Component {
                     <div className="comment-content">
                         <textarea name="comment-txt" rows="3" placeholder="Leave a comment" maxLength="240"></textarea>
                         <button type="submit">
-                            Send
+                            <FormattedMessage id="сomments.sendbtn" defaultMessage="Send" />
                         </button>
                     </div>
                 </div>
                 <div className="all-comments">
                     <div className="my-row">
-                        <div className="avatar">
+                        <div className="avatar" userid={userId} onClick={this.showOtherUser}>
                             <img src="https://cdn.iconscout.com/icon/free/png-256/avatar-373-456325.png" alt="my avatar"/>
                         </div>
                         <div className="details">
                             <div className="info">
-                                <div className="author">
+                                <div className="author" userid={userId} onClick={this.showOtherUser}>
                                     Some Person
                                 </div>
                                 <div className="time-stamp">
@@ -134,18 +159,6 @@ class Comments extends Component {
                         </div>
                     </div>
                 </div>
-                {/* <div style={{height:'700px', overflow:'auto'}}>
-                    <InfiniteScroll
-                        pageStart={0}
-                        loadMore={this.loadItems}
-                        hasMore={this.state.hasMoreItems}
-                        loader={loader}>
-                        <div className="all-comments">
-                            {items}
-                        </div>
-                    </InfiniteScroll>
-                </div> */}
-
             </div>
         )
     }

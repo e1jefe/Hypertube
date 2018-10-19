@@ -3,6 +3,8 @@
   font-size: calc(16px + 6 * ((100vw - 320px) / 680));
   margin: 15px auto;
   padding: 0 10px;
+  min-height: -webkit-calc(100vh - 120px);
+  min-height: calc(100vh - 120px);
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   font-family: 'Open Sans', sans-serif; }
@@ -70,6 +72,15 @@
         .library-container .control .search-input input:focus {
           outline: none;
           border-bottom: 1px solid #a460b9; }
+    .library-container .control .year-select {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center; }
     .library-container .control .input-range {
       width: 50%; }
       .library-container .control .input-range .input-range__track--background {
@@ -185,10 +196,28 @@
         font-size: 0.7em; }
 
 @media screen and (max-width: 769px) {
+  .library-container .control {
+    -webkit-box-align: end;
+    -webkit-align-items: flex-end;
+        -ms-flex-align: end;
+            align-items: flex-end; }
   .library-container .control.need-space .search-input button {
     height: 30px;
     padding: 5px;
-    font-size: 14px; } }
+    margin-right: 0;
+    font-size: 14px; }
+  .library-container .control.need-space .year-select {
+    padding-right: 16px;
+    height: 30px;
+    -webkit-box-align: end;
+    -webkit-align-items: flex-end;
+        -ms-flex-align: end;
+            align-items: flex-end; }
+    .library-container .control.need-space .year-select button {
+      height: 30px;
+      padding: 5px;
+      margin-right: 0;
+      font-size: 14px; } }
 
 @media screen and (max-width: 415px) {
   .library-container .control.column {
@@ -223,5 +252,10 @@
       margin: 20px auto 0px;
       padding-right: 16px;
       height: 20px; }
+      .library-container .control.need-space .year-select button {
+        height: 30px;
+        padding: 5px;
+        margin-right: 0;
+        font-size: 14px; }
   .library-container .input-range__label-container {
     font-size: 9px; } }

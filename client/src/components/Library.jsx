@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import '../interface/style/library.css';
 import { Dropdown, Button, Icon, Input } from 'semantic-ui-react';
-import Slider from 'rc-slider';
 import "react-input-range/lib/css/index.css";
 import 'rc-slider/assets/index.css';
 import axios from 'axios';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import { updateIntl } from 'react-intl-redux';
-
-const Range = Slider.createSliderWithTooltip(Slider.Range);
 
 class Library extends Component {
 
@@ -20,11 +16,6 @@ class Library extends Component {
                 min: 1910,
                 max: 2018
             },
-            country: [
-                { key: 'usa', value: 'usa', flag: 'us', text: 'USA' },
-                { key: 'gb', value: 'gb', flag: 'gb', text: 'Britain' },
-                { key: 'fr', value: 'fr', flag: 'fr', text: 'France' }
-            ],
             imdb: [
                 {
                     key: 'any',
@@ -196,7 +187,7 @@ class Library extends Component {
                 }
             ],
             movies: [],
-            hasMoreItems: true,
+            hasMore: true,
             isLoading: false,
             currentSortParam: "rating",
             order: "desc",
@@ -206,7 +197,6 @@ class Library extends Component {
             error: "",
             movieTitle: ""
         };
-        this.changeYearRange = this.changeYearRange.bind(this);
         this.changeSort = this.changeSort.bind(this);
         this.changeRate = this.changeRate.bind(this);
         this.changeGenre = this.changeGenre.bind(this);
@@ -225,84 +215,75 @@ class Library extends Component {
                     hasMore
                 },
             } = this;
-      
             if ( isLoading || !hasMore) return;
-
             // Checks that the page has scrolled to the bottom
             if ( window.innerHeight + document.documentElement.scrollTop === document.documentElement.scrollHeight ) {
                 loadItems();
             }
-          };
+        };
     }
 
     componentDidMount() {
         if (localStorage.getItem('token') === null) {
             this.props.history.push('/signin');
         }
-        // const page = this.state.pageStart + 1;
-        this.loadItems();
-        // this.setState({
-        //     pageStart: page
-        // });
-    }
-
-    changeYearRange(val) {
-        //get value as array of ints [min, max]
-        // console.log("in change year mov", val)
-        // if (this.state.yearGap[0] !== val[0] || this.state.yearGap[1] !== val[1]) {
-        //     this.setState({
-        //         yearGap: val,
-        //         movies: [],
-        //         pageStart: 0
-        //     }, () => this.loadItems());
-        // }
-        this.setState({
-            yearGap: val,
-            movies: [],
-            pageStart: 1
-        });
         this.loadItems();
     }
 
-    changeMinYear(event, data) {
-        console.log("min", data.value)
+    changeMinYear(e, data) {
         let yearGap = this.state.yearGap;
-        yearGap.min = data.value;
+        if (data.value.match("[0-9]+") !== null) {
+            yearGap.min = data.value.length < 5 ? data.value.match("[0-9]+")[0] : yearGap.min;
+        } else {
+            yearGap.min = "";
+        }
         this.setState({
             yearGap
-        })
+        });
     }
 
-    changeMaxYear(event, data) {
-        console.log("max", data.value)
-
+    changeMaxYear(e, data) {
         let yearGap = this.state.yearGap;
-        yearGap.max = data.value;
+        if (data.value.match("[0-9]+") !== null) {
+            yearGap.max = data.value.length < 5 ? data.value.match("[0-9]+")[0] : yearGap.max;
+        } else {
+            yearGap.max = "";
+        }
         this.setState({
             yearGap
         })
     }
 
     sendYear(){
+        let yearGap = this.state.yearGap;
+        if (this.state.yearGap.min === "" && this.state.yearGap.max === "") {
+            yearGap = {
+                min: 1910,
+                max: 2018
+            }
+        } else if (this.state.yearGap.min === "" || this.state.yearGap.max === "") {
+            yearGap.min = this.state.yearGap.min === "" ? this.state.yearGap.max : this.state.yearGap.min;
+            yearGap.max = this.state.yearGap.max === "" ? this.state.yearGap.min : this.state.yearGap.max;
+        }
         this.setState({
             pageStart: 1,
             movies: [],
             currentSortParam: "title",
             order: "asc",
-        });
-        console.log("send year", this.state)
-
-        this.loadItems();
+            yearGap: yearGap,
+            hasMore: true
+        }, () => this.loadItems());
     }
 
-    changeRate(val, data) {
-        if (data.value !== "any") {
+    changeRate(event, data) {
+        if (data.value !== this.state.imdbMin) {
             this.setState({
                 currentSortParam: "title",
                 order: "asc",
                 imdbMin: data.value,
                 pageStart: 1,
-                movies: []
+                movies: [],
+                hasMore: true
             }, () => this.loadItems());
         }
     }
@@ -313,16 +294,17 @@ class Library extends Component {
             currentGenre: data.value,
         })
         if (currentLength > data.value.length) {
-            this.sendGenre(event, data);
+            this.sendGenre();
         }
     }
 
-    sendGenre(event, data) {
+    sendGenre() {
         this.setState({
             currentSortParam: "title",
             order: "asc",
             movies: [],
-            pageStart: 1
+            pageStart: 1,
+            hasMore: true
         }, () => this.loadItems());
     }
 
@@ -332,81 +314,89 @@ class Library extends Component {
                 currentSortParam: "rating",
                 order: "desc",
                 movies: [],
-                pageStart: 1
+                pageStart: 1,
+                hasMore: true
             }, () => this.loadItems());
         } else {
             this.setState({
                 currentSortParam: "title",
                 order: "asc",
                 movies: [],
-                pageStart: 1
+                pageStart: 1,
+                hasMore: true
             }, () => this.loadItems());
         }
     }
 
     loadItems = () => {
-        console.log("movies in load ", this.state.movies);
-        console.log("page ", this.state.pageStart);
+        // console.log("yearGap ", this.state.yearGap);
+        console.log("state ", this.state);
 
-
-        const baseUrl = "https://yts.am/api/v2/list_movies.json?";
-        const page = 'page=' + this.state.pageStart;
-        const sortParam = "&sort_by=" + this.state.currentSortParam;
-        const orderParam = "&order_by=" + this.state.order;
-        const rate = this.state.imdbMin !== "" ? "&minimum_rating=" + this.state.imdbMin : "";
-        const title = this.state.movieTitle !== "" ? "&query_term=" + this.state.movieTitle : "";
-        let allGenres = "";
-        if (this.state.currentGenre.length !== 0) {
-            this.state.currentGenre.forEach((genre) => {
-                allGenres = allGenres.concat("&genre=" + genre);
-            })
-        }
-        let requestUrl = baseUrl + page + rate + sortParam + orderParam + allGenres + title;
-        console.log("requestUrl ", requestUrl);
-
-        this.setState({ isLoading: true }, () => {
-            axios.get(requestUrl)
-                .then((response) => {          
-                    // Creates a massaged array of user data
-        // console.log("response ", response.data.data.movies[0]);
-
-                    const nextMovPack = response.data.data.movies.map((mov) => {
-                        if (this.state.yearGap.min <= mov.year && mov.year <= this.state.yearGap.max) {
-                            return ({
-                                poster: mov.large_cover_image,
-                                country: mov.language,
-                                year: mov.year,
-                                id: mov.id,
-                                name: mov.title_english,
-                                genre: mov.genres
-                            })
+        if (this.state.hasMore) {
+            const baseUrl = "https://yts.am/api/v2/list_movies.json?";
+            const page = 'page=' + this.state.pageStart;
+            const sortParam = "&sort_by=" + this.state.currentSortParam;
+            const orderParam = "&order_by=" + this.state.order;
+            const rate = this.state.imdbMin !== "" ? "&minimum_rating=" + this.state.imdbMin : "";
+            const title = this.state.movieTitle !== "" ? "&query_term=" + this.state.movieTitle : "";
+            let allGenres = "";
+            if (this.state.currentGenre.length !== 0) {
+                this.state.currentGenre.forEach((genre) => {
+                    allGenres = allGenres.concat("&genre=" + genre);
+                })
+            }
+            let requestUrl = baseUrl + page + rate + sortParam + orderParam + allGenres + title;
+            let yearGap = this.state.yearGap;
+            if (this.state.yearGap.min === "" && this.state.yearGap.max === "") {
+                yearGap = {
+                    min: 1910,
+                    max: 2018
+                }
+            } else if (this.state.yearGap.min === "" || this.state.yearGap.max === "") {
+                yearGap.min = this.state.yearGap.min === "" ? this.state.yearGap.max : this.state.yearGap.min;
+                yearGap.max = this.state.yearGap.max === "" ? this.state.yearGap.min : this.state.yearGap.max;
+            }
+            console.log("requestUrl ", requestUrl);
+            this.setState({ isLoading: true }, () => {
+                axios.get(requestUrl)
+                    .then((response) => {          
+                        let nextMovPack = response.data.data.movies.map((mov) => {
+                            if (yearGap.min <= mov.year && mov.year <= yearGap.max) {
+                                return ({
+                                    poster: mov.large_cover_image !== "" ? mov.large_cover_image : mov.medium_cover_image !== "" ? mov.medium_cover_image : mov.small_cover_image,
+                                    country: mov.language,
+                                    year: mov.year,
+                                    id: mov.id,
+                                    name: mov.title_english,
+                                    genre: mov.genres
+                                })
+                            } else {
+                                return false
+                            }
+                        });
+                        let filteredMovies = nextMovPack.filter(function(el) { return el; });
+                        let newPage = this.state.pageStart + 1;
+                        this.setState({
+                            hasMore: (this.state.movies.length + filteredMovies.length < response.data.data.movie_count),
+                            isLoading: false,
+                            movies: [
+                            ...this.state.movies,
+                            ...filteredMovies,
+                            ],
+                            pageStart: newPage
+                        });
+                        if (filteredMovies.length < 20 && (this.state.movies.length % 4 !== 0)) {
+                            this.loadItems();
                         }
-                    });
-                    let filteredMovies = nextMovPack.filter(function(el) { return el; });
-                    let newPage = this.state.pageStart + 1;
-                    // Merges the next users into our existing users
-                    this.setState({
-                        // Note: Depending on the API you're using, this value may be
-                        // returned as part of the payload to indicate that there is no
-                        // additional data to be loaded
-                        hasMore: (this.state.movies.length < response.data.data.movie_count),
-                        isLoading: false,
-                        movies: [
-                        ...this.state.movies,
-                        ...filteredMovies,
-                        ],
-                        pageStart: newPage
-                    });
-        console.log("load mov ", this.state.movies);
-
-                })
-                .catch((err) => {
-                this.setState({
-                    error: err.message,
-                    isLoading: false,
-                    });
-                })
+                    })
+                    .catch((err) => {
+                        this.setState({
+                            error: err.message,
+                            isLoading: false,
+                        });
+                    })
             });
+        }
     }
 
     recordSearchTitle(e){
@@ -426,11 +416,6 @@ class Library extends Component {
     }
 
     render() {
-        const marks = {
-            1910: '1910',
-            2018: '2018'
-        };
-
         return (
             <div className="library-container">
                 <h1>
@@ -450,16 +435,15 @@ class Library extends Component {
                         </Button>       
                     </div>
                     <div className="year-select">
-                        <FormattedMessage id="library.year" defaultMessage="Year from" />
-                        <Input placeholder='From...' onChange={this.changeMinYear}/>
-                        <Input placeholder='To...' onChange={this.changeMaxYear}/>
-                        <Button animated color='purple' onClick={() => this.sendYear()}>
+                        <FormattedMessage id="library.year" defaultMessage="Select year" />
+                        <Input pattern="[0-9]*" placeholder={this.props.componentState.intl.locale === 'en' ? 'From...' : 'С...'} onChange={this.changeMinYear} style={{margin: "0 5px"}} value={this.state.yearGap.min}/>
+                        <Input pattern="[0-9]*" placeholder={this.props.componentState.intl.locale === 'en' ? 'To...' : 'По...'} onChange={this.changeMaxYear} value={this.state.yearGap.max}/>
+                        <Button  animated color='purple' onClick={() => this.sendYear()} style={{marginLeft: "5px"}}>
                             <Button.Content visible>{this.props.componentState.intl.locale === 'en' ? "Go" : "Вперед"}</Button.Content>
                             <Button.Content hidden>
                                 <Icon name='arrow right' />
                             </Button.Content>
                         </Button>
-                        {/* <Range min={1910} max={2018} defaultValue={[1910, 2018]} marks={marks} onAfterChange={(event) => this.changeYearRange(event)}/> */}
                     </div>
                 </div>
                 <div className="control column">
@@ -477,9 +461,9 @@ class Library extends Component {
                 <div className="movies-all container">
                     <div className="row">
                     {
-                        this.state.movies.map((mov) => {
+                        this.state.movies.map((mov, i) => {
                             return(
-                                <div className="movie-item col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12" key={mov.id}>
+                                <div className={this.state.movies.length < 3 ? 'movie-item col-sm-6' : "movie-item col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12"} key={i}>
                                     <div className="poster">
                                         <img src={mov.poster} alt={mov.name}/>
                                         <a href={"/movie/" + mov.id}>
@@ -526,12 +510,4 @@ const mapStateToProps = state => {
     };
   };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        updateIntl: obj => dispatch(updateIntl(obj))
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Library);
-
-// export default connect()(Library);
+export default connect(mapStateToProps, null)(Library);

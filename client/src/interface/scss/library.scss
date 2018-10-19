@@ -2,6 +2,7 @@
     font-size: calc(16px + 6 * ((100vw - 320px) / 680));
     margin: 15px auto;
     padding: 0 10px;
+    min-height: calc(100vh - 120px);
     box-sizing: border-box;
     font-family: 'Open Sans', sans-serif;
 
@@ -65,10 +66,10 @@
             }
         }
 
-        // .year-select {
-        //     width: 200px;
-        //     height: 50px;
-        // }
+        .year-select {
+            display: flex;
+            align-items: center;
+        }
 
         .input-range {
             width: 50%;
@@ -206,11 +207,31 @@
 
 @media screen and (max-width: 769px) {
     .library-container {
+
+        .control {
+            align-items: flex-end;
+        }
+
         .control.need-space {
             .search-input {
                 button {
                     height: 30px;
                     padding: 5px;
+                    margin-right: 0;
+                    font-size: 14px;
+                }
+            }
+
+            .year-select {
+                // margin:  20px auto 0px;
+                padding-right: 16px;
+                height: 30px;
+                align-items: flex-end;
+
+                button {
+                    height: 30px;
+                    padding: 5px;
+                    margin-right: 0;
                     font-size: 14px;
                 }
             }
@@ -253,6 +274,13 @@
                 margin:  20px auto 0px;
                 padding-right: 16px;
                 height: 20px;
+
+                button {
+                    height: 30px;
+                    padding: 5px;
+                    margin-right: 0;
+                    font-size: 14px;
+                }
             }
         }
         

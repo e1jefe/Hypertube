@@ -157,7 +157,8 @@
                 border-radius: 3px;
         padding: 5px; }
         .single-movie-container .comments .all-comments .my-row .avatar {
-          width: 10%; }
+          width: 10%;
+          cursor: pointer; }
           .single-movie-container .comments .all-comments .my-row .avatar img {
             display: block;
             width: 100%; }
@@ -178,7 +179,8 @@
                     align-items: center; }
             .single-movie-container .comments .all-comments .my-row .details .info .author {
               font-weight: bold;
-              color: #7F8C8D; }
+              color: #7F8C8D;
+              cursor: pointer; }
             .single-movie-container .comments .all-comments .my-row .details .info .time-stamp {
               font-weight: 300;
               color: #BDC3C7; }
@@ -195,6 +197,8 @@
             -ms-flex-pack: start;
                 justify-content: flex-start;
         background-color: #eadcef; }
+        .single-movie-container .comments .all-comments .my-row.my-comment .avatar {
+          cursor: default; }
         .single-movie-container .comments .all-comments .my-row.my-comment .details .info {
           -webkit-box-orient: horizontal;
           -webkit-box-direction: reverse;
@@ -217,4 +221,6 @@
       display: block;
       width: 100%; }
   .single-movie-container .comments h2 {
-    font-size: 16px; } }
+    font-size: 16px; }
+  .modal {
+    overflow: visible; } }

@@ -3,7 +3,7 @@ import '../interface/style/singleMovie.css';
 import MyPlayer from './MyPlayer';
 import Comments from './Comments.jsx';
 import axios from 'axios';
-
+import { FormattedMessage } from 'react-intl';
 
 class SingleMovie extends Component {
     constructor(props) {
@@ -65,7 +65,7 @@ class SingleMovie extends Component {
                     <div className="description-txt">
                         <div className="my-row">
                             <div className="characteristic">
-                                Year:
+                                <FormattedMessage id="movie.year" defaultMessage="Year: " />
                             </div>
                             <div className="txt">
                                 {this.state.data.year}
@@ -73,7 +73,7 @@ class SingleMovie extends Component {
                         </div>
                         <div className="my-row">
                             <div className="characteristic">
-                                Length:
+                                <FormattedMessage id="movie.length" defaultMessage="Length: " />
                             </div>
                             <div className="txt">
                                 {this.state.data.runtime}
@@ -81,7 +81,8 @@ class SingleMovie extends Component {
                         </div>
                         <div className="my-row">
                             <div className="characteristic">
-                                IMDb grade:
+                                <FormattedMessage id="movie.imdb" defaultMessage="IMDb grade: " />
+                                
                             </div>
                             <div className="txt">
                                 {this.state.data.rating} 
@@ -89,7 +90,7 @@ class SingleMovie extends Component {
                         </div>
                         <div className="my-row">
                             <div className="characteristic">
-                                Country:
+                                <FormattedMessage id="movie.country" defaultMessage="Country: " />
                             </div>
                             <div className="txt">
                                 {this.state.data.country}
@@ -97,7 +98,7 @@ class SingleMovie extends Component {
                         </div>
                         <div className="my-row">
                             <div className="characteristic">
-                                Director:
+                                <FormattedMessage id="movie.director" defaultMessage="Director: " />
                             </div>
                             <div className="txt">
                                 {this.state.data.director}
@@ -105,7 +106,7 @@ class SingleMovie extends Component {
                         </div>
                         <div className="my-row">
                             <div className="characteristic">
-                                Stars:
+                                <FormattedMessage id="movie.stars" defaultMessage="Stars: " />
                             </div>
                             <div className="txt">
                                 {this.state.data.actors}
@@ -113,7 +114,7 @@ class SingleMovie extends Component {
                         </div>
                         <div className="my-row">
                             <div className="characteristic">
-                                Summary:
+                                <FormattedMessage id="movie.summary" defaultMessage="Summary: " />
                             </div>
                             <div className="txt">
                                 {this.state.data.plot}

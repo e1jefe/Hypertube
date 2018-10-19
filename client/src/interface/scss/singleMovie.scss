@@ -168,6 +168,7 @@
 
                 .avatar {
                     width: 10%;
+                    cursor: pointer;
 
                     img {
                         display: block;
@@ -186,6 +187,7 @@
                         .author {
                             font-weight: bold;
                             color: #7F8C8D;
+                            cursor: pointer;
                         }
 
                         .time-stamp {
@@ -204,6 +206,10 @@
                 flex-direction: row-reverse;
                 justify-content: flex-start;
                 background-color: #eadcef;
+
+                .avatar {
+                    cursor: default;
+                }
 
                 .details {
 
@@ -247,5 +253,9 @@
                 font-size: 16px;
             }
         }
+    }
+    
+    .modal {
+        overflow: visible;
     }
 }
