@@ -85,23 +85,27 @@ class CabinetController extends Controller
 
     public function watchedFilmsUsersReturn(){
         $user = auth()->guard('api')->user();
-        $filmsArray = WatchedFilmsUser::where('id_user', $user->id)->get();
+        $filmsArray = WatchedFilmsUser::where('id_user', $user->id)->orderBy('updated_at', 'desc')->get();
         return response()->json($filmsArray);
     }
 
     public function watchedFilmsUsersCreate(Request $request){
-        $film = WatchedFilmsUser::where('id_film', $request->id_film)->first();
+        if(empty($request->id_film))
+            die;
+        $filmExist = WatchedFilmsUser::where('id_film', $request->id_film)->first();
         $user = auth()->guard('api')->user();
-        if(!empty($film)){
-            die;
+        $filmsArray = WatchedFilmsUser::where('id_user', $user->id)->get();
+        if(!empty($filmExist)){
+            WatchedFilmsUser::where('id_film', $request->id_film)->update(['updated_at' => date("Y-m-d H:i:s")]);
+        }else{
+            if (count($filmsArray) === 10)
+                WatchedFilmsUser::where('id_user', $user->id)->orderBy('updated_at', 'asc')->first()->delete();
+            $filmNew = new WatchedFilmsUser;
+            $filmNew->id_film = $request->id_film;
+            $filmNew->id_user = $user->id;
+            $filmNew->save();
         }
-        if(empty($request->id_film)){
-            die;
-        }
-        $films = new WatchedFilmsUser;
-        $films->id_film = $request->id_film;
-        $films->id_user = $user->id;
-        $films->save();
-        return response()->json($films);
+        $filmNew = true;
+        return response()->json($filmNew);
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -9,15 +8,12 @@ use App\User;
 use App\Notifications\SignupActivate;
 use Avatar;
 use Storage;
-
 class AuthController extends Controller
 {
     /**
      * Register and create user
-     * @param  (prinimaet) [string] username
+     * @param  (prinimaet) [string] name
      * @param  [string] email
-     * @param  [string] firstname
-     * @param  [string] lastname
      * @param  [string] password
      * @param  [string] password_confirmation
      * @return (prinimaet)[string] message
@@ -26,16 +22,12 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'firstname' => 'required|string',
-            'lastname' => 'required|string',
             'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|confirmed|min:7|regex:/^(?=.*[a-z])(?=.*\d)(?:[^A-Z\n\r]*[A-Z]){1}[^A-Z\n\r]*$/'
+            'password' => 'required|string|confirmed'
         ]);
         $user = new User([
             'name' => $request->name,
             'email' => $request->email,
-            'firstname' => $request->firstname,
-            'lastname' => $request->lastname,
             'password' => bcrypt($request->password),
             'activation_token' => str_random(60)
         ]);
@@ -47,7 +39,6 @@ class AuthController extends Controller
             'message' => 'Successfully created user!'
         ], 201);
     }
-
     /**
      * Login user and create token
      * @param  (prinimaet)[string] email
@@ -67,7 +58,6 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
         $credentials['active'] = 1;
         $credentials['deleted_at'] = null;
-
         if(!Auth::attempt($credentials))
             return response()->json([
                 'message' => 'Unauthorized'
@@ -86,7 +76,6 @@ class AuthController extends Controller
             )->toDateTimeString()
         ]);
     }
-
     /**
      * Logout user and remove token
      * @return (otdaet)[string] message
@@ -98,7 +87,6 @@ class AuthController extends Controller
             'message' => 'Successfully logged out'
         ]);
     }
-
     /**
      * Get info about authenticated User
      * @return [json] user object
@@ -119,7 +107,6 @@ class AuthController extends Controller
         $user->active = true;
         $user->activation_token = '';
         $user->save();
-
         return $user;
     }
 }

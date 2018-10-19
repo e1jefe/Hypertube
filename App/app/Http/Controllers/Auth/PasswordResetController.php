@@ -73,7 +73,7 @@ class PasswordResetController extends Controller
     {
         $request->validate([
             'email' => 'required|string|email',
-            'password' => 'required|string|confirmed|min:7|regex:/^(?=.*[a-z])(?=.*\d)(?:[^A-Z\n\r]*[A-Z]){1}[^A-Z\n\r]*$/',
+            'password' => 'required|string|confirmed',
             'token' => 'required|string'
         ]);
         $passwordReset = PasswordReset::where([
