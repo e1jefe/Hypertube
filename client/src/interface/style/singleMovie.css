@@ -31,11 +31,13 @@
       vertical-align: top;
       font-size: -webkit-calc(16px + 6 * ((100vw - 320px) / 680));
       font-size: calc(16px + 6 * ((100vw - 320px) / 680)); }
-      .single-movie-container .description .description-txt .my-row div {
-        display: inline-block; }
-      .single-movie-container .description .description-txt .my-row .characteristic {
-        font-weight: bold;
-        margin-right: 5px; }
+      .single-movie-container .description .description-txt .my-row {
+        margin-top: 10px; }
+        .single-movie-container .description .description-txt .my-row div {
+          display: inline-block; }
+        .single-movie-container .description .description-txt .my-row .characteristic {
+          font-weight: bold;
+          margin-right: 5px; }
   .single-movie-container .player {
     width: 100%;
     height: 400px;
@@ -54,6 +56,7 @@
     .single-movie-container .comments .comment-action-box {
       width: 100%;
       padding: 0.4em;
+      margin-top: 10px;
       position: -webkit-sticky;
       position: sticky;
       top: 0;

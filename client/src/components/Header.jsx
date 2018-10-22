@@ -59,6 +59,7 @@ class Header extends Component {
                     'movie.director': 'Режиссер: ',
                     'movie.stars': 'Актеры: ',
                     'movie.summary': 'Описание: ',
+                    'movie.quality': 'Качество: ',
                     'footer.msg': 'Запилили: ',
                 }, this.props.componentState.intl.mesagies),
             });

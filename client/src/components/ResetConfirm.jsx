@@ -23,13 +23,14 @@ class Reset extends Component {
         this.setNewPass = this.setNewPass.bind(this);
         this.onChange = this.onChange.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.redirectSignin = this.redirectSignin.bind(this);
     }
 
     componentDidMount() {
         if (localStorage.getItem('token') !== null) {
             this.props.history.push('/');
         }
-        
+        console.log("token", this.props.match.params.token);
     }
 
     changeLanguage(str) {
@@ -83,6 +84,7 @@ class Reset extends Component {
         const data = {
             email: this.state.email,
             password: this.state.newPass,
+            password_confirmation: this.state.newPass,
             token: this.props.match.params.token
         };
         this.setState({
@@ -97,7 +99,7 @@ class Reset extends Component {
             }
         }).then((res) => res.json())
         .then((responce) => {
-            if (responce.message === "Unauthorized") {
+            if (responce.errors !== undefined) {
                 if (this.state.lang === 'en') {
                     this.setState({
                         errors: "Something wrong with email",
@@ -105,7 +107,7 @@ class Reset extends Component {
                     });
                 } else {
                     this.setState({
-                        errors: "Проверьте email",
+                        errors: "Проверьте email или пароль",
                         processing: false
                     });
                 }
@@ -127,7 +129,12 @@ class Reset extends Component {
     closeModal() {
         this.setState({
             showModal: false
-        })
+        });
+        this.redirectSignin();
+    }
+
+    redirectSignin() {
+        this.props.history.push('/signin');
     }
 
     render() {
@@ -136,7 +143,7 @@ class Reset extends Component {
                 <header className="main-head">
                     <div className="main-head-logo">
                         <NavLink to="signin">
-                            <img src="./pics/logo.png" alt="our logo" />
+                            <img src="../pics/logo.png" alt="our logo" />
                             <p>hypertube</p>
                         </NavLink>
                     </div>
@@ -154,9 +161,9 @@ class Reset extends Component {
                         <p className="main-head-btn-description">
                             <FormattedMessage id="reset.account" defaultMessage="Already registered?" />
                         </p>
-                        <NavLink role="button" to="signin" className="main-head-btn">
+                        <button className="main-head-btn" onClick={this.redirectSignin}>
                             <FormattedMessage id="reset.signin" defaultMessage="Sign in" />
-                        </NavLink>
+                        </button>
                     </div>
                 </header>
                 <section className="reset-page-content">
@@ -164,7 +171,7 @@ class Reset extends Component {
                         <div className="reset-form">
                             <form onSubmit={this.resetRequest}>
                                 <div className="my-row">
-                                    <img src="./pics/madagascar.png" alt="flat movie icons"/>
+                                    <img src="../pics/madagascar.png" alt="flat movie icons"/>
                                 </div>
                                 <div className="form-foreword">
                                     <FormattedMessage id="reset.title" defaultMessage="Reset password" />
@@ -177,7 +184,7 @@ class Reset extends Component {
                                         </label>
                                     </div>
                                 </div>
-                                <div>
+                                <div className="my-row">
                                     <div className="input-holder tooltip-castom">
                                         <span className="tooltiptext pass">
                                             {this.state.lang === 'en' ? "Minimum 7 characters, at least 1 number, upper and lovercase letter" : "Минимум 7 символов, хотя бы 1 цифра, большая и маленькая буква" }</span>
@@ -189,7 +196,7 @@ class Reset extends Component {
                                 </div>
                                 <div className="my-row">
                                     <div className="input-holder form-button">
-                                        <button className="form-btn-submit">
+                                        <button className="form-btn-submit" onClick={this.setNewPass}>
                                             <FormattedMessage id="reset.btn" defaultMessage="Reset" />
                                         </button>
                                     </div>

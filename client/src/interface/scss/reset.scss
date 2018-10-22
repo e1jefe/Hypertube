@@ -69,7 +69,8 @@ button {
 		.main-head-logo {
 			width: 20%;
 
-			a {
+			a,
+			button {
 				@include vertical-center;
 				justify-content: space-evenly;
 				text-decoration: none;

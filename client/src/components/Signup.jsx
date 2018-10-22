@@ -71,7 +71,6 @@ class Signup extends Component {
                     'reset.title': 'Восстановить пароль',
                     'reset.btn': 'Восстановить',
                 },
-                // messages: this.props.componentState.intl.messages
             });
         } else {
             this.props.updateIntl({
@@ -337,7 +336,7 @@ class Signup extends Component {
                             {this.state.lang === 'en' ? "We sent you an activation link to given email." : "Мы отправили ссылку для активации аккаунта на указаный email."}
                         </p>
                         <p>
-                            {this.state.lang === 'en' ? "Please, follow it to activate your account." : "Пожалуйста, перейдите по ней"}
+                            {this.state.lang === 'en' ? "Please, follow it to activate your account." : "Пожалуйста, перейдите по ней."}
                         </p>
                         </Modal.Description>
                     </Modal.Content>

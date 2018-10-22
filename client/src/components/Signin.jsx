@@ -5,9 +5,7 @@ import { connect } from 'react-redux';
 import FacebookAuth from 'react-facebook-auth';
 import { FormattedMessage } from 'react-intl';
 import { updateIntl } from 'react-intl-redux';
-
-// ACTIONS from redux reduser
-import { recordToken } from "../redux/actions";
+import { Button, Header, Image, Modal, Dimmer, Loader } from 'semantic-ui-react';
 
 const MyFacebookButton = ({ onClick }) => (
     <button onClick={onClick}>
@@ -23,18 +21,27 @@ class Signin extends Component {
             email: "",
             pass: "",
             errors: "",
-            lang: props.componentState.intl.locale
+            lang: props.componentState.intl.locale,
+            showModal: false,
+            processing: false
         };
         this.changeLanguage = this.changeLanguage.bind(this);
         this.onChange = this.onChange.bind(this);        
         this.signinRequest = this.signinRequest.bind(this);
         this.signinFacebook = this.signinFacebook.bind(this);
+        this.closeModal = this.closeModal.bind(this);
     }
 
     componentDidMount() {
         if (localStorage.getItem('token') !== null) {
             this.props.history.push('/');
         }
+    }
+
+    closeModal() {
+        this.setState({
+            showModal: false
+        });
     }
 
     changeLanguage(str) {
@@ -100,6 +107,10 @@ class Signin extends Component {
             email: this.state.email,
             password: this.state.pass
         };
+        this.setState({
+            processing: true,
+            errors: []
+        });
         fetch('http://127.0.0.1:8000/api/auth/login', {
             method: 'POST',
             body: JSON.stringify(data),
@@ -120,7 +131,6 @@ class Signin extends Component {
                     });
                 }
             } else {
-                this.props.recordToken(responce.access_token);
                 localStorage.setItem('token', responce.access_token);
                 this.props.history.push('/');
             }
@@ -252,6 +262,43 @@ class Signin extends Component {
                         </div>
                     </div>
                 </section>
+                <div>
+                    <Modal dimmer="blurring" open={this.state.showModal} onClose={this.closeModal}>
+                    <Modal.Header>
+                        {this.state.lang === 'en' ? "Success" : "Успех"}
+                    </Modal.Header>
+                    <Modal.Content image>
+                        <Image wrapped size={window.innerWidth < 416 ? 'small' : 'medium'} src='./pics/projector-camera.png' />
+                        <Modal.Description>
+                        <Header>
+                            {this.state.lang === 'en' ? "Your account was registered" : "Ваш аккаунт зарегестрирован"}
+                        </Header>
+                        <p>
+                            {this.state.lang === 'en' ? "We sent you an activation link to given email." : "Мы отправили ссылку для активации аккаунта на указаный email."}
+                        </p>
+                        <p>
+                            {this.state.lang === 'en' ? "Please, follow it to activate your account." : "Пожалуйста, перейдите по ней"}
+                        </p>
+                        </Modal.Description>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button
+                            positive
+                            icon='checkmark'
+                            labelPosition='right'
+                            content={this.state.lang === 'en' ? "Got it" : "Понял"}
+                            onClick={this.closeModal}
+                        />
+                    </Modal.Actions>
+                    </Modal>
+                </div>
+                <div>
+                    <Dimmer active={this.state.processing}>
+                        <Loader active>
+                            {this.state.lang === 'en' ? "(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ Baiking coockies" : "(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ Стелим красную ковровую дорожку"}
+                        </Loader>
+                    </Dimmer>
+                </div>
             </main>
         )
     }
@@ -265,7 +312,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        recordToken: str => dispatch(recordToken(str)),
         updateIntl: obj => dispatch(updateIntl(obj))
     };
 };

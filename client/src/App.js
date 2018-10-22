@@ -8,6 +8,7 @@ import Main from './Main';
 import { connect } from 'react-redux';
 import Reset from './components/Reset';
 import ResetConfirm from './components/ResetConfirm';
+import SignupConfirm from './components/SignupConfirm';
 import { IntlProvider } from 'react-intl';
 
 class App extends Component {
@@ -18,6 +19,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/signin" component={Signin}/>
             <Route path="/signup" component={Signup}/>
+            <Route path="/signupConfirm/:token" component={SignupConfirm}/>
             <Route path="/resetpass" component={Reset}/>
             <Route path="/resetConfirm/:token" component={ResetConfirm}/>
             <Route path="/" component={Main}/>

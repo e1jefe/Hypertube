@@ -49,7 +49,8 @@ button {
     padding: 0.3em; }
     .reset-page .main-head .main-head-logo {
       width: 20%; }
-      .reset-page .main-head .main-head-logo a {
+      .reset-page .main-head .main-head-logo a,
+      .reset-page .main-head .main-head-logo button {
         -webkit-box-align: center;
         -webkit-align-items: center;
             -ms-flex-align: center;
@@ -64,10 +65,12 @@ button {
                 justify-content: space-evenly;
         text-decoration: none;
         color: inherit; }
-        .reset-page .main-head .main-head-logo a img {
+        .reset-page .main-head .main-head-logo a img,
+        .reset-page .main-head .main-head-logo button img {
           display: inline-block;
           width: 25%; }
-        .reset-page .main-head .main-head-logo a p {
+        .reset-page .main-head .main-head-logo a p,
+        .reset-page .main-head .main-head-logo button p {
           display: inline-block;
           margin: 0; }
     .reset-page .main-head .language-holder {

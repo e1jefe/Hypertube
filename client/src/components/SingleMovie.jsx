@@ -28,6 +28,8 @@ class SingleMovie extends Component {
     }
 
     componentDidMount() {
+        // console.log("props", this.props);
+
         let self = this;
         // axios.get('http://localhost:3001/youtube/' + this.props.match.params.id)
         //     .then((response) => {
@@ -61,7 +63,7 @@ class SingleMovie extends Component {
               .catch(function (error) {
                 // handle error
                 console.log(error);
-              })
+              });
     }
 
     render() {
@@ -136,7 +138,7 @@ class SingleMovie extends Component {
                         </div>
                         <div className="my-row">
                             <div className="characteristic">
-                                Quality:
+                                <FormattedMessage id="movie.quality" defaultMessage="Quality: " />
                             </div>
                             <Button color='purple' id="720" onClick={() => this.changeQuality(720)}>720p</Button>
                             <Button color='purple' id="1080" onClick={() => this.changeQuality(1080)}>1080p</Button>

@@ -206,6 +206,7 @@ class Library extends Component {
         this.sendYear = this.sendYear.bind(this);
         this.changeMinYear = this.changeMinYear.bind(this);
         this.changeMaxYear = this.changeMaxYear.bind(this);
+        this.pushMovie = this.pushMovie.bind(this);
 
         window.onscroll = () => {
             const {
@@ -330,7 +331,7 @@ class Library extends Component {
 
     loadItems = () => {
         // console.log("yearGap ", this.state.yearGap);
-        console.log("state ", this.state);
+        // console.log("state ", this.state);
 
         if (this.state.hasMore) {
             const baseUrl = "https://yts.am/api/v2/list_movies.json?";
@@ -359,34 +360,42 @@ class Library extends Component {
             console.log("requestUrl ", requestUrl);
             this.setState({ isLoading: true }, () => {
                 axios.get(requestUrl)
-                    .then((response) => {          
-                        let nextMovPack = response.data.data.movies.map((mov) => {
-                            if (yearGap.min <= mov.year && mov.year <= yearGap.max) {
-                                return ({
-                                    poster: mov.large_cover_image !== "" ? mov.large_cover_image : mov.medium_cover_image !== "" ? mov.medium_cover_image : mov.small_cover_image,
-                                    country: mov.language,
-                                    year: mov.year,
-                                    id: mov.id,
-                                    name: mov.title_english,
-                                    genre: mov.genres
-                                })
-                            } else {
-                                return false
+                    .then((response) => {
+            // console.log("response ", response);
+                        if (response.data.data.movie_count !== 0 && response.data.data.hasOwnProperty('movies')) {
+                            let nextMovPack = response.data.data.movies.map((mov) => {
+                                if (yearGap.min <= mov.year && mov.year <= yearGap.max) {
+                                    return ({
+                                        poster: mov.large_cover_image !== "" ? mov.large_cover_image : mov.medium_cover_image !== "" ? mov.medium_cover_image : mov.small_cover_image,
+                                        country: mov.language,
+                                        year: mov.year,
+                                        id: mov.id,
+                                        name: mov.title_english,
+                                        genre: mov.genres
+                                    })
+                                } else {
+                                    return false
+                                }
+                            });
+                            let filteredMovies = nextMovPack.filter(function(el) { return el; });
+                            let newPage = this.state.pageStart + 1;
+                            this.setState({
+                                hasMore: (this.state.movies.length + filteredMovies.length < response.data.data.movie_count),
+                                isLoading: false,
+                                movies: [
+                                ...this.state.movies,
+                                ...filteredMovies,
+                                ],
+                                pageStart: newPage
+                            });
+                            if (filteredMovies.length < 20 && (this.state.movies.length % 4 !== 0)) {
+                                this.loadItems();
                             }
-                        });
-                        let filteredMovies = nextMovPack.filter(function(el) { return el; });
-                        let newPage = this.state.pageStart + 1;
-                        this.setState({
-                            hasMore: (this.state.movies.length + filteredMovies.length < response.data.data.movie_count),
-                            isLoading: false,
-                            movies: [
-                            ...this.state.movies,
-                            ...filteredMovies,
-                            ],
-                            pageStart: newPage
-                        });
-                        if (filteredMovies.length < 20 && (this.state.movies.length % 4 !== 0)) {
-                            this.loadItems();
+                        } else {
+                            this.setState({
+                                hasMore: false,
+                                isLoading: false
+                            })
                         }
                     })
                     .catch((err) => {
@@ -415,7 +424,15 @@ class Library extends Component {
         }, () => this.loadItems());
     }
 
+    pushMovie(e){
+        e.preventDefault();
+        const movId = e.target.getAttribute('movnbr');
+        this.props.history.push('/movie/' + movId);
+    }
+
     render() {
+        // console.log("lang lib", this.props.componentState.intl.locale);
+
         return (
             <div className="library-container">
                 <h1>
@@ -427,7 +444,7 @@ class Library extends Component {
                             <i className="fas fa-search"></i>
                         </label>
                         <input type="text" placeholder={this.props.componentState.intl.locale === 'en' ? "Search" : "Поиск"} onChange={this.recordSearchTitle}/>
-                        <Button animated color='purple' onClick={() => this.sendMovTitle()}>
+                        <Button animated color='purple' onClick={() => this.sendMovTitle()} disabled={this.state.movieTitle.length === 0}>
                             <Button.Content visible>{this.props.componentState.intl.locale === 'en' ? "Go" : "Вперед"}</Button.Content>
                             <Button.Content hidden>
                                 <Icon name='arrow right' />
@@ -466,11 +483,11 @@ class Library extends Component {
                                 <div className={this.state.movies.length < 3 ? 'movie-item col-sm-6' : "movie-item col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12"} key={i}>
                                     <div className="poster">
                                         <img src={mov.poster} alt={mov.name}/>
-                                        <a href={"/movie/" + mov.id}>
+                                        <button movnbr={mov.id} onClick={this.pushMovie}>
                                             <p>
                                                 <i className="fas fa-play"></i>
                                             </p>
-                                        </a>
+                                        </button>
                                     </div>
                                     <div className="production">
                                         <p className="year">
@@ -481,9 +498,9 @@ class Library extends Component {
                                         </p>
                                     </div>
                                     <div className="title">
-                                        <a href={"/movie/" + mov.id}>
+                                        <button movnbr={mov.id} onClick={this.pushMovie}>
                                             {mov.name}
-                                        </a>
+                                        </button>
                                     </div>
                                     <div className="genre">
                                         {mov.genre !== undefined ? mov.genre.join(", ") : " "}
@@ -491,6 +508,20 @@ class Library extends Component {
                                 </div>
                             )
                         })
+                    }
+                    {
+                        this.state.movies.length === 0 && this.state.isLoading === false && this.props.componentState.intl.locale === 'en' &&
+                            <div style={{textAlign: "center"}}>
+                                ┐('～`)┌  No results
+                                <img src="./pics/no-results.png" alt="polar bear" style={{display: "block", width: "100%", marginTop: "5px"}}/>
+                            </div>
+                    }
+                    {
+                        this.state.movies.length === 0 && this.state.isLoading === false && this.props.componentState.intl.locale === 'ru' &&
+                            <div style={{textAlign: "center"}}>
+                                ┐('～`)┌  Нет результатов
+                                <img src="./pics/no-results.png" alt="polar bear" style={{display: "block", width: "100%", marginTop: "5px"}}/>
+                            </div>
                     }
                     {this.state.isLoading &&
                         <span style={{textAlign: 'center', width: '320px', display: "block", margin: "10px auto"}}>
