@@ -98,7 +98,7 @@ class CabinetController extends Controller
         if(!empty($filmExist)){
             WatchedFilmsUser::where('id_film', $request->id_film)->update(['updated_at' => date("Y-m-d H:i:s")]);
         }else{
-            if (count($filmsArray) === 10)
+            if (count($filmsArray) === 6)
                 WatchedFilmsUser::where('id_user', $user->id)->orderBy('updated_at', 'asc')->first()->delete();
             $filmNew = new WatchedFilmsUser;
             $filmNew->id_film = $request->id_film;

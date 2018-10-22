@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost:3306
--- Время создания: Окт 19 2018 г., 09:02
+-- Время создания: Окт 22 2018 г., 09:11
 -- Версия сервера: 5.7.22
 -- Версия PHP: 7.1.17
 
@@ -44,10 +44,10 @@ CREATE TABLE `comments_to_films` (
 --
 
 INSERT INTO `comments_to_films` (`id`, `id_film`, `id_user`, `comment`, `created_at`, `updated_at`) VALUES
-(1, '20', '17', 'djfdsfdsjkl', '2018-10-09 21:00:00', '2018-10-09 21:00:00'),
+(1, '20', '2', 'djfdsfdsjkl', '2018-10-09 21:00:00', '2018-10-09 21:00:00'),
 (2, '20', '17', 'djfdsfdsjkldasadsads', '2018-10-09 21:00:00', '2018-10-09 21:00:00'),
 (3, '20', '19', 'dsadsadsa]dsf[]dfs;\'.431123', '2018-10-09 21:00:00', '2018-10-09 21:00:00'),
-(4, '22', '17', 'dsadsadsa]dsf[]dfs;\'.431123dsaads', '2018-10-09 21:00:00', '2018-10-09 21:00:00'),
+(4, '11', '17', 'dsadsadsa]dsf[]dfs;\'.431123dsaads', '2018-10-09 21:00:00', '2018-10-09 21:00:00'),
 (7, '11', '1', 'adsdsadsadas', '2018-10-11 09:37:07', '2018-10-11 09:37:07');
 
 -- --------------------------------------------------------
@@ -67,7 +67,6 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(1, '2014_10_12_000000_create_users_table', 1),
 (2, '2014_10_12_100000_create_password_resets_table', 1),
 (3, '2016_06_01_000001_create_oauth_auth_codes_table', 1),
 (4, '2016_06_01_000002_create_oauth_access_tokens_table', 1),
@@ -75,7 +74,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (6, '2016_06_01_000004_create_oauth_clients_table', 1),
 (7, '2016_06_01_000005_create_oauth_personal_access_clients_table', 1),
 (8, '2018_10_10_132305_create_keep_comments_to_films_table', 1),
-(9, '2018_10_17_120145_watched_films_user', 2);
+(9, '2018_10_17_120145_watched_films_user', 2),
+(10, '2018_10_22_083807_create_users_watched_films_one_month', 3),
+(11, '2014_10_12_000000_create_users_table', 4);
 
 -- --------------------------------------------------------
 
@@ -100,6 +101,7 @@ CREATE TABLE `oauth_access_tokens` (
 --
 
 INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes`, `revoked`, `created_at`, `updated_at`, `expires_at`) VALUES
+('07d2db73cb4b2f178b07c4c54faad537600a217bffd9a1393e64b2a77ebe0c54e4e14ee26a05b800', 1, 3, 'Personal Access Token', '[]', 0, '2018-10-22 12:34:16', '2018-10-22 12:34:16', '2019-10-22 15:34:16'),
 ('22a7a062b798565643504de52c8ce9b62a85914526cdcffd9e9f7229a9dafadda5a9c52308691e02', 1, 1, 'Personal Access Token', '[]', 0, '2018-10-11 08:05:45', '2018-10-11 08:05:45', '2019-10-11 11:05:45');
 
 -- --------------------------------------------------------
@@ -203,12 +205,17 @@ CREATE TABLE `password_resets` (
 CREATE TABLE `users` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `firstname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `lastname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'avatar.png',
   `active` tinyint(1) NOT NULL DEFAULT '0',
   `activation_token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `provider` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `provider_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `access_token` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -219,8 +226,41 @@ CREATE TABLE `users` (
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `avatar`, `active`, `activation_token`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'valera', 'korotkovsergey96@gmail.com', NULL, '$2y$10$gLHWb2nFeRDnTvH8kjlhYeb2xyivMVKJAOZtJD1bOAyIxhJeaL5mO', 'avatar.png', 1, '', NULL, '2018-10-11 06:58:12', '2018-10-11 06:59:12', NULL);
+INSERT INTO `users` (`id`, `name`, `firstname`, `lastname`, `email`, `email_verified_at`, `password`, `active`, `activation_token`, `avatar`, `provider`, `provider_id`, `access_token`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'valera', 'vas9', 'pet9', 'korotkovsergey96@gmail.com', NULL, '$2y$10$hmYtukk/Xvu..M4fMn9XM.LS4CpoYhAJrOcAbNTEfT5Rl8QjajANK', 1, '', NULL, NULL, NULL, NULL, NULL, '2018-10-22 12:33:19', '2018-10-22 12:33:49', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `users_watched_films_one_months`
+--
+
+CREATE TABLE `users_watched_films_one_months` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `id_film` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `users_watched_films_one_months`
+--
+
+INSERT INTO `users_watched_films_one_months` (`id`, `id_film`, `created_at`, `updated_at`) VALUES
+(1, '25', '2018-10-22 06:53:24', '2018-10-22 06:53:24'),
+(2, '15', '2018-10-22 06:53:39', '2018-10-22 06:53:39'),
+(3, '48', '2018-10-22 06:53:42', '2018-10-22 06:53:42'),
+(4, '22', '2018-10-22 06:53:46', '2018-10-22 06:53:46'),
+(5, '10', '2018-10-22 06:53:49', '2018-10-22 06:53:49'),
+(6, '8', '2018-10-22 06:55:32', '2018-10-22 06:55:32'),
+(7, '13', '2018-10-22 06:55:35', '2018-09-05 06:55:35'),
+(8, '88', '2018-10-22 06:55:37', '2018-10-22 06:55:37'),
+(9, '101', '2018-10-22 06:55:40', '2018-09-04 06:55:40'),
+(10, '23', '2018-10-22 06:55:43', '2018-10-22 06:55:43'),
+(11, '534', '2018-10-22 06:55:45', '2018-10-22 06:55:45'),
+(12, '423', '2018-10-22 06:55:48', '2018-10-22 06:55:48'),
+(13, '86', '2018-10-22 06:55:53', '2018-10-22 06:55:53'),
+(14, '956', '2018-10-22 06:56:10', '2018-10-22 06:56:10');
 
 -- --------------------------------------------------------
 
@@ -247,14 +287,10 @@ INSERT INTO `watched_films_users` (`id`, `id_film`, `id_user`, `created_at`, `up
 (10, '12', '1', '2018-10-19 11:26:29', '2018-10-19 11:26:29'),
 (11, '48', '1', '2018-10-19 11:27:41', '2018-10-19 11:27:41'),
 (13, '15', '1', '2018-10-19 12:30:25', '2018-10-19 12:30:25'),
-(14, '8', '1', '2018-10-19 12:30:51', '2018-10-19 12:33:40'),
-(15, '19', '1', '2018-10-19 12:33:54', '2018-10-19 12:33:54'),
 (16, '11', '2', '2018-10-19 15:35:10', '2018-10-19 15:35:10'),
 (17, '24', '2', '2018-10-19 15:35:10', '2018-10-16 15:35:10'),
 (18, '19', '2', '2018-10-19 15:35:13', '2018-10-15 15:35:13'),
-(19, '18', '2', '2018-10-19 15:35:13', '2018-10-19 15:35:13'),
-(20, '13', '1', '2018-10-19 12:36:31', '2018-10-19 12:36:31'),
-(21, '25', '1', '2018-10-19 12:47:54', '2018-10-19 12:47:54');
+(19, '18', '2', '2018-10-19 15:35:13', '2018-10-19 15:35:13');
 
 --
 -- Индексы сохранённых таблиц
@@ -321,6 +357,12 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
+-- Индексы таблицы `users_watched_films_one_months`
+--
+ALTER TABLE `users_watched_films_one_months`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `watched_films_users`
 --
 ALTER TABLE `watched_films_users`
@@ -340,7 +382,7 @@ ALTER TABLE `comments_to_films`
 -- AUTO_INCREMENT для таблицы `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT для таблицы `oauth_clients`
@@ -365,6 +407,12 @@ ALTER TABLE `password_resets`
 --
 ALTER TABLE `users`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT для таблицы `users_watched_films_one_months`
+--
+ALTER TABLE `users_watched_films_one_months`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT для таблицы `watched_films_users`

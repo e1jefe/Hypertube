@@ -63,3 +63,16 @@ Route::group([
     Route::post('create-comment', 'CommentsController@createUserCommentToFilm');
     Route::post('delete-comment', 'CommentsController@deleteUserCommentToFilm');
 });
+
+Route::group([
+    'namespace' => 'Films',
+    'middleware' => 'api',
+    'prefix' => 'films'
+], function () {
+    Route::post('create-films', 'FilmsController@createFilmsWatchedUsers');
+    Route::post('return-films', 'FilmsController@returnFilmsMoreMonth');
+});
+
+header('Access-Control-Allow-Origin:  *');
+header('Access-Control-Allow-Methods:  POST, GET, OPTIONS, PUT, DELETE');
+header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Origin, Authorization, X-Requested-With');

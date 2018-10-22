@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Comments;
 
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
@@ -11,7 +12,11 @@ class CommentsController extends Controller
 {
     public function returnAllCommentsToFilm(Request $request){
         $commentsArray = CommentsToFilm::where('id_film', $request->id_film)->get();
-        return response()->json($commentsArray);
+        $user = CommentsToFilm::where('id_film', $request->id_film)
+        ->join('users', 'id_user', '=', 'users.id')
+            ->select('users.*', 'comment')
+            ->get();
+        return response()->json($user);
     }
 
     public function createUserCommentToFilm(Request $request){
