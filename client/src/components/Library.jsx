@@ -207,28 +207,41 @@ class Library extends Component {
         this.changeMinYear = this.changeMinYear.bind(this);
         this.changeMaxYear = this.changeMaxYear.bind(this);
         this.pushMovie = this.pushMovie.bind(this);
+        this.handleScroll = this.handleScroll.bind(this);
 
-        window.onscroll = () => {
-            const {
-                loadItems,
-                state: {
-                    isLoading,
-                    hasMore
-                },
-            } = this;
-            if ( isLoading || !hasMore) return;
-            // Checks that the page has scrolled to the bottom
-            if ( window.innerHeight + document.documentElement.scrollTop === document.documentElement.scrollHeight ) {
-                loadItems();
-            }
-        };
+        // window.onscroll = () => {
+        //     const {
+        //         loadItems,
+        //         state: {
+        //             isLoading,
+        //             hasMore
+        //         },
+        //     } = this;
+        //     if ( isLoading || !hasMore) return;
+        //     // Checks that the page has scrolled to the bottom
+        //     if ( window.innerHeight + document.documentElement.scrollTop === document.documentElement.scrollHeight ) {
+        //         loadItems();
+        //     }
+        // };
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll, false);
     }
 
     componentDidMount() {
         if (localStorage.getItem('token') === null) {
             this.props.history.push('/signin');
         }
+        window.addEventListener('scroll', this.handleScroll);
+        
         this.loadItems();
+    }
+
+    handleScroll() {
+        if ( window.innerHeight + document.documentElement.scrollTop === document.documentElement.scrollHeight ) {
+            this.loadItems();
+        }
     }
 
     changeMinYear(e, data) {
@@ -431,7 +444,7 @@ class Library extends Component {
     }
 
     render() {
-        // console.log("lang lib", this.props.componentState.intl.locale);
+        //console.log("lib", this.state.movies);
 
         return (
             <div className="library-container">

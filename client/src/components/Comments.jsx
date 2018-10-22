@@ -20,6 +20,27 @@ class Comments extends Component {
 
     componentDidMount() {
         console.log("loaded coment component");
+        const data = {
+            id_film: this.props.movid
+        };
+        const token = localStorage.getItem('token');
+        if (token !== null) {
+            fetch('http://127.0.0.1:8000/api/comments/all-comments', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers:{
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+                .then((res) => res.json())
+                .then((res) => {
+                    console.log("all coments");
+                })
+        } else {
+            this.props.history.push('/signin');
+        }
     }
 
     showOtherUser(event) {

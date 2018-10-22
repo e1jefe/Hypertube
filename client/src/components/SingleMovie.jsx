@@ -15,7 +15,8 @@ class SingleMovie extends Component {
             error: "",
             data: {},
             quality: null,
-            trailerUrl: null
+            trailerUrl: null,
+            userId: ""
         };
     }
 
@@ -28,8 +29,27 @@ class SingleMovie extends Component {
     }
 
     componentDidMount() {
-        // console.log("props", this.props);
+        // console.log("token", token);
 
+        const token = localStorage.getItem('token');
+        // console.log("token", token);
+        if (token !== null) {
+            fetch('http://127.0.0.1:8000/api/auth/user', {
+                method: 'GET',
+                headers:{
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+                .then((res) => res.json())
+                .then((res) => {
+                    this.setState({
+                        userId: res.id
+                    });
+                    // console.log("user info", res);
+                })
+        } else {
+            this.props.history.push('/signin');
+        }
         let self = this;
         // axios.get('http://localhost:3001/youtube/' + this.props.match.params.id)
         //     .then((response) => {
@@ -154,7 +174,7 @@ class SingleMovie extends Component {
                             :
                             null
                 }
-                <Comments/>
+                <Comments movid={this.props.match.params.id} master={this.state.userId}/>
             </section>
         );
     }
