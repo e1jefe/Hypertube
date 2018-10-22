@@ -14,7 +14,7 @@ class CommentsController extends Controller
         $commentsArray = CommentsToFilm::where('id_film', $request->id_film)->get();
         $user = CommentsToFilm::where('id_film', $request->id_film)
         ->join('users', 'id_user', '=', 'users.id')
-            ->select('users.*', 'comment')
+            ->select('comments_to_films.*', 'name', 'firstname', 'lastname', 'avatar')
             ->get();
         return response()->json($user);
     }
@@ -32,6 +32,10 @@ class CommentsController extends Controller
         $comment->id_user = $user->id;
         $comment->comment = $request->comment;
         $comment->save();
+        $comment->name = $user->name;
+        $comment->firtsname = $user->firstname;
+        $comment->lastname = $user->lastname;
+        $comment->avatar = $user->avatar;
         return response()->json($comment);
     }
 
