@@ -1,5 +1,17 @@
 .Cabinet {
   text-align: center;
 }
+.avatar{
+  width: 60%;
+}
+.infoUser{
+  text-align: center;
+  width: 15%;
+}
+.lastSeen{
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 
