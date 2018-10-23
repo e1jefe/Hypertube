@@ -123,14 +123,19 @@ class Signin extends Component {
             if (responce.message === "Unauthorized") {
                 if (this.state.lang === 'en') {
                     this.setState({
-                        errors: "Something wrong with email or password"
+                        errors: "Something wrong with email or password",
+                        processing: false
                     });
                 } else {
                     this.setState({
-                        errors: "Проверьте email или пароль"
+                        errors: "Проверьте email или пароль",
+                        processing: false
                     });
                 }
             } else {
+                this.setState({
+                    processing: false
+                })
                 localStorage.setItem('token', responce.access_token);
                 this.props.history.push('/');
             }

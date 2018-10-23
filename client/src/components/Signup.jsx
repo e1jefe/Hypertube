@@ -122,6 +122,7 @@ class Signup extends Component {
             }
         }).then((res) => res.json())
         .then((responce) => {
+            console.log("res", responce);
             if (responce.errors !== undefined) {
                 let lang = this.state.lang;
                 if (lang === 'en') {

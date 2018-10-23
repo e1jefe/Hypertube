@@ -1,5 +1,7 @@
 .single-movie-container {
   max-width: 960px;
+  min-height: -webkit-calc(100vh - 103px);
+  min-height: calc(100vh - 103px);
   margin: 0 auto;
   font-family: 'Open Sans', sans-serif;
   color: #000;
@@ -54,6 +56,7 @@
     padding: 10px 20px;
     position: relative; }
     .single-movie-container .comments .comment-action-box {
+      z-index: 9999999999;
       width: 100%;
       padding: 0.4em;
       margin-top: 10px;
@@ -98,6 +101,8 @@
                   box-sizing: border-box;
           padding: 5px;
           font-size: 0.8em; }
+          .single-movie-container .comments .comment-action-box .comment-content textarea:focus {
+            outline: none; }
         .single-movie-container .comments .comment-action-box .comment-content button {
           border: none;
           margin: 0;
@@ -190,6 +195,7 @@
           .single-movie-container .comments .all-comments .my-row .details .content {
             color: #7F8C8D; }
       .single-movie-container .comments .all-comments .my-row.my-comment {
+        position: relative;
         -webkit-box-orient: horizontal;
         -webkit-box-direction: reverse;
         -webkit-flex-direction: row-reverse;
@@ -210,6 +216,39 @@
                   flex-direction: row-reverse; }
           .single-movie-container .comments .all-comments .my-row.my-comment .details .info .author {
             visibility: hidden; }
+        .single-movie-container .comments .all-comments .my-row.my-comment button {
+          text-decoration: none;
+          display: block;
+          opacity: 0;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(51, 0, 51, 0.8);
+          color: #fff;
+          padding: 15px;
+          -webkit-transition: all 0.4s ease-in-out 0s;
+          -o-transition: all 0.4s ease-in-out 0s;
+          transition: all 0.4s ease-in-out 0s; }
+          .single-movie-container .comments .all-comments .my-row.my-comment button p {
+            text-align: center;
+            font-size: inherit;
+            display: inline-block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            font-size: 40px; }
+          .single-movie-container .comments .all-comments .my-row.my-comment button:focus {
+            outline: none; }
+        .single-movie-container .comments .all-comments .my-row.my-comment:hover button {
+          cursor: pointer;
+          opacity: 1; }
 
 @media screen and (max-width: 415px) {
   .single-movie-container .description {
@@ -225,5 +264,15 @@
       width: 100%; }
   .single-movie-container .comments h2 {
     font-size: 16px; }
+  .single-movie-container .comments .all-comments .my-row .details .info .author {
+    font-size: 12px;
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+       text-overflow: ellipsis;
+    max-width: 55%;
+    padding: 2px; }
+  .single-movie-container .comments .all-comments .my-row .details .info .time-stamp {
+    font-size: 12px; }
   .modal {
     overflow: visible; } }

@@ -60,6 +60,7 @@ class Header extends Component {
                     'movie.stars': 'Актеры: ',
                     'movie.summary': 'Описание: ',
                     'movie.quality': 'Качество: ',
+                    'movie.firstComment': 'Будь первым прокоментировавшим этот фильм',
                     'footer.msg': 'Запилили: ',
                 }, this.props.componentState.intl.mesagies),
             });

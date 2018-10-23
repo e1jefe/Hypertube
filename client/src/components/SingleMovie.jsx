@@ -43,9 +43,10 @@ class SingleMovie extends Component {
                 .then((res) => res.json())
                 .then((res) => {
                     this.setState({
-                        userId: res.id
+                        userId: res.id,
+                        userAvatar: res.avatar
                     });
-                    // console.log("user info", res);
+                    console.log("user info", res);
                 })
         } else {
             this.props.history.push('/signin');
@@ -89,6 +90,7 @@ class SingleMovie extends Component {
     render() {
         // console.log("history", this.state.movieId)
         // console.log("state", this.state);
+                    console.log("history", this.props.history);
         return (
             <section className="single-movie-container">
                 <div className="description">
@@ -174,7 +176,7 @@ class SingleMovie extends Component {
                             :
                             null
                 }
-                <Comments movid={this.props.match.params.id} master={this.state.userId}/>
+                <Comments movid={this.props.match.params.id} master={this.state.userId} avatar={this.state.userAvatar}/>
             </section>
         );
     }
