@@ -31,23 +31,30 @@ class CabinetController extends Controller
         $user = auth()->guard('api')->user();
         if(strcmp($request->email, $user->email) === 0){
             $request->validate([
-                'name' => 'required|string'
+                'name' => 'required|string',
+                'firstname' => 'required|string',
+                'lastname' => 'required|string'
             ]);
         }else{
             $request->validate([
                 'name' => 'required|string',
+                'firstname' => 'required|string',
+                'lastname' => 'required|string',
                 'email' => 'required|string|email|unique:users'
             ]);
         }
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->firstname = $request->firstname;
+        $user->lastname = $request->lastname;
         $user->save();
         return response()->json($user);
     }
 
     public function changePass(Request $request){
         $request->validate([
-            'password' => 'required|string|confirmed'
+            'password' => 'required|string|confirmed|min:7|regex:/^(?=.*[a-z])(?=.*\d)(?:[^A-Z\n\r]*[A-Z]){1}[^A-Z\n\r]*$/'
+
         ]);
         $userToken = auth()->guard('api')->user();
         $userBase = User::where('email', $userToken->email)->first();
