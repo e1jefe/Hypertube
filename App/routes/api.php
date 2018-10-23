@@ -23,6 +23,8 @@ Route::group([
     Route::post('login', 'AuthController@login');
     Route::post('signup', 'AuthController@signup');
     Route::get('signup/activate/{token}', 'AuthController@signupActivate');
+    Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider');
+    Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
 
     Route::group([
         'middleware' => 'auth:api'

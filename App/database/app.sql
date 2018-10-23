@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.2
+-- version 4.8.0.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Sep 29, 2018 at 11:45 AM
--- Server version: 5.7.23
--- PHP Version: 7.1.20
+-- Хост: localhost:3306
+-- Время создания: Окт 23 2018 г., 09:55
+-- Версия сервера: 5.7.22
+-- Версия PHP: 7.1.17
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `app`
+-- База данных: `app`
 --
 CREATE DATABASE IF NOT EXISTS `app` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `app`;
@@ -27,7 +27,50 @@ USE `app`;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `migrations`
+-- Структура таблицы `comments_to_films`
+--
+
+CREATE TABLE `comments_to_films` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `id_film` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_user` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `comment` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `comments_to_films`
+--
+
+INSERT INTO `comments_to_films` (`id`, `id_film`, `id_user`, `comment`, `created_at`, `updated_at`) VALUES
+(1, '11', '2', 'djfdsfdsjkl', '2018-10-09 21:00:00', '2018-10-09 21:00:00'),
+(2, '20', '17', 'djfdsfdsjkldasadsads', '2018-10-09 21:00:00', '2018-10-09 21:00:00'),
+(3, '20', '19', 'dsadsadsa]dsf[]dfs;\'.431123', '2018-10-09 21:00:00', '2018-10-09 21:00:00'),
+(4, '12', '17', 'dsadsadsa]dsf[]dfs;\'.431123dsaads', '2018-10-09 21:00:00', '2018-10-09 21:00:00'),
+(7, '11', '1', 'adsdsadsadas', '2018-10-11 09:37:07', '2018-10-11 09:37:07'),
+(8, '11', '1', 'dsafasdfdasfds', '2018-10-22 13:24:19', '2018-10-22 13:24:19'),
+(9, '88', '1', 'dsafasdfdasfds', '2018-10-22 13:28:01', '2018-10-22 13:28:01'),
+(10, '88', '1', '/', '2018-10-23 13:07:30', '2018-10-23 13:07:30'),
+(11, '22', '1', 'dadadddd', '2018-10-23 13:14:36', '2018-10-23 13:14:36'),
+(12, '22', '1', 'eqweqwewqewqe', '2018-10-23 13:36:25', '2018-10-23 13:36:25');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `films_vasiliu`
+--
+
+CREATE TABLE `films_vasiliu` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `migrations`
 --
 
 CREATE TABLE `migrations` (
@@ -37,22 +80,26 @@ CREATE TABLE `migrations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `migrations`
+-- Дамп данных таблицы `migrations`
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(36, '2014_10_12_000000_create_users_table', 1),
-(37, '2014_10_12_100000_create_password_resets_table', 1),
-(38, '2016_06_01_000001_create_oauth_auth_codes_table', 1),
-(39, '2016_06_01_000002_create_oauth_access_tokens_table', 1),
-(40, '2016_06_01_000003_create_oauth_refresh_tokens_table', 1),
-(41, '2016_06_01_000004_create_oauth_clients_table', 1),
-(42, '2016_06_01_000005_create_oauth_personal_access_clients_table', 1);
+(2, '2014_10_12_100000_create_password_resets_table', 1),
+(3, '2016_06_01_000001_create_oauth_auth_codes_table', 1),
+(4, '2016_06_01_000002_create_oauth_access_tokens_table', 1),
+(5, '2016_06_01_000003_create_oauth_refresh_tokens_table', 1),
+(6, '2016_06_01_000004_create_oauth_clients_table', 1),
+(7, '2016_06_01_000005_create_oauth_personal_access_clients_table', 1),
+(8, '2018_10_10_132305_create_keep_comments_to_films_table', 1),
+(10, '2018_10_22_083807_create_users_watched_films_one_month', 3),
+(12, '2018_10_23_134605_create_users_table_films', 5),
+(13, '2018_10_17_120145_create_watched_films_users', 6),
+(15, '2014_10_12_000000_create_users_table', 7);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oauth_access_tokens`
+-- Структура таблицы `oauth_access_tokens`
 --
 
 CREATE TABLE `oauth_access_tokens` (
@@ -67,10 +114,18 @@ CREATE TABLE `oauth_access_tokens` (
   `expires_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Дамп данных таблицы `oauth_access_tokens`
+--
+
+INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes`, `revoked`, `created_at`, `updated_at`, `expires_at`) VALUES
+('07d2db73cb4b2f178b07c4c54faad537600a217bffd9a1393e64b2a77ebe0c54e4e14ee26a05b800', 1, 3, 'Personal Access Token', '[]', 0, '2018-10-22 12:34:16', '2018-10-22 12:34:16', '2019-10-22 15:34:16'),
+('22a7a062b798565643504de52c8ce9b62a85914526cdcffd9e9f7229a9dafadda5a9c52308691e02', 1, 1, 'Personal Access Token', '[]', 0, '2018-10-11 08:05:45', '2018-10-11 08:05:45', '2019-10-11 11:05:45');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oauth_auth_codes`
+-- Структура таблицы `oauth_auth_codes`
 --
 
 CREATE TABLE `oauth_auth_codes` (
@@ -85,7 +140,7 @@ CREATE TABLE `oauth_auth_codes` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oauth_clients`
+-- Структура таблицы `oauth_clients`
 --
 
 CREATE TABLE `oauth_clients` (
@@ -101,10 +156,20 @@ CREATE TABLE `oauth_clients` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Дамп данных таблицы `oauth_clients`
+--
+
+INSERT INTO `oauth_clients` (`id`, `user_id`, `name`, `secret`, `redirect`, `personal_access_client`, `password_client`, `revoked`, `created_at`, `updated_at`) VALUES
+(1, NULL, 'Laravel Personal Access Client', 'e886VjvGGBOWFx31UuqDvTMBGEZKjBjGKO5iKd9t', 'http://localhost', 1, 0, 0, '2018-10-11 08:05:34', '2018-10-11 08:05:34'),
+(2, NULL, 'Laravel Password Grant Client', 'gSz44ObxecYBohq6o4O4mBpEtr5mjymmsvbRnyGe', 'http://localhost', 0, 1, 0, '2018-10-11 08:05:34', '2018-10-11 08:05:34'),
+(3, NULL, 'Laravel Personal Access Client', 'MZxKW4MV6i9O1CuiI36lVSv5LL8lB6DMEmEp4WPn', 'http://localhost', 1, 0, 0, '2018-10-17 09:23:16', '2018-10-17 09:23:16'),
+(4, NULL, 'Laravel Password Grant Client', '27uJK1Cd4oN5TYeYiOGZMlDJeG2ho7K66b8kBl5u', 'http://localhost', 0, 1, 0, '2018-10-17 09:23:16', '2018-10-17 09:23:16');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oauth_personal_access_clients`
+-- Структура таблицы `oauth_personal_access_clients`
 --
 
 CREATE TABLE `oauth_personal_access_clients` (
@@ -114,10 +179,18 @@ CREATE TABLE `oauth_personal_access_clients` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Дамп данных таблицы `oauth_personal_access_clients`
+--
+
+INSERT INTO `oauth_personal_access_clients` (`id`, `client_id`, `created_at`, `updated_at`) VALUES
+(1, 1, '2018-10-11 08:05:34', '2018-10-11 08:05:34'),
+(2, 3, '2018-10-17 09:23:16', '2018-10-17 09:23:16');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oauth_refresh_tokens`
+-- Структура таблицы `oauth_refresh_tokens`
 --
 
 CREATE TABLE `oauth_refresh_tokens` (
@@ -130,7 +203,7 @@ CREATE TABLE `oauth_refresh_tokens` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `password_resets`
+-- Структура таблицы `password_resets`
 --
 
 CREATE TABLE `password_resets` (
@@ -141,28 +214,26 @@ CREATE TABLE `password_resets` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `password_resets`
---
-
-INSERT INTO `password_resets` (`id`, `email`, `token`, `created_at`, `updated_at`) VALUES
-(1, 'dmitry.sheptun@gmail.com', 'ZwryU8TsS0He2VBLmDRQDogIxp9sQKIzio6j1QpqU5nWqhH2TYkHWPURW7yZ', '2018-09-29 13:52:34', '2018-09-29 13:52:34');
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Структура таблицы `users`
 --
 
 CREATE TABLE `users` (
   `id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `firstname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lastname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'avatar.png',
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '0',
-  `activation_token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `activation_token` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `provider` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `provider_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `access_token` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -170,105 +241,199 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `users`
+-- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `avatar`, `active`, `activation_token`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(10, 'dima', 'dmitry.sheptun@gmail.com', NULL, '$2y$10$bPH/vdl6Jj3MLtYNhmCC3ukCuZ/mMwk9J3qYL0CDAf4rjXnEKb7Nu', 'avatar.png', 0, 'pukKi8D3tKwz0MaGajXnH8zb0DPKLuJk3wnXVqsBuHSYkbgDteb1VufQeJ9T', NULL, '2018-09-29 13:11:57', '2018-09-29 13:11:57', NULL),
-(11, 'dima', 'dmitry.sptun@gmail.com', NULL, '$2y$10$k.6a3nl9R5dL6/IB3moLJO3Etm/fV52RjhjVOCP9j72a7dcrq5BSy', 'avatar.png', 0, 'QwFh7wAT1dPHUoMhALOZ48k1JAYcVm3E1b1eWOxUKyBnlOOphc29NIEczYSS', NULL, '2018-09-29 13:55:55', '2018-09-29 13:55:55', NULL),
-(12, 'dima', 'dmitry.sptun@gnmail.com', NULL, '$2y$10$dXAx.30p6K7oMUoTvQ5A3O7dCDjLgS3KmMqPvIEyicy4y1K8AUbee', 'avatar.png', 0, 'z28ZP1PDbzXTKrsUXppk16YUmoVe10o7lVG4DVg0YSvhp2Qc1WqA9GWLoTMD', NULL, '2018-09-29 15:30:54', '2018-09-29 15:30:54', NULL);
+INSERT INTO `users` (`id`, `name`, `firstname`, `lastname`, `email`, `email_verified_at`, `password`, `active`, `activation_token`, `avatar`, `provider`, `provider_id`, `access_token`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, NULL, NULL, NULL, 'korotkovsergey96@gmail.com', NULL, NULL, 0, NULL, NULL, 'github', '35339479', NULL, 'IxwONMuIFBZVFesv20a7xmCSjCJFIyDe0Bo9r6yKOfmO0co5bb8KwGGu5rj9', '2018-10-23 13:00:40', '2018-10-23 13:00:40', NULL),
+(2, 'Serhii Korotkov', NULL, NULL, 'skorotko@student.unit.ua', NULL, NULL, 0, NULL, NULL, 'intra', NULL, NULL, 'Ruas5VbhFORdmDCy1PNlMsCrIHqAYgMuSMlBrE7vfcYavRD8EgwcyMRdepss', '2018-10-23 13:09:31', '2018-10-23 13:09:31', NULL);
+
+-- --------------------------------------------------------
 
 --
--- Indexes for dumped tables
+-- Структура таблицы `users_watched_films_one_months`
+--
+
+CREATE TABLE `users_watched_films_one_months` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `id_film` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `users_watched_films_one_months`
+--
+
+INSERT INTO `users_watched_films_one_months` (`id`, `id_film`, `created_at`, `updated_at`) VALUES
+(1, '25', '2018-10-22 06:53:24', '2018-10-22 06:53:24'),
+(2, '15', '2018-10-22 06:53:39', '2018-10-22 06:53:39'),
+(3, '48', '2018-10-22 06:53:42', '2018-10-22 06:53:42'),
+(4, '22', '2018-10-22 06:53:46', '2018-10-22 06:53:46'),
+(5, '10', '2018-10-22 06:53:49', '2018-10-22 06:53:49'),
+(6, '8', '2018-10-22 06:55:32', '2018-10-22 06:55:32'),
+(7, '13', '2018-10-22 06:55:35', '2018-09-05 06:55:35'),
+(8, '88', '2018-10-22 06:55:37', '2018-10-22 06:55:37'),
+(9, '101', '2018-10-22 06:55:40', '2018-09-04 06:55:40'),
+(10, '23', '2018-10-22 06:55:43', '2018-10-22 06:55:43'),
+(11, '534', '2018-10-22 06:55:45', '2018-10-22 06:55:45'),
+(12, '423', '2018-10-22 06:55:48', '2018-10-22 06:55:48'),
+(13, '86', '2018-10-22 06:55:53', '2018-10-22 06:55:53'),
+(14, '956', '2018-10-22 06:56:10', '2018-10-22 06:56:10');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `watched_films_users`
+--
+
+CREATE TABLE `watched_films_users` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `id_film` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_user` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Индексы сохранённых таблиц
 --
 
 --
--- Indexes for table `migrations`
+-- Индексы таблицы `comments_to_films`
+--
+ALTER TABLE `comments_to_films`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `films_vasiliu`
+--
+ALTER TABLE `films_vasiliu`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `migrations`
 --
 ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `oauth_access_tokens`
+-- Индексы таблицы `oauth_access_tokens`
 --
 ALTER TABLE `oauth_access_tokens`
   ADD PRIMARY KEY (`id`),
   ADD KEY `oauth_access_tokens_user_id_index` (`user_id`);
 
 --
--- Indexes for table `oauth_auth_codes`
+-- Индексы таблицы `oauth_auth_codes`
 --
 ALTER TABLE `oauth_auth_codes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `oauth_clients`
+-- Индексы таблицы `oauth_clients`
 --
 ALTER TABLE `oauth_clients`
   ADD PRIMARY KEY (`id`),
   ADD KEY `oauth_clients_user_id_index` (`user_id`);
 
 --
--- Indexes for table `oauth_personal_access_clients`
+-- Индексы таблицы `oauth_personal_access_clients`
 --
 ALTER TABLE `oauth_personal_access_clients`
   ADD PRIMARY KEY (`id`),
   ADD KEY `oauth_personal_access_clients_client_id_index` (`client_id`);
 
 --
--- Indexes for table `oauth_refresh_tokens`
+-- Индексы таблицы `oauth_refresh_tokens`
 --
 ALTER TABLE `oauth_refresh_tokens`
   ADD PRIMARY KEY (`id`),
   ADD KEY `oauth_refresh_tokens_access_token_id_index` (`access_token_id`);
 
 --
--- Indexes for table `password_resets`
+-- Индексы таблицы `password_resets`
 --
 ALTER TABLE `password_resets`
   ADD PRIMARY KEY (`id`),
   ADD KEY `password_resets_email_index` (`email`);
 
 --
--- Indexes for table `users`
+-- Индексы таблицы `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- Индексы таблицы `users_watched_films_one_months`
+--
+ALTER TABLE `users_watched_films_one_months`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `watched_films_users`
+--
+ALTER TABLE `watched_films_users`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT для сохранённых таблиц
 --
 
 --
--- AUTO_INCREMENT for table `migrations`
+-- AUTO_INCREMENT для таблицы `comments_to_films`
+--
+ALTER TABLE `comments_to_films`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT для таблицы `films_vasiliu`
+--
+ALTER TABLE `films_vasiliu`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- AUTO_INCREMENT for table `oauth_clients`
+-- AUTO_INCREMENT для таблицы `oauth_clients`
 --
 ALTER TABLE `oauth_clients`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `oauth_personal_access_clients`
+-- AUTO_INCREMENT для таблицы `oauth_personal_access_clients`
 --
 ALTER TABLE `oauth_personal_access_clients`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT для таблицы `password_resets`
+--
+ALTER TABLE `password_resets`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `password_resets`
---
-ALTER TABLE `password_resets`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT для таблицы `users_watched_films_one_months`
+--
+ALTER TABLE `users_watched_films_one_months`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT для таблицы `watched_films_users`
+--
+ALTER TABLE `watched_films_users`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

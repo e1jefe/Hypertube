@@ -91,7 +91,7 @@ class CabinetController extends Controller
 
     public function watchedFilmsUsersCreate(Request $request){
         if(empty($request->id_film))
-            die;
+            return response()->json(false);
         $filmExist = WatchedFilmsUser::where('id_film', $request->id_film)->first();
         $user = auth()->guard('api')->user();
         $filmsArray = WatchedFilmsUser::where('id_user', $user->id)->get();
