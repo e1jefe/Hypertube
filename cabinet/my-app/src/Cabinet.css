@@ -1,17 +1,33 @@
 .Cabinet {
   text-align: center;
+  margin-top: 20px;
 }
 .avatar{
-  width: 60%;
-}
-.infoUser{
-  text-align: center;
-  width: 15%;
-}
-.lastSeen{
-  width: 50%;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
-
+.infoUser{
+  text-align: center;
+  width: 30%;
+}
+.infoUser Button{
+width: 80%;
+}
+.lastSeen{
+  margin-top: 20px;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.lastSeen1{
+  margin-top: 20px;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+.Seen{
+  margin-top: 20px;
+}
 
