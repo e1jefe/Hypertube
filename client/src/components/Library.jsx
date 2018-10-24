@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../interface/style/library.css';
-import { Dropdown, Button, Icon, Input } from 'semantic-ui-react';
+import { Dropdown, Button, Input } from 'semantic-ui-react';
 import "react-input-range/lib/css/index.css";
 import 'rc-slider/assets/index.css';
 import axios from 'axios';
@@ -230,11 +230,25 @@ class Library extends Component {
     }
 
     componentDidMount() {
-        if (localStorage.getItem('token') === null) {
+        const token = localStorage.getItem('token');
+        if (token === null) {
             this.props.history.push('/signin');
         }
         window.addEventListener('scroll', this.handleScroll);
-        
+        fetch('http://127.0.0.1:8000/api/cabinet/all-watched-films', {
+                method: 'POST',
+                headers:{
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then((res) => res.json())
+            .then((res) => {
+                this.setState({
+                    watchedFilms: res
+                });
+            });
         this.loadItems();
     }
 
@@ -384,7 +398,8 @@ class Library extends Component {
                                         year: mov.year,
                                         id: mov.id,
                                         name: mov.title_english,
-                                        genre: mov.genres
+                                        genre: mov.genres,
+                                        seen: this.state.watchedFilms.some((item) => item === mov.id)
                                     })
                                 } else {
                                     return false
@@ -392,6 +407,14 @@ class Library extends Component {
                             });
                             let filteredMovies = nextMovPack.filter(function(el) { return el; });
                             let newPage = this.state.pageStart + 1;
+                            // this.state.pageStart * 20 < response.data.data.movie_count
+                            // console.log("state", this.state);
+                            // console.log("response", response.data.data);
+                            // console.log("length", this.state.movies.length);
+                            // console.log("отфильтровано < 20", filteredMovies.length < 20);
+                            // console.log("кратно 4", (this.state.movies.length + filteredMovies.length) % 4 !== 0);
+                            // console.log("новый результат кратно 20", (this.state.movies.length) % 20);
+
                             this.setState({
                                 hasMore: (this.state.movies.length + filteredMovies.length < response.data.data.movie_count),
                                 isLoading: false,
@@ -444,7 +467,7 @@ class Library extends Component {
     }
 
     render() {
-        //console.log("lib", this.state.movies);
+        // console.log("lib", this.state.movies);
 
         return (
             <div className="library-container">
@@ -457,22 +480,16 @@ class Library extends Component {
                             <i className="fas fa-search"></i>
                         </label>
                         <input type="text" placeholder={this.props.componentState.intl.locale === 'en' ? "Search" : "Поиск"} onChange={this.recordSearchTitle}/>
-                        <Button animated color='purple' onClick={() => this.sendMovTitle()} disabled={this.state.movieTitle.length === 0}>
+                        <Button color='purple' onClick={() => this.sendMovTitle()} disabled={this.state.movieTitle.length === 0}>
                             <Button.Content visible>{this.props.componentState.intl.locale === 'en' ? "Go" : "Вперед"}</Button.Content>
-                            <Button.Content hidden>
-                                <Icon name='arrow right' />
-                            </Button.Content>
                         </Button>       
                     </div>
                     <div className="year-select">
                         <FormattedMessage id="library.year" defaultMessage="Select year" />
                         <Input pattern="[0-9]*" placeholder={this.props.componentState.intl.locale === 'en' ? 'From...' : 'С...'} onChange={this.changeMinYear} style={{margin: "0 5px"}} value={this.state.yearGap.min}/>
                         <Input pattern="[0-9]*" placeholder={this.props.componentState.intl.locale === 'en' ? 'To...' : 'По...'} onChange={this.changeMaxYear} value={this.state.yearGap.max}/>
-                        <Button  animated color='purple' onClick={() => this.sendYear()} style={{marginLeft: "5px"}}>
+                        <Button  color='purple' onClick={() => this.sendYear()} style={{marginLeft: "5px"}}>
                             <Button.Content visible>{this.props.componentState.intl.locale === 'en' ? "Go" : "Вперед"}</Button.Content>
-                            <Button.Content hidden>
-                                <Icon name='arrow right' />
-                            </Button.Content>
                         </Button>
                     </div>
                 </div>
@@ -495,6 +512,12 @@ class Library extends Component {
                             return(
                                 <div className={this.state.movies.length < 3 ? 'movie-item col-sm-6' : "movie-item col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12"} key={i}>
                                     <div className="poster">
+                                        {
+                                            mov.seen &&
+                                            <div className="seen">
+                                                <FormattedMessage id="library.watched" defaultMessage="WATCHED" />
+                                            </div>
+                                        }
                                         <img src={mov.poster} alt={mov.name}/>
                                         <button movnbr={mov.id} onClick={this.pushMovie}>
                                             <p>

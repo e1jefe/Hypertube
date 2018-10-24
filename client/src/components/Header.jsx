@@ -48,6 +48,7 @@ class Header extends Component {
                     'header.logout': 'Выход',
                     'library.title': 'Фильмы',
                     'library.year': 'Выберите год',
+                    'library.watched': 'ИГРАЛО',
                     'otherUser.title': 'Информация о пользователе',
                     'otherUser.visit': 'Последний раз был на сайте: ',
                     'сomments.title': 'Комментарии',

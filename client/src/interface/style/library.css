@@ -124,6 +124,22 @@
         margin-bottom: 10px;
         position: relative;
         overflow: hidden; }
+        .library-container .movies-all .row .movie-item .poster .seen {
+          bottom: -30px;
+          color: white;
+          background: red;
+          font-weight: 700;
+          font-size: 14px;
+          position: absolute;
+          right: -72%;
+          left: -41%;
+          height: 50px;
+          text-align: center;
+          -webkit-transform: rotate(-33deg);
+              -ms-transform: rotate(-33deg);
+                  transform: rotate(-33deg);
+          padding-left: 118px;
+          line-height: 50px; }
         .library-container .movies-all .row .movie-item .poster button {
           text-decoration: none;
           display: block;
@@ -169,17 +185,14 @@
         -webkit-justify-content: space-between;
             -ms-flex-pack: justify;
                 justify-content: space-between;
-        -webkit-box-align: center;
-        -webkit-align-items: center;
-            -ms-flex-align: center;
-                align-items: center;
         font-size: 0.8em;
         margin-bottom: 10px; }
         .library-container .movies-all .row .movie-item .production .year,
         .library-container .movies-all .row .movie-item .production .country {
           display: inline-block;
           color: #bfbfbf;
-          text-transform: uppercase; }
+          text-transform: uppercase;
+          margin: 0; }
       .library-container .movies-all .row .movie-item .title {
         font-weight: bold;
         color: #000;

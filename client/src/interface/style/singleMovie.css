@@ -36,7 +36,8 @@
       .single-movie-container .description .description-txt .my-row {
         margin-top: 10px; }
         .single-movie-container .description .description-txt .my-row div {
-          display: inline-block; }
+          display: inline-block;
+          line-height: 1em; }
         .single-movie-container .description .description-txt .my-row .characteristic {
           font-weight: bold;
           margin-right: 5px; }
@@ -56,7 +57,7 @@
     padding: 10px 20px;
     position: relative; }
     .single-movie-container .comments .comment-action-box {
-      z-index: 9999999999;
+      z-index: 1000;
       width: 100%;
       padding: 0.4em;
       margin-top: 10px;
@@ -191,9 +192,11 @@
               cursor: pointer; }
             .single-movie-container .comments .all-comments .my-row .details .info .time-stamp {
               font-weight: 300;
+              line-height: 1em;
               color: #BDC3C7; }
           .single-movie-container .comments .all-comments .my-row .details .content {
-            color: #7F8C8D; }
+            color: #7F8C8D;
+            margin-top: 10px; }
       .single-movie-container .comments .all-comments .my-row.my-comment {
         position: relative;
         -webkit-box-orient: horizontal;

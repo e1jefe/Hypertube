@@ -119,6 +119,22 @@
                     position: relative;
                     overflow: hidden;
 
+                    .seen {
+                        bottom: -30px;
+                        color: white;
+                        background: red;
+                        font-weight: 700;
+                        font-size: 14px;
+                        position: absolute;
+                        right: -72%;
+                        left: -41%;
+                        height: 50px;
+                        text-align: center;
+                        transform: rotate(-33deg);
+                        padding-left: 118px;
+                        line-height: 50px;
+                    }
+
                     button {
                         text-decoration: none;
                         display: block;
@@ -171,7 +187,6 @@
                 .production {
                     display: flex;
                     justify-content: space-between;
-                    align-items: center;
                     font-size: 0.8em;
                     margin-bottom: 10px;
 
@@ -180,6 +195,7 @@
                         display: inline-block;
                         color: #bfbfbf;
                         text-transform: uppercase;
+                        margin: 0;
                     }
                 }
 

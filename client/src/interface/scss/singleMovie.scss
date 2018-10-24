@@ -44,6 +44,7 @@
 
                 div {
                     display: inline-block;
+                    line-height: 1em;
                 }
                 
                 .characteristic {
@@ -72,7 +73,7 @@
         position: relative;
 
         .comment-action-box {
-            z-index: 9999999999;
+            z-index: 1000;
             width: 100%;
             padding: 0.4em;
             margin-top: 10px;
@@ -202,12 +203,14 @@
 
                         .time-stamp {
                             font-weight: 300;
+                            line-height: 1em;
                             color: #BDC3C7;
                         }
                     }
 
                     .content {
                         color: #7F8C8D;
+                        margin-top: 10px;
                     }
                 }
             }

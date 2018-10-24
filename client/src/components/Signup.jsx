@@ -324,32 +324,32 @@ class Signup extends Component {
                 </section>
                 <div>
                     <Modal dimmer="blurring" open={this.state.showModal} onClose={this.closeModal}>
-                    <Modal.Header>
-                        {this.state.lang === 'en' ? "Success" : "Успех"}
-                    </Modal.Header>
-                    <Modal.Content image>
-                        <Image wrapped size={window.innerWidth < 416 ? 'small' : 'medium'} src='./pics/projector-camera.png' />
-                        <Modal.Description>
-                        <Header>
-                            {this.state.lang === 'en' ? "Your account was registered" : "Ваш аккаунт зарегестрирован"}
-                        </Header>
-                        <p>
-                            {this.state.lang === 'en' ? "We sent you an activation link to given email." : "Мы отправили ссылку для активации аккаунта на указаный email."}
-                        </p>
-                        <p>
-                            {this.state.lang === 'en' ? "Please, follow it to activate your account." : "Пожалуйста, перейдите по ней."}
-                        </p>
-                        </Modal.Description>
-                    </Modal.Content>
-                    <Modal.Actions>
-                        <Button
-                            positive
-                            icon='checkmark'
-                            labelPosition='right'
-                            content={this.state.lang === 'en' ? "Got it" : "Понял"}
-                            onClick={this.closeModal}
-                        />
-                    </Modal.Actions>
+                        <Modal.Header>
+                            {this.state.lang === 'en' ? "Success" : "Успех"}
+                        </Modal.Header>
+                        <Modal.Content image>
+                            <Image wrapped size={window.innerWidth < 416 ? 'small' : 'medium'} src='./pics/projector-camera.png' />
+                            <Modal.Description>
+                            <Header>
+                                {this.state.lang === 'en' ? "Your account was registered" : "Ваш аккаунт зарегестрирован"}
+                            </Header>
+                            <p>
+                                {this.state.lang === 'en' ? "We sent you an activation link to given email." : "Мы отправили ссылку для активации аккаунта на указаный email."}
+                            </p>
+                            <p>
+                                {this.state.lang === 'en' ? "Please, follow it to activate your account." : "Пожалуйста, перейдите по ней."}
+                            </p>
+                            </Modal.Description>
+                        </Modal.Content>
+                        <Modal.Actions>
+                            <Button
+                                positive
+                                icon='checkmark'
+                                labelPosition='right'
+                                content={this.state.lang === 'en' ? "Got it" : "Понял"}
+                                onClick={this.closeModal}
+                            />
+                        </Modal.Actions>
                     </Modal>
                 </div>
                 <div>

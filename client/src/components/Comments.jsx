@@ -222,7 +222,7 @@ class Comments extends Component {
                 </h2>
                 <div className="comment-action-box">
                     <div className="avatar">
-                        <img src={this.state.avatar !== null ? this.state.avatar : "https://static.thenounproject.com/png/214280-200.png"} alt="my avatar"/>
+                        <img src={this.state.avatar !== undefined && this.state.avatar !== null ? 'http://127.0.0.1:8000/' + this.state.avatar : "https://static.thenounproject.com/png/214280-200.png"} alt="my avatar"/>
                     </div>
                     <div className="comment-content">
                         <textarea name="comment-txt" rows="3" placeholder="Leave a comment" maxLength="240" onChange={this.recordComment} value={this.state.commentTxt}></textarea>
@@ -238,7 +238,7 @@ class Comments extends Component {
                             return (
                                 <div key={i} className={parseInt(msg.id_user, 10) === this.state.user ? "my-row my-comment" : "my-row"}>
                                     <div className="avatar" userid={msg.id_user} onClick={parseInt(msg.id_user, 10) === this.state.user ? undefined : this.showOtherUser}>
-                                        <img src={msg.avatar !== null ? msg.avatar : "../pics/avatar.png"} alt="my avatar"/>
+                                        <img src={(msg.avatar !== undefined && msg.avatar !== null) ? 'http://127.0.0.1:8000/' + msg.avatar : "../pics/avatar.png"} alt="my avatar"/>
                                     </div>
                                     <div className="details">
                                         <div className="info">

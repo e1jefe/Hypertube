@@ -20,7 +20,7 @@ class OtherUserProfile extends Component {
                     <FormattedMessage id="otherUser.title" defaultMessage="User info" />
                 </Modal.Header>
                 <Modal.Content image>
-                <Image wrapped size='medium' src={this.props.propfile.ava !== null ? this.props.propfile.ava : '../pics/avatar.png'} />
+                <Image wrapped size='medium' src={this.props.propfile.ava !== undefined && this.props.propfile.ava !== null ? 'http://127.0.0.1:8000/' + this.props.propfile.ava : '../pics/avatar.png'} />
                 <Modal.Description>
                     <Header>
                         {this.props.propfile.name}

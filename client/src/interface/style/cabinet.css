@@ -1,6 +1,7 @@
 .Cabinet {
   text-align: center;
   margin-top: 20px;
+  min-height: calc(100vh - 125px);
 }
 .avatar{
   width: 100%;
