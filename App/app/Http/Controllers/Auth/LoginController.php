@@ -10,7 +10,7 @@ use Socialite;
 
 class LoginController extends Controller
 {
-    protected $redirectTo = '/';
+    protected $redirectTo = 'http://localhost:3000';
 
     public function redirectToProvider($provider)
     {
@@ -31,9 +31,7 @@ class LoginController extends Controller
             Auth::login($user, true);
             return redirect($this->redirectTo);
         } else
-            return response()->json([
-                'message' => 'Email already in use'
-            ], 401);
+            return response()->json(false, 401);
     }
 
     /**
@@ -44,16 +42,15 @@ class LoginController extends Controller
      */
     private function findOrCreateUser($githubUser, $provider)
     {
+        if ($authUser = User::where('provider', $provider)->first()) {
+            return $authUser;
+        }
         $mail = $githubUser->getEmail();
         $authUser = User::where('email', $mail)->first();
 
         if (!empty($authUser)) {
             return false;
         }
-        if ($authUser = User::where('provider_id', $githubUser->id)->first()) {
-            return $authUser;
-        }
-
         return User::create([
             'name' => $githubUser->getName(),
             'email' => $githubUser->getEmail(),
