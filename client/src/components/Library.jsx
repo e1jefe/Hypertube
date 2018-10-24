@@ -552,6 +552,6 @@ const mapStateToProps = state => {
     return {
         componentState: state
     };
-  };
+};
 
 export default connect(mapStateToProps, null)(Library);

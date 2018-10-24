@@ -61,6 +61,9 @@ class Header extends Component {
                     'movie.summary': 'Описание: ',
                     'movie.quality': 'Качество: ',
                     'movie.firstComment': 'Будь первым прокоментировавшим этот фильм',
+                    'cabinet.changePassBtn': 'Сменить пароль',
+                    'cabinet.changeInfoBtn': 'Изменить информацию',
+                    'cabinet.noWatch': 'Вы еще ничего не посмотрели',
                     'footer.msg': 'Запилили: ',
                 }, this.props.componentState.intl.mesagies),
             });

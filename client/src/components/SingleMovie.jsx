@@ -11,12 +11,12 @@ class SingleMovie extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            movieId: "",
             error: "",
             data: {},
             quality: null,
             trailerUrl: null,
-            userId: ""
+            userId: "",
+            watched: false
         };
     }
 
@@ -24,13 +24,35 @@ class SingleMovie extends Component {
         this.setState({
             quality: resolution
         });
-            document.getElementById('1080').disabled = "disabled";
-            document.getElementById('720').disabled = "disabled";
+        document.getElementById('1080').disabled = "disabled";
+        document.getElementById('720').disabled = "disabled";
+        if (!this.state.watched) {
+            const data = {
+                id_film: this.props.match.params.id
+            };
+            const token = localStorage.getItem('token');
+            fetch('http://127.0.0.1:8000/api/cabinet/watched-films_create', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers:{
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then((res) => res.json())
+                .then((res) => {
+                    if (res === true) {
+                        this.setState({
+                            watched: true
+                        });
+                    }
+                });
+        }
     }
 
     componentDidMount() {
         // console.log("token", token);
-
         const token = localStorage.getItem('token');
         // console.log("token", token);
         if (token !== null) {
@@ -46,7 +68,7 @@ class SingleMovie extends Component {
                         userId: res.id,
                         userAvatar: res.avatar
                     });
-                    console.log("user info", res);
+                    // console.log("user info", res);
                 })
         } else {
             this.props.history.push('/signin');
@@ -90,7 +112,7 @@ class SingleMovie extends Component {
     render() {
         // console.log("history", this.state.movieId)
         // console.log("state", this.state);
-                    console.log("history", this.props.history);
+        // console.log("history", this.props.history);
         return (
             <section className="single-movie-container">
                 <div className="description">
