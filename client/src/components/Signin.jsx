@@ -2,16 +2,9 @@ import React, {Component} from 'react';
 import '../interface/style/signin.css';
 import {NavLink} from 'react-router-dom';
 import {connect} from 'react-redux';
-// import FacebookAuth from 'react-facebook-auth';
 import {FormattedMessage} from 'react-intl';
 import {updateIntl} from 'react-intl-redux';
 import {Button, Header, Image, Modal, Dimmer, Loader} from 'semantic-ui-react';
-
-// const MyFacebookButton = ({ onClick }) => (
-//     <button onClick={onClick}>
-//         <i className="fab fa-github-square"></i>
-//     </button>
-// );
 
 class Signin extends Component {
 

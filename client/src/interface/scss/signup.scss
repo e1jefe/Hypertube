@@ -398,6 +398,12 @@ button {
 						font-size: 1.3em;
 						margin-top: 10px;
 
+						a,
+						a:hover,
+						a:visited, {
+							color: #fff;
+						}
+
 						div {
 							display: inline-block;
 
@@ -413,6 +419,7 @@ button {
 							background-size: cover;
 							background-position: 50%;
 							border-radius: 3px;
+							text-indent: -9999px;
 
 							img {
 								display: block;

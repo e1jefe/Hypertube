@@ -2,17 +2,10 @@ import React, { Component } from 'react';
 import '../interface/style/signup.css';
 import { NavLink } from 'react-router-dom';
 import { Button, Header, Image, Modal, Dimmer, Loader } from 'semantic-ui-react';
-import FacebookAuth from 'react-facebook-auth';
 import { connect } from 'react-redux';
 import { recordToken } from "../redux/actions";
 import { FormattedMessage } from 'react-intl';
 import { updateIntl } from 'react-intl-redux';
-
-const MyFacebookButton = ({ onClick }) => (
-    <button onClick={onClick}>
-        <i className="fab fa-facebook-square"></i>
-    </button>
-);
 
 class Signup extends Component {
 
@@ -33,7 +26,6 @@ class Signup extends Component {
         this.onChange = this.onChange.bind(this);        
         this.signupRequest = this.signupRequest.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        this.signupFacebook = this.signupFacebook.bind(this);
     }
 
     componentDidMount() {
@@ -154,33 +146,6 @@ class Signup extends Component {
         this.setState({
             showModal: false
         });
-    }
-
-    signupFacebook(responce) {
-        console.log("from FB: ", responce);
-        if (responce.error === undefined) {
-            const name = responce.name.split(" ");
-            const data = {
-                firstName: name[0],
-                lastName: name[1],
-                email: responce.email,
-                password: "iP0pka7!",
-                password_confirmation: "iP0pka7!"
-            };
-            fetch('http://127.0.0.1:8000/api/auth/signup', {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers:{
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            }).then((res) => res.json())
-            .then((responce) => {
-                //some method after success registering throught FB
-                // this.props.recordToken(token for record in store);
-                // this.props.history.push('/');
-            });
-        }
     }
 
     render() {
@@ -305,17 +270,15 @@ class Signup extends Component {
                                 </div>
                                 <div className="my-row">
                                     <div className="social-media">
-                                        <div>
-                                            <FacebookAuth
-                                                appId="292030674968220"
-                                                callback={this.signupFacebook}
-                                                component={MyFacebookButton}
-                                                />
-                                        </div>
-                                        <div>
-                                            <i className="fab fa-twitter-square"></i>
-                                        </div>
-                                        <div className="fortytwo"></div>
+                                        <a href="http://127.0.0.1:8000/api/auth/login/github">
+                                            <i className="fab fa-github-square"></i>
+                                        </a>
+                                        <a href="http://127.0.0.1:8000/api/auth/login/google">
+                                            <i className="fab fa-google"></i>
+                                        </a>
+                                        <a className="fortytwo" href="http://127.0.0.1:8000/api/auth/login/intra">
+                                            42
+                                        </a>
                                     </div>
                                 </div>
                             </form>
