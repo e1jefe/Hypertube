@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import 'semantic-ui-css/semantic.min.css';
 import '../interface/style/cabinet.css';
-import { Image, Icon, Input, List, Button } from 'semantic-ui-react';
+import {Image, Icon, Input, List, Button} from 'semantic-ui-react';
 import axios from 'axios';
-import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+import {connect} from 'react-redux';
+import {FormattedMessage} from 'react-intl';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
@@ -24,7 +24,9 @@ class Cabinet extends Component {
         this.confirmPhotoUpload = this.confirmPhotoUpload.bind(this);
         this.cancelPhotoUpload = this.cancelPhotoUpload.bind(this);
         this.changeInfo = this.changeInfo.bind(this);
+        this.changePass = this.changePass.bind(this);
         this.fileInput = React.createRef();
+        this.changeHandler = this.changeHandler.bind(this);
     }
 
     async getPosters(films) {
@@ -40,14 +42,14 @@ class Cabinet extends Component {
         return posters;
     }
 
-    
+
     async componentDidMount() {
         const token = localStorage.getItem('token');
         if (token !== null) {
-            this.setState({ isLoading: true });
+            this.setState({isLoading: true});
             let userInfo = await fetch('http://127.0.0.1:8000/api/auth/user', {
                 method: 'GET',
-                headers:{
+                headers: {
                     'Authorization': 'Bearer ' + token
                 }
             });
@@ -55,7 +57,7 @@ class Cabinet extends Component {
 
             let films = await fetch('http://127.0.0.1:8000/api/cabinet/watched-films_return', {
                 method: 'POST',
-                headers:{
+                headers: {
                     'Authorization': 'Bearer ' + token,
                     'Content-Type': 'application/json',
                     'X-Requested-With': 'XMLHttpRequest'
@@ -82,13 +84,14 @@ class Cabinet extends Component {
                         posters.map((mov, i) => {
                             return (
                                 <div className="col-md-4" key={i} style={{marginTop: "5px"}}>
-                                    <Image src={mov ? mov : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
+                                    <Image
+                                        src={mov ? mov : 'https://react.semantic-ui.com/images/wireframe/image.png'}/>
                                 </div>
                             )
                         })
                         :
                         <div>
-                            <FormattedMessage id="cabinet.noWatch" defaultMessage="You have not watch anything yeat" />
+                            <FormattedMessage id="cabinet.noWatch" defaultMessage="You have not watch anything yeat"/>
                         </div>
                 }
             </ div>
@@ -96,37 +99,69 @@ class Cabinet extends Component {
     }
 
     changeInfo() {
+        const token = localStorage.getItem('token');
         const data = {
-            name: this.state.login,
-            password: this.state.pass,
-            password_confirmation: this.state.pass,
-            firstname: this.state.fname,
-            lastname: this.state.lname,
+            username: this.state.username,
+            firstname: this.state.firstname,
+            lastname: this.state.lastname,
             email: this.state.email,
+
         };
-        axios.post('http://localhost:8000/api/cabinet/change-info', {
+        fetch('http://localhost:8000/api/cabinet/change-info', {
+            method: 'POST',
+            body: JSON.stringify(data),
             headers: {
                 'Authorization': 'Bearer ' + token,
                 'Content-Type': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest'
-            },
+            }
+        }).then((res) => res.json())
+            .then((responce) => {
+                console.log(responce)
+            });
+    }
 
-        })
+    changePass() {
+        const token = localStorage.getItem('token');
+        const data = {
+            password: this.state.pass,
+            password_confirmation: this.state.pass_rep,
+
+        };
+        fetch('http://localhost:8000/api/cabinet/change-pass', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        }).then((res) => res.json())
+            .then((responce) => {
+                console.log(responce)
+            });
+    }
+
+    changeHandler(e) {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+        console.log('this.state = ', this.state)
     }
 
     imgFileToBase64 = (file) => {
         return new Promise((resolve, reject) => {
             let reader = new FileReader();
-        
+
             reader.onload = e => {
                 resolve(e.target.result);
             }
-        
+
             reader.onerror = e => {
                 console.error(e.target.error);
                 reject(e.target.error);
             }
-        
+
             reader.readAsDataURL(file);
         });
     }
@@ -173,14 +208,14 @@ class Cabinet extends Component {
 
         const token = localStorage.getItem('token');
         fetch('http://127.0.0.1:8000/api/cabinet/change-avatar', {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers:{
-                    'Authorization': 'Bearer ' + token,
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
             .then((res) => res.json())
             .then((res) => {
                 this.setState({
@@ -212,10 +247,10 @@ class Cabinet extends Component {
 
     render() {
         // this.state.watchedFilms.map((mov, i) => console.log(mov));
-        console.log("state", this.state);
+        // console.log("state", this.state);
         return (
-            <div className="Cabinet container" >        
-                <div className="avatar row" >
+            <div className="Cabinet container">
+                <div className="avatar row">
                     <div className="col-6 col-md-4">
                         <input
                             type="file"
@@ -226,12 +261,12 @@ class Cabinet extends Component {
                         <Image
                             onClick={() => this.fileInput.current.click()}
                             fluid
-                            label={{ as: 'a', color: 'red', corner: 'right', icon: 'save' }}
-                            src={!this.state.chosePhotoStage ? this.state.userData.avatar !== undefined && this.state.userData.avatar !== null  ? "http://127.0.0.1:8000/" + this.state.userData.avatar : 'https://react.semantic-ui.com/images/wireframe/image.png' : this.state.tmpPhoto}
+                            label={{as: 'a', color: 'red', corner: 'right', icon: 'save'}}
+                            src={!this.state.chosePhotoStage ? this.state.userData.avatar !== undefined && this.state.userData.avatar !== null ? "http://127.0.0.1:8000/" + this.state.userData.avatar : 'https://react.semantic-ui.com/images/wireframe/image.png' : this.state.tmpPhoto}
                         />
                         {
                             this.state.chosePhotoStage &&
-                            <div style={{ marginTop: "5px"}}>
+                            <div style={{marginTop: "5px"}}>
                                 <Button negative onClick={this.cancelPhotoUpload}>
                                     {this.props.componentState.intl.locale === "en" ? "Cancel" : "Отменить"}
                                 </Button>
@@ -242,50 +277,56 @@ class Cabinet extends Component {
                         }
                     </div>
                     <div className="col-6 col-md-4">
-                    <List>
-                        <List.Item icon='user' content={this.state.userData.name} />
-                        <List.Item icon='user' content={this.state.userData.firstname + " " + this.state.userData.lastname} />
-                        <List.Item
-                            icon='mail'
-                            content={this.state.userData.email}
-                        />
-                    </List>
+                        <List>
+                            <List.Item icon='user' content={this.state.userData.name}/>
+                            <List.Item icon='user'
+                                       content={this.state.userData.firstname + " " + this.state.userData.lastname}/>
+                            <List.Item
+                                icon='mail'
+                                content={this.state.userData.email}
+                            />
+                        </List>
                     </div>
                     <div className="infoUser col-6 col-md-3">
                         <Input iconPosition='left' placeholder='Email'>
-                            <Icon name='at' />
-                            <input />
+                            <Icon name='at'/>
+                            <input name="email" onChange={this.changeHandler}/>
                         </Input>
-                        <Input iconPosition='left' placeholder={this.props.componentState.intl.locale === "en" ? 'Username' : 'Имя пользователя'}>
-                            <Icon name='user' />
-                            <input />
+                        <Input iconPosition='left'
+                               placeholder={this.props.componentState.intl.locale === "en" ? 'Username' : 'Имя пользователя'}>
+                            <Icon name='user'/>
+                            <input name="username" onChange={this.changeHandler}/>
                         </Input>
-                        <Input iconPosition='left' placeholder={this.props.componentState.intl.locale === "en" ? 'Firstname' : 'Имя'}>
-                            <Icon name='address book' />
-                            <input />
+                        <Input iconPosition='left'
+                               placeholder={this.props.componentState.intl.locale === "en" ? 'Firstname' : 'Имя'}>
+                            <Icon name='address book'/>
+                            <input name="firstname" onChange={this.changeHandler}/>
                         </Input>
-                        <Input iconPosition='left' placeholder={this.props.componentState.intl.locale === "en" ? 'Lastname' : 'Фамилия'}>
-                            <Icon name='address book' />
-                            <input />
+                        <Input iconPosition='left'
+                               placeholder={this.props.componentState.intl.locale === "en" ? 'Lastname' : 'Фамилия'}>
+                            <Icon name='address book'/>
+                            <input name="lastname" onChange={this.changeHandler}/>
                         </Input>
-                        <Button>
-                            <FormattedMessage id="cabinet.changeInfoBtn" defaultMessage="Change info" />
+                        <Button onClick={this.changeInfo}>
+                            <FormattedMessage id="cabinet.changeInfoBtn" defaultMessage="Change info"/>
                         </Button>
-                        <Input iconPosition='left' placeholder={this.props.componentState.intl.locale === "en" ? 'Password' : 'Пароль'}>
-                            <Icon name='privacy' />
-                            <input />
+                        <Input iconPosition='left'
+                               placeholder={this.props.componentState.intl.locale === "en" ? 'Password' : 'Пароль'}>
+                            <Icon name='privacy'/>
+                            <input name="pass" onChange={this.changeHandler}/>
                         </Input>
-                        <Input iconPosition='left' placeholder={this.props.componentState.intl.locale === "en" ? 'Password confirmation' : 'Подтверждение пароля'}>
-                            <Icon name='privacy' />
-                            <input />
+                        <Input iconPosition='left'
+                               placeholder={this.props.componentState.intl.locale === "en" ? 'Password confirmation' : 'Подтверждение пароля'}>
+                            <Icon name='privacy'/>
+                            <input name="pass_rep" onChange={this.changeHandler}/>
                         </Input>
-                        <Button>
-                            <FormattedMessage id="cabinet.changePassBtn" defaultMessage="Change password" />
+                        <Button onClick={this.changePass}>
+                            <FormattedMessage id="cabinet.changePassBtn" defaultMessage="Change password"/>
                         </Button>
                     </div>
                 </div>
                 <div className="Seen">
-                    { this.renderLastSeen(this.state.posters) }
+                    {this.renderLastSeen(this.state.posters)}
                 </div>
             </div>
         );
