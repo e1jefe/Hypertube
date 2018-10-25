@@ -21,40 +21,47 @@ class CabinetController extends Controller
 {
     public $successStatus = 200;
 
-    public function userInfo(){
+    public function userInfo()
+    {
         $user = auth()->guard('api')->user();
         $user->avatar = 'data:image/' . "jpeg" . ';base64,' . base64_encode(file_get_contents($user->avatar));
         return response()->json($user);
     }
 
-    public function changeInfo(Request $request){
+    public function changeInfo(Request $request)
+    {
         $user = auth()->guard('api')->user();
-        if(strcmp($request->email, $user->email) === 0){
+//        return response()->json($user);
+        if (strcmp($request->email, $user->email) === 0) {
             $request->validate([
-                'name' => 'required|string',
-                'firstname' => 'required|string',
-                'lastname' => 'required|string'
+                'name' => 'string',
+                'firstname' => 'string',
+                'lastname' => 'string'
             ]);
-        }else{
+        } else {
             $request->validate([
-                'name' => 'required|string',
-                'firstname' => 'required|string',
-                'lastname' => 'required|string',
-                'email' => 'required|string|email|unique:users'
+                'name' => 'string',
+                'firstname' => 'string',
+                'lastname' => 'string',
+                'email' => 'string|email|unique:users'
             ]);
         }
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->firstname = $request->firstname;
-        $user->lastname = $request->lastname;
+        if(!empty($request->name))
+            $user->name = $request->name;
+        if(!empty($request->email))
+            $user->email = $request->email;
+        if(!empty($request->firstname))
+            $user->firstname = $request->firstname;
+        if(!empty($request->lastname))
+            $user->lastname = $request->lastname;
         $user->save();
         return response()->json($user);
     }
 
-    public function changePass(Request $request){
+    public function changePass(Request $request)
+    {
         $request->validate([
             'password' => 'required|string|confirmed|min:7|regex:/^(?=.*[a-z])(?=.*\d)(?:[^A-Z\n\r]*[A-Z]){1}[^A-Z\n\r]*$/'
-
         ]);
         $userToken = auth()->guard('api')->user();
         $userBase = User::where('email', $userToken->email)->first();
@@ -63,17 +70,18 @@ class CabinetController extends Controller
         return response()->json($userBase);
     }
 
-    public function changeAvatar(Request $request){
+    public function changeAvatar(Request $request)
+    {
         $user = auth()->guard('api')->user();
         $img = $request->avatar;
         $avatarPath = 'users_avatar/' . $user->id;
-        if(!file_exists('users_avatar')){
+        if (!file_exists('users_avatar')) {
             mkdir('users_avatar');
         }
-        if(!file_exists($avatarPath)) {
+        if (!file_exists($avatarPath)) {
             mkdir($avatarPath);
         }
-        if(file_exists($user->avatar)) {
+        if (file_exists($user->avatar)) {
             unlink($user->avatar);
         }
         $img = str_replace('data:image/png;base64,', '', $img);
@@ -90,21 +98,23 @@ class CabinetController extends Controller
         return response()->json($user);
     }
 
-    public function watchedFilmsUsersReturn(){
+    public function watchedFilmsUsersReturn()
+    {
         $user = auth()->guard('api')->user();
         $filmsArray = WatchedFilmsUser::where('id_user', $user->id)->orderBy('updated_at', 'desc')->get();
         return response()->json($filmsArray);
     }
 
-    public function watchedFilmsUsersCreate(Request $request){
-        if(empty($request->id_film))
+    public function watchedFilmsUsersCreate(Request $request)
+    {
+        if (empty($request->id_film))
             return response()->json(false);
         $filmExist = WatchedFilmsUser::where('id_film', $request->id_film)->first();
         $user = auth()->guard('api')->user();
         $filmsArray = WatchedFilmsUser::where('id_user', $user->id)->get();
-        if(!empty($filmExist)){
+        if (!empty($filmExist)) {
             WatchedFilmsUser::where('id_film', $request->id_film)->update(['updated_at' => date("Y-m-d H:i:s")]);
-        }else{
+        } else {
             if (count($filmsArray) === 6)
                 WatchedFilmsUser::where('id_user', $user->id)->orderBy('updated_at', 'asc')->first()->delete();
             $filmNew = new WatchedFilmsUser;
@@ -114,5 +124,16 @@ class CabinetController extends Controller
         }
         $filmNew = true;
         return response()->json($filmNew);
+    }
+
+    public function returnAllWatchedFilms(Request $request)
+    {
+        $user = auth()->guard('api')->user();
+        $filmsArray = WatchedFilmsUser::select('id_film')->where('id_user', $user->id)->get();
+        $res = [];
+        foreach ($filmsArray as $val) {
+            array_push($res, intval($val["id_film"]));
+        }
+        return response()->json($res);
     }
 }

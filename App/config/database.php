@@ -46,7 +46,7 @@ return [
             'database' => env('DB_DATABASE', 'app'),
             'username' => env('DB_USERNAME', 'root'),
             'password' => env('DB_PASSWORD', '123456'),
-            'unix_socket' => '/Users/skorotko/MAMP/mysql/tmp/mysql.sock',
+            'unix_socket' => '/Users/vsarapin/programs/MAMP/mysql/tmp/mysql.sock',
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',

@@ -7,10 +7,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Socialite;
+use Carbon\Carbon;
 
 class LoginController extends Controller
 {
-    protected $redirectTo = 'http://localhost:3000';
+    protected $redirectTo = 'http://localhost:3000/social/';
 
     public function redirectToProvider($provider)
     {
@@ -27,11 +28,12 @@ class LoginController extends Controller
         $github = Socialite::driver($provider)->stateless()->user();
 
         $user = $this->findOrCreateUser($github, $provider);
-        if($user) {
-            Auth::login($user, true);
-            return redirect($this->redirectTo);
+        if ($user) {
+            $tokenResult = $user->createToken('Personal Access Token');
+            return redirect($this->redirectTo . $tokenResult->accessToken);
         } else
-            return response()->json(false, 401);
+            return abort(404);
+//            return response()->json( 404);
     }
 
     /**
@@ -42,7 +44,7 @@ class LoginController extends Controller
      */
     private function findOrCreateUser($githubUser, $provider)
     {
-        if ($authUser = User::where('provider', $provider)->first()) {
+        if ($authUser = User::where('provider_id', $githubUser->id)->first()) {
             return $authUser;
         }
         $mail = $githubUser->getEmail();
@@ -54,9 +56,8 @@ class LoginController extends Controller
         return User::create([
             'name' => $githubUser->getName(),
             'email' => $githubUser->getEmail(),
-            'provider_id' => $githubUser->getId(),
+            'provider_id' => ($provider == "intra") ? $githubUser->id : $githubUser->getId(),
             'provider' => $provider
         ]);
-
     }
 }

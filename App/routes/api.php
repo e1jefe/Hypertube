@@ -48,6 +48,7 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'cabinet'
 ], function () {
+    Route::post('all-watched-films', 'CabinetController@returnAllWatchedFilms');
     Route::get('user-info', 'CabinetController@userInfo');
     Route::post('change-info', 'CabinetController@changeInfo');
     Route::post('change-pass', 'CabinetController@changePass');

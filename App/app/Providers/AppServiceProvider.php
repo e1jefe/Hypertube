@@ -13,14 +13,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $socialite = $this->app->make('Laravel\Socialite\Contracts\Factory');
-        $socialite->extend(
-            'intra',
-            function ($app) use ($socialite) {
-                $config = $app['config']['services.intra'];
-                return $socialite->buildProvider(IntraProvider::class, $config);
-            }
-        );
+//        $socialite = $this->app->make('Laravel\Socialite\Contracts\Factory');
+//        $socialite->extend(
+//            'intra',
+//            function ($app) use ($socialite) {
+//                $config = $app['config']['services.intra'];
+//                return $socialite->buildProvider(IntraProvider::class, $config);
+//            }
+//        );
+        \Schema::defaultStringLength(150);
+        $this->bootIntraSocialite();
     }
 
     /**
@@ -31,5 +33,16 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+    }
+    private function bootIntraSocialite()
+    {
+        $socialite = $this->app->make('Laravel\Socialite\Contracts\Factory');
+        $socialite->extend(
+            'intra',
+            function ($app) use ($socialite) {
+                $config = $app['config']['services.intra'];
+                return $socialite->buildProvider(IntraProvider::class, $config);
+            }
+        );
     }
 }

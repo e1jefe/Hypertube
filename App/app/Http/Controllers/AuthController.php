@@ -68,14 +68,14 @@ class AuthController extends Controller
         $credentials['active'] = 1;
         $credentials['deleted_at'] = null;
 
-        if(!Auth::attempt($credentials))
+        if (!Auth::attempt($credentials))
             return response()->json([
                 'message' => 'Unauthorized'
             ], 401);
         $user = $request->user();
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
-        if ($request->remember_me)
+//        if ($request->remember_me)
             $token->expires_at = Carbon::now()->addWeeks(1);
         $token->save();
         return response()->json([

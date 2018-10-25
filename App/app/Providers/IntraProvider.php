@@ -61,6 +61,7 @@ class IntraProvider extends AbstractProvider implements ProviderInterface
     {
         return (new User)->setRaw($user)->map([
             'nickname' => Arr::get($user, 'login'),
+            'id' => Arr::get($user, 'id'),
             'name' => Arr::get($user, 'displayname'),
             'email' => Arr::get($user, 'email'),
             'avatar' => Arr::get($user, 'image_url'),
