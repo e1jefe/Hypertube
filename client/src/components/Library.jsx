@@ -195,7 +195,8 @@ class Library extends Component {
             currentGenre: [],
             pageStart: 1,
             error: "",
-            movieTitle: ""
+            movieTitle: "",
+            rememberPrevRes: 0
         };
         this.changeSort = this.changeSort.bind(this);
         this.changeRate = this.changeRate.bind(this);
@@ -358,7 +359,7 @@ class Library extends Component {
 
     loadItems = () => {
         // console.log("yearGap ", this.state.yearGap);
-        // console.log("state ", this.state);
+        console.log("has More ", this.state.hasMore);
 
         if (this.state.hasMore) {
             const baseUrl = "https://yts.am/api/v2/list_movies.json?";
@@ -414,7 +415,7 @@ class Library extends Component {
                             // console.log("отфильтровано < 20", filteredMovies.length < 20);
                             // console.log("кратно 4", (this.state.movies.length + filteredMovies.length) % 4 !== 0);
                             // console.log("новый результат кратно 20", (this.state.movies.length) % 20);
-
+                            const prevMovRes = this.state.rememberPrevRes + filteredMovies.length;
                             this.setState({
                                 hasMore: (this.state.movies.length + filteredMovies.length < response.data.data.movie_count),
                                 isLoading: false,
@@ -422,10 +423,21 @@ class Library extends Component {
                                 ...this.state.movies,
                                 ...filteredMovies,
                                 ],
-                                pageStart: newPage
+                                pageStart: newPage,
+                                rememberPrevRes: prevMovRes
                             });
-                            if (filteredMovies.length < 20 && (this.state.movies.length % 4 !== 0)) {
+                            // if (filteredMovies.length < 20 && (this.state.movies.length % 4 !== 0)) {
+                            //     this.loadItems();
+                            // }
+                            console.log("prevMovRes", prevMovRes)
+
+                            if (prevMovRes < 20 && this.state.hasMore) {
+                                console.log("call more")
                                 this.loadItems();
+                            } else {
+                                this.setState({
+                                    rememberPrevRes: 0
+                                })
                             }
                         } else {
                             this.setState({
