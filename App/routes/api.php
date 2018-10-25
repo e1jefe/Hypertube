@@ -28,7 +28,7 @@ Route::group([
 
     Route::group([
         'middleware' => 'auth:api'
-    ], function() {
+    ], function () {
         Route::get('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
     });
@@ -69,11 +69,11 @@ Route::group([
 
 Route::group([
     'namespace' => 'Films',
-    'middleware' => 'api',
     'prefix' => 'films'
-], function () {
-    Route::post('create-films', 'FilmsController@createFilmsWatchedUsers');
-    Route::post('return-films', 'FilmsController@returnFilmsMoreMonth');
+],
+    function () {
+        Route::post('create-films', 'FilmsController@createFilmsWatchedUsers');
+        Route::get('return-films', 'FilmsController@returnFilmsMoreMonth');
 });
 
 header('Access-Control-Allow-Origin:  *');

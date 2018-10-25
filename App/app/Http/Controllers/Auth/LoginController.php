@@ -31,8 +31,10 @@ class LoginController extends Controller
         if ($user) {
             $tokenResult = $user->createToken('Personal Access Token');
             return redirect($this->redirectTo . $tokenResult->accessToken);
-        } else
-            return abort(404);
+        } else {
+            return redirect('http://localhost:3000/404');
+        }
+            //return abort(404);
 //            return response()->json( 404);
     }
 
