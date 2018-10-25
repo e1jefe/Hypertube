@@ -463,7 +463,11 @@ button {
     .signup-page .main-head {
       padding: 0.2em; }
       .signup-page .main-head .main-head-btn-holder {
-        width: 22%; }
+        width: 22%;
+        -webkit-box-pack: end;
+        -webkit-justify-content: flex-end;
+            -ms-flex-pack: end;
+                justify-content: flex-end; }
         .signup-page .main-head .main-head-btn-holder p {
           display: none; }
       .signup-page .main-head .main-head-logo a {
@@ -481,7 +485,6 @@ button {
         display: -webkit-flex;
         display: -ms-flexbox;
         display: flex;
-        width: 18%;
         -webkit-box-pack: justify;
         -webkit-justify-content: space-between;
             -ms-flex-pack: justify;
@@ -498,7 +501,7 @@ button {
           margin-left: 7px;
           width: 1px;
           height: 12px;
-          background: #737373;
+          background: #e6e6e6;
           content: '';
           display: inline-block; }
     .signup-page .signup-page-content {
@@ -514,7 +517,8 @@ button {
         font-weight: bold; }
       .signup-page .signup-page-content h3 {
         color: #737373;
-        background: rgba(255, 255, 255, 0.6); }
+        background: rgba(255, 255, 255, 0.6);
+        font-size: 2.5em; }
       .signup-page .signup-page-content .back-s-u {
         position: absolute;
         top: 0;
@@ -534,7 +538,7 @@ button {
         margin-top: 20px;
         padding: 3em 3em;
         position: absolute;
-        top: 50%;
+        top: 49%;
         left: 50%;
         -webkit-transform: translate(-50%, -50%);
             -ms-transform: translate(-50%, -50%);
@@ -577,6 +581,12 @@ button {
               left: 4%; }
               .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-email input + label:after {
                 right: -1px; }
+  .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder input + label i {
+    font-size: 2.2em; }
+  .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder .form-btn-submit {
+    font-size: 2em; }
+  .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .social-media {
+    font-size: 2.6em; }
   .ui.active.modal {
     margin: 25% auto 0;
     -webkit-transform: translateY(0);

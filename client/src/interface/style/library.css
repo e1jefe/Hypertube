@@ -266,12 +266,27 @@
         width: 96%; }
     .library-container .control.need-space .year-select {
       margin: 20px auto 0px;
-      padding-right: 16px;
-      height: 20px; }
+      padding-right: 0;
+      height: 20px;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: justify;
+      -webkit-justify-content: space-between;
+          -ms-flex-pack: justify;
+              justify-content: space-between;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center;
+      width: 100%; }
       .library-container .control.need-space .year-select button {
         height: 30px;
         padding: 5px;
         margin-right: 0;
         font-size: 14px; }
+      .library-container .control.need-space .year-select .year-select-input-ru {
+        max-width: 31.5%; }
   .library-container .input-range__label-container {
     font-size: 9px; } }

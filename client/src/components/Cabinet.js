@@ -20,7 +20,6 @@ class Cabinet extends Component {
             chosePhotoStage: false,
             tmpPhoto: ""
         };
-        // this.closeModal = this.closeModal.bind(this);
         this.confirmPhotoUpload = this.confirmPhotoUpload.bind(this);
         this.cancelPhotoUpload = this.cancelPhotoUpload.bind(this);
         this.changeInfo = this.changeInfo.bind(this);
@@ -90,7 +89,7 @@ class Cabinet extends Component {
                             )
                         })
                         :
-                        <div>
+                        <div style={{width: "100%"}}>
                             <FormattedMessage id="cabinet.noWatch" defaultMessage="You have not watch anything yeat"/>
                         </div>
                 }
@@ -101,11 +100,10 @@ class Cabinet extends Component {
     changeInfo() {
         const token = localStorage.getItem('token');
         const data = {
-            username: this.state.username,
+            name: this.state.name,
             firstname: this.state.firstname,
             lastname: this.state.lastname,
             email: this.state.email,
-
         };
         fetch('http://localhost:8000/api/cabinet/change-info', {
             method: 'POST',
@@ -117,7 +115,22 @@ class Cabinet extends Component {
             }
         }).then((res) => res.json())
             .then((responce) => {
-                console.log(responce)
+                console.log(responce.errors)
+                if (responce.errors !== undefined) {
+                    this.setState({
+                        userData: responce
+                    })
+                } else {
+                    const msg = this.props.componentState.intl.locale === "en" ? 'Please check entered data' : 'Проверьте, пожалуйста, корректность введенных данных';
+                    toast.error(msg, {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true
+                    });
+                }
             });
     }
 
@@ -138,7 +151,17 @@ class Cabinet extends Component {
             }
         }).then((res) => res.json())
             .then((responce) => {
-                console.log(responce)
+                if (responce.errors) {
+                    const msg = this.props.componentState.intl.locale === "en" ? 'Please check entered data' : 'Проверьте, пожалуйста, корректность введенных данных';
+                    toast.error(msg, {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true
+                    });
+                }
             });
     }
 
@@ -242,15 +265,19 @@ class Cabinet extends Component {
         this.fileInput.current.value = "";
     }
 
-    // closeModal() {
-    //     this.setState({
-    //         showModal: false
-    //     });
-    // }
-
     render() {
         // this.state.watchedFilms.map((mov, i) => console.log(mov));
         // console.log("state", this.state);
+        let realName = "";
+        // if (this.state.userData.firstname !== null) {
+        //     realName = realName + this.state.userData.firstname;
+        // }
+        // if (this.state.userData.lastname !== null) {
+
+        // }
+        realName = this.state.userData.firstname !== null ? realName + this.state.userData.firstname : realName;
+        realName = this.state.userData.lastname !== null ? realName + " " + this.state.userData.lastname : realName;
+
         return (
             <div className="Cabinet container" >
                 <ToastContainer autoClose={5000} position="top-center" hideProgressBar={true}/>
@@ -283,9 +310,9 @@ class Cabinet extends Component {
                     <div className="col-6 col-md-4">
                         <List>
                             <List.Item icon='user' content={this.state.userData.name}/>
-                            {this.state.userData.provider === null &&
+                            {(this.state.userData.firstname !== null || this.state.userData.lastname !== null) &&
                                 <List.Item icon='user'
-                                       content={this.state.userData.firstname + " " + this.state.userData.lastname}/>
+                                       content={realName}/>
                             }
                             <List.Item
                                 icon='mail'
@@ -303,7 +330,7 @@ class Cabinet extends Component {
                         <Input iconPosition='left'
                                placeholder={this.props.componentState.intl.locale === "en" ? 'Username' : 'Имя пользователя'}>
                             <Icon name='user'/>
-                            <input name="username" onChange={this.changeHandler}/>
+                            <input name="name" onChange={this.changeHandler}/>
                         </Input>
                         <Input iconPosition='left'
                                placeholder={this.props.componentState.intl.locale === "en" ? 'Firstname' : 'Имя'}>
@@ -315,7 +342,7 @@ class Cabinet extends Component {
                             <Icon name='address book'/>
                             <input name="lastname" onChange={this.changeHandler}/>
                         </Input>
-                        <Button onClick={this.changeInfo}>
+                        <Button onClick={this.changeInfo} className="my-cabinet-btn">
                             <FormattedMessage id="cabinet.changeInfoBtn" defaultMessage="Change info"/>
                         </Button>
                         {this.state.userData.provider === null &&
@@ -330,7 +357,7 @@ class Cabinet extends Component {
                                     <Icon name='privacy'/>
                                     <input name="pass_rep" onChange={this.changeHandler}/>
                                 </Input>
-                                <Button onClick={this.changePass}>
+                                <Button onClick={this.changePass} className="my-cabinet-btn">
                                     <FormattedMessage id="cabinet.changePassBtn" defaultMessage="Change password"/>
                                 </Button>
                             </div>

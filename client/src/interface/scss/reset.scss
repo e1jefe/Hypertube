@@ -55,7 +55,7 @@ button {
 }
 
 .reset-page {
-	font-size: calc(16px + 6 * ((100vw - 320px) / 680));
+	font-size: calc(16px + 6 * ((100vw - 1320px) / 680));
 	font-family: 'Open Sans', sans-serif;
 	color: rgb(255, 255, 255);
 	background-color: $main-bg;
@@ -128,6 +128,10 @@ button {
 			justify-content: space-between;
 			color: inherit;
 			width: 30%;
+
+			p {
+				margin: 0;
+			}
 
 			.main-head-btn {
 				color: $btn-txt-col;
@@ -454,6 +458,10 @@ button {
     }
 }
 
+.ui.small.basic.modal.transition.visible.active.myResetModal {
+	transform: translate(75%, 50%);
+}
+
 
 @media screen and (min-width: 1240px)  {
 	.reset-page-content {
@@ -470,7 +478,8 @@ button {
 	}
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 769px) {
+
 	.reset-page {
 		.main-head {
 			padding: 0.2em;
@@ -479,11 +488,34 @@ button {
 				width: 35%;
 			}
 		}
+
 		.reset-page-content {
 			max-width: 540px;
 			
 			.reset-form-holder {
 				margin-top: 4em;
+
+				.reset-form {
+					.my-row {
+						.input-holder {
+							input {
+								font-size: 12px;
+							}
+			
+							input + label {
+								font-size: 1em;
+			
+								i {
+									font-size: 1em;
+								}
+							}
+
+							.form-btn-submit {
+								font-size: 1.2em;
+							}
+						}
+					}
+				}
 			}
 		}
 	}
@@ -498,6 +530,7 @@ button {
 
 			.main-head-btn-holder {
 				width: 22%;
+				justify-content: flex-end;
 
 				p {
 					display: none;
@@ -521,7 +554,6 @@ button {
 			.language-holder {
 				color: #5d2d6c;
 				display: flex;
-    			width: 18%;
 				justify-content: space-between;
 				
 				.language-option {
@@ -544,15 +576,6 @@ button {
 					&:focus {
 						outline: none;
 					}
-				}
-
-				button:first-child::after {
-					margin-left: 7px;
-					width: 1px;
-					height: 12px;
-					background: #e6e6e6;
-					content: '';
-					display: inline-block;
 				}
 			}
 		}
@@ -626,8 +649,19 @@ button {
 							margin: 0 0 5px 0;
 
 							input {
-								font-size: 14px;
+								font-size: 12px;
 								line-height: 1;
+							}
+
+							input + label {
+
+								i {
+									font-size: 1.5em;
+								}
+							}
+
+							.form-btn-submit {
+								font-size: 1.6em;
 							}
 						}
 
@@ -651,6 +685,10 @@ button {
 							input + label {
 
 								left: 4%;
+
+								i {
+									font-size: 1.5em;
+								}
 
 								&:after {
 									right: -1px;;

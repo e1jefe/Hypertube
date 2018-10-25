@@ -484,15 +484,14 @@ class Library extends Component {
                     </div>
                     <div className="year-select">
                         <FormattedMessage id="library.year" defaultMessage="Select year" />
-                        <Input pattern="[0-9]*" placeholder={this.props.componentState.intl.locale === 'en' ? 'From...' : 'С...'} onChange={this.changeMinYear} style={{margin: "0 5px"}} value={this.state.yearGap.min}/>
-                        <Input pattern="[0-9]*" placeholder={this.props.componentState.intl.locale === 'en' ? 'To...' : 'По...'} onChange={this.changeMaxYear} value={this.state.yearGap.max}/>
+                        <Input className="year-select-input-ru" pattern="[0-9]*" placeholder={this.props.componentState.intl.locale === 'en' ? 'From...' : 'С...'} onChange={this.changeMinYear} style={{margin: "0 5px"}} value={this.state.yearGap.min}/>
+                        <Input className="year-select-input-ru" pattern="[0-9]*" placeholder={this.props.componentState.intl.locale === 'en' ? 'To...' : 'По...'} onChange={this.changeMaxYear} value={this.state.yearGap.max}/>
                         <Button  color='purple' onClick={() => this.sendYear()} style={{marginLeft: "5px"}}>
                             <Button.Content visible>{this.props.componentState.intl.locale === 'en' ? "Go" : "Вперед"}</Button.Content>
                         </Button>
                     </div>
                 </div>
                 <div className="control column">
-
                     <div className="param">                    
                         <Dropdown placeholder={this.props.componentState.intl.locale === 'en' ? 'IMDB RATING' : 'IMDB рейтинг'} fluid search selection options={this.props.componentState.intl.locale === 'en' ? this.state.imdb : this.state.imdbRU} onChange={this.changeRate}/>
                     </div>

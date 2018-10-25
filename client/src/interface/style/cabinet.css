@@ -40,3 +40,12 @@ width: 80%;
 i.icon.save:before {
   cursor: pointer;
 }
+
+.ui.list .list>.item:first-child, .ui.list>.item:first-child, ol.ui.list li:first-child, ul.ui.list li:first-child,
+.ui.list .list>.item:last-child, .ui.list>.item:last-child, ol.ui.list li:last-child, ul.ui.list li:last-child {
+  word-break: break-all;
+}
+
+.ui.button.my-cabinet-btn {
+  width: 100%;
+}

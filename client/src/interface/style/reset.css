@@ -27,8 +27,8 @@ button {
     padding: 0; }
 
 .reset-page {
-  font-size: -webkit-calc(16px + 6 * ((100vw - 320px) / 680));
-  font-size: calc(16px + 6 * ((100vw - 320px) / 680));
+  font-size: -webkit-calc(16px + 6 * ((100vw - 1320px) / 680));
+  font-size: calc(16px + 6 * ((100vw - 1320px) / 680));
   font-family: 'Open Sans', sans-serif;
   color: white;
   background-color: #2e1536;
@@ -131,6 +131,8 @@ button {
               justify-content: space-between;
       color: inherit;
       width: 30%; }
+      .reset-page .main-head .main-head-btn-holder p {
+        margin: 0; }
       .reset-page .main-head .main-head-btn-holder .main-head-btn {
         color: #5d2d6c;
         text-decoration: none;
@@ -435,6 +437,11 @@ button {
             transform: translateY(0%);
     max-height: 515px; }
 
+.ui.small.basic.modal.transition.visible.active.myResetModal {
+  -webkit-transform: translate(75%, 50%);
+      -ms-transform: translate(75%, 50%);
+          transform: translate(75%, 50%); }
+
 @media screen and (min-width: 1240px) {
   .reset-page-content {
     max-width: 1140px; } }
@@ -445,7 +452,7 @@ button {
   .reset-page-content {
     max-width: 720px; } }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 769px) {
   .reset-page .main-head {
     padding: 0.2em; }
     .reset-page .main-head .main-head-btn-holder {
@@ -453,7 +460,15 @@ button {
   .reset-page .reset-page-content {
     max-width: 540px; }
     .reset-page .reset-page-content .reset-form-holder {
-      margin-top: 4em; } }
+      margin-top: 4em; }
+      .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder input {
+        font-size: 12px; }
+      .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder input + label {
+        font-size: 1em; }
+        .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder input + label i {
+          font-size: 1em; }
+      .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder .form-btn-submit {
+        font-size: 1.2em; } }
 
 @media screen and (max-width: 415px) {
   .reset-page {
@@ -461,7 +476,11 @@ button {
     .reset-page .main-head {
       padding: 0.2em; }
       .reset-page .main-head .main-head-btn-holder {
-        width: 22%; }
+        width: 22%;
+        -webkit-box-pack: end;
+        -webkit-justify-content: flex-end;
+            -ms-flex-pack: end;
+                justify-content: flex-end; }
         .reset-page .main-head .main-head-btn-holder p {
           display: none; }
       .reset-page .main-head .main-head-logo a {
@@ -479,7 +498,6 @@ button {
         display: -webkit-flex;
         display: -ms-flexbox;
         display: flex;
-        width: 18%;
         -webkit-box-pack: justify;
         -webkit-justify-content: space-between;
             -ms-flex-pack: justify;
@@ -504,13 +522,6 @@ button {
           font-weight: bold; }
           .reset-page .main-head .language-holder button:focus {
             outline: none; }
-        .reset-page .main-head .language-holder button:first-child::after {
-          margin-left: 7px;
-          width: 1px;
-          height: 12px;
-          background: #e6e6e6;
-          content: '';
-          display: inline-block; }
     .reset-page .reset-page-content {
       width: 100%;
       position: relative;
@@ -578,8 +589,12 @@ button {
               width: 100%;
               margin: 0 0 5px 0; }
               .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder input {
-                font-size: 14px;
+                font-size: 12px;
                 line-height: 1; }
+              .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder input + label i {
+                font-size: 1.5em; }
+              .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder .form-btn-submit {
+                font-size: 1.6em; }
             .reset-page .reset-page-content .reset-form-holder .reset-form .my-row:first-child {
               margin-bottom: 10px; }
             .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .tooltip-castom .tooltiptext {
@@ -588,5 +603,7 @@ button {
               padding-left: 45px; }
             .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-email input + label {
               left: 4%; }
+              .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-email input + label i {
+                font-size: 1.5em; }
               .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-email input + label:after {
                 right: -1px; } }

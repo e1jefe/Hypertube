@@ -191,7 +191,7 @@ class Reset extends Component {
                         </Dimmer>
                     </div>
                     <div>
-                        <Modal open={this.state.showModal} onClose={this.closeModal} basic size='small'>
+                        <Modal className="myResetModal" open={this.state.showModal} onClose={this.closeModal} basic size='small'>
                             <Header icon='unlock alternate' content={this.state.lang === 'en' ? "Reset password" : "Восстановление пароля"} />
                             <Modal.Content>
                                 <p>

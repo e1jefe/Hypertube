@@ -267,7 +267,7 @@ class Comments extends Component {
                         })
                         :
                         <div className="my-row">
-                            <div style={{margin: "0 auto"}}>
+                            <div style={{margin: "0 auto", padding: '10px'}}>
                                 <FormattedMessage id="movie.firstComment" defaultMessage="Be first who comment it" />
                             </div>
                         </div>
