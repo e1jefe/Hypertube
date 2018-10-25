@@ -1,0 +1,43 @@
+.Cabinet {
+  text-align: center;
+  margin-top: 20px;
+  min-height: calc(100vh - 125px);
+}
+.avatar{
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.infoUser{
+  text-align: center;
+  width: 30%;
+}
+.infoUser Button{
+width: 80%;
+}
+.lastSeen{
+  margin-top: 20px;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.lastSeen1{
+  margin-top: 20px;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+.Seen{
+  margin-top: 20px;
+}
+
+.ui.input {
+  width: 100%;
+}
+
+/* .ui.button,
+.ui.active.button:active,
+.ui.button:active {
+  width: 100%;
+} */
