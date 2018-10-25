@@ -283,8 +283,10 @@ class Cabinet extends Component {
                     <div className="col-6 col-md-4">
                         <List>
                             <List.Item icon='user' content={this.state.userData.name}/>
-                            <List.Item icon='user'
+                            {this.state.userData.provider === null &&
+                                <List.Item icon='user'
                                        content={this.state.userData.firstname + " " + this.state.userData.lastname}/>
+                            }
                             <List.Item
                                 icon='mail'
                                 content={this.state.userData.email}
@@ -292,10 +294,12 @@ class Cabinet extends Component {
                         </List>
                     </div>
                     <div className="infoUser col-6 col-md-3">
-                        <Input iconPosition='left' placeholder='Email'>
-                            <Icon name='at'/>
-                            <input name="email" onChange={this.changeHandler}/>
-                        </Input>
+                        {this.state.userData.provider === null &&
+                            <Input iconPosition='left' placeholder='Email'>
+                                <Icon name='at'/>
+                                <input name="email" onChange={this.changeHandler}/>
+                            </Input>
+                        }
                         <Input iconPosition='left'
                                placeholder={this.props.componentState.intl.locale === "en" ? 'Username' : 'Имя пользователя'}>
                             <Icon name='user'/>
@@ -314,19 +318,23 @@ class Cabinet extends Component {
                         <Button onClick={this.changeInfo}>
                             <FormattedMessage id="cabinet.changeInfoBtn" defaultMessage="Change info"/>
                         </Button>
-                        <Input iconPosition='left'
-                               placeholder={this.props.componentState.intl.locale === "en" ? 'Password' : 'Пароль'}>
-                            <Icon name='privacy'/>
-                            <input name="pass" onChange={this.changeHandler}/>
-                        </Input>
-                        <Input iconPosition='left'
-                               placeholder={this.props.componentState.intl.locale === "en" ? 'Password confirmation' : 'Подтверждение пароля'}>
-                            <Icon name='privacy'/>
-                            <input name="pass_rep" onChange={this.changeHandler}/>
-                        </Input>
-                        <Button onClick={this.changePass}>
-                            <FormattedMessage id="cabinet.changePassBtn" defaultMessage="Change password"/>
-                        </Button>
+                        {this.state.userData.provider === null &&
+                            <div>
+                                <Input iconPosition='left'
+                                    placeholder={this.props.componentState.intl.locale === "en" ? 'Password' : 'Пароль'}>
+                                    <Icon name='privacy'/>
+                                    <input name="pass" onChange={this.changeHandler}/>
+                                </Input>
+                                <Input iconPosition='left'
+                                    placeholder={this.props.componentState.intl.locale === "en" ? 'Password confirmation' : 'Подтверждение пароля'}>
+                                    <Icon name='privacy'/>
+                                    <input name="pass_rep" onChange={this.changeHandler}/>
+                                </Input>
+                                <Button onClick={this.changePass}>
+                                    <FormattedMessage id="cabinet.changePassBtn" defaultMessage="Change password"/>
+                                </Button>
+                            </div>
+                        }
                     </div>
                 </div>
                 <div className="Seen">

@@ -147,7 +147,7 @@ class Signin extends Component {
 
     render() {
         // console.log("history signin", this.props);
-        console.log("props login", this.props);
+        // console.log("props login", this.props);
 
         return (
             <main className="signin-page">
