@@ -263,7 +263,9 @@ class Signin extends Component {
                                         <a href="http://localhost:8000/api/auth/login/google">
                                             <i className="fab fa-google"></i>
                                         </a>
-                                        <a className="fortytwo" href="http://localhost:8000/api/auth/login/intra"></a>
+                                        <a className="fortytwo" href="http://localhost:8000/api/auth/login/intra">
+                                            42
+                                        </a>
                                     </div>
                                 </div>
                             </form>

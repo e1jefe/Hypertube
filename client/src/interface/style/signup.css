@@ -27,8 +27,8 @@ button {
     padding: 0; }
 
 .signup-page {
-  font-size: -webkit-calc(16px + 6 * ((100vw - 320px) / 680));
-  font-size: calc(16px + 6 * ((100vw - 320px) / 680));
+  font-size: -webkit-calc(16px + 6 * ((100vw - 1320px) / 680));
+  font-size: calc(16px + 6 * ((100vw - 1320px) / 680));
   font-family: 'Open Sans', sans-serif;
   color: white;
   background-color: #2e1536;
@@ -128,6 +128,9 @@ button {
               justify-content: space-between;
       color: inherit;
       width: 30%; }
+      .signup-page .main-head .main-head-btn-holder p,
+      .signup-page .main-head .main-head-btn-holder p.main-head-btn-description {
+        margin: 0; }
       .signup-page .main-head .main-head-btn-holder .main-head-btn {
         color: #5d2d6c;
         text-decoration: none;
@@ -191,7 +194,8 @@ button {
         text-decoration: none;
         color: #a55dbb; }
     .signup-page .signup-page-content h3 {
-      margin-top: 15px; }
+      margin-top: 15px;
+      font-size: 1.5em; }
     .signup-page .signup-page-content .signup-form-holder {
       -webkit-box-align: center;
       -webkit-align-items: center;

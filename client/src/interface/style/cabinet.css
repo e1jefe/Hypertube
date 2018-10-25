@@ -36,8 +36,7 @@ width: 80%;
   width: 100%;
 }
 
-/* .ui.button,
-.ui.active.button:active,
-.ui.button:active {
-  width: 100%;
-} */
+.ui.red.corner.label i:hover,
+i.icon.save:before {
+  cursor: pointer;
+}

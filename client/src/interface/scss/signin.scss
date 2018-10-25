@@ -129,6 +129,11 @@ button {
 			color: inherit;
 			width: 20%;
 
+			p,
+			p.main-head-btn-description {
+				margin: 0;
+			}
+
 			.main-head-btn {
 				color: $btn-txt-col;
 				word-wrap: break-word;
@@ -373,6 +378,12 @@ button {
 						width: 100%;
 						font-size: 1.3em;
 
+						a,
+						a:hover,
+						a:visited, {
+							color: #fff;
+						}
+						
 						div {
 							display: inline-block;
 
@@ -388,6 +399,7 @@ button {
 							background-size: cover;
 							background-position: 50%;
 							border-radius: 3px;
+							text-indent: -9999px;
 
 							img {
 								display: block;

@@ -55,7 +55,7 @@ button {
 }
 
 .signup-page {
-	font-size: calc(16px + 6 * ((100vw - 320px) / 680));
+	font-size: calc(16px + 6 * ((100vw - 1320px) / 680));
 	font-family: 'Open Sans', sans-serif;
 	color: rgb(255, 255, 255);
 	background-color: $main-bg;
@@ -128,6 +128,11 @@ button {
 			color: inherit;
 			width: 30%;
 
+			p,
+			p.main-head-btn-description {
+				margin: 0;
+			}
+
 			.main-head-btn {
 				color: $btn-txt-col;
 				text-decoration: none;
@@ -193,6 +198,7 @@ button {
 
 		h3 {
 			margin-top: 15px;
+			font-size: 1.5em;
 		}
 
 		.signup-form-holder {

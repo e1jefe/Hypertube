@@ -4,7 +4,6 @@ body {
   padding: 0;
   font-family: 'Open Sans', sans-serif; }
 
-
 button {
   border: none;
   margin: 0;
@@ -130,6 +129,9 @@ button {
               justify-content: space-between;
       color: inherit;
       width: 20%; }
+      .signin-page .main-head .main-head-btn-holder p,
+      .signin-page .main-head .main-head-btn-holder p.main-head-btn-description {
+        margin: 0; }
       .signin-page .main-head .main-head-btn-holder .main-head-btn {
         color: #5d2d6c;
         word-wrap: break-word;
@@ -374,6 +376,10 @@ button {
                   justify-content: space-around;
           width: 100%;
           font-size: 1.3em; }
+          .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .social-media a,
+          .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .social-media a:hover,
+          .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .social-media a:visited {
+            color: #fff; }
           .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .social-media div {
             display: inline-block; }
             .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .social-media div:hover {
@@ -388,7 +394,8 @@ button {
                     background-size: cover;
             background-position: 50%;
             -webkit-border-radius: 3px;
-                    border-radius: 3px; }
+                    border-radius: 3px;
+            text-indent: -9999px; }
             .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .social-media .fortytwo img {
               display: block;
               width: 100%; }

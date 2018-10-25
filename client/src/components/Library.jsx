@@ -112,14 +112,9 @@ class Library extends Component {
             ],
             genre: [
                 {
-                    key: 'love',
-                    value: 'romance',
-                    text: 'Romance'
-                },
-                {
-                    key: 'comedy',
-                    value: 'comedy',
-                    text: 'Comedy'
+                    key: 'animation',
+                    value: 'animation',
+                    text: 'Animation'
                 },
                 {
                     key: 'action',
@@ -127,19 +122,9 @@ class Library extends Component {
                     text: 'Action'
                 },
                 {
-                    key: 'sci-fi',
-                    value: 'sci-fi',
-                    text: 'Sci-Fi'
-                },
-                {
-                    key: 'horror',
-                    value: 'horror',
-                    text: 'Horror'
-                },
-                {
-                    key: 'thriller',
-                    value: 'thriller',
-                    text: 'Thriller'
+                    key: 'comedy',
+                    value: 'comedy',
+                    text: 'Comedy'
                 },
                 {
                     key: 'drama',
@@ -147,19 +132,34 @@ class Library extends Component {
                     text: 'Drama'
                 },
                 {
-                    key: 'animation',
-                    value: 'animation',
-                    text: 'Animation'
+                    key: 'fantasy',
+                    value: 'fantasy',
+                    text: 'Fantasy'
+                },
+                {
+                    key: 'horror',
+                    value: 'horror',
+                    text: 'Horror'
+                },
+                {
+                    key: 'love',
+                    value: 'romance',
+                    text: 'Romance'
                 },
                 {
                     key: 'mystery',
                     value: 'mystery',
                     text: 'Mystery'
-                },
+                },    
                 {
-                    key: 'fantasy',
-                    value: 'fantasy',
-                    text: 'Fantasy'
+                    key: 'sci-fi',
+                    value: 'sci-fi',
+                    text: 'Sci-Fi'
+                },    
+                {
+                    key: 'thriller',
+                    value: 'thriller',
+                    text: 'Thriller'
                 }
             ],
             sortParam: [
@@ -209,21 +209,6 @@ class Library extends Component {
         this.changeMaxYear = this.changeMaxYear.bind(this);
         this.pushMovie = this.pushMovie.bind(this);
         this.handleScroll = this.handleScroll.bind(this);
-
-        // window.onscroll = () => {
-        //     const {
-        //         loadItems,
-        //         state: {
-        //             isLoading,
-        //             hasMore
-        //         },
-        //     } = this;
-        //     if ( isLoading || !hasMore) return;
-        //     // Checks that the page has scrolled to the bottom
-        //     if ( window.innerHeight + document.documentElement.scrollTop === document.documentElement.scrollHeight ) {
-        //         loadItems();
-        //     }
-        // };
     }
 
     componentWillUnmount() {
@@ -232,25 +217,26 @@ class Library extends Component {
 
     componentDidMount() {
         const token = localStorage.getItem('token');
-        if (token === null) {
-            this.props.history.push('/signin');
-        }
-        window.addEventListener('scroll', this.handleScroll);
-        fetch('http://127.0.0.1:8000/api/cabinet/all-watched-films', {
-                method: 'POST',
-                headers:{
-                    'Authorization': 'Bearer ' + token,
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then((res) => res.json())
-            .then((res) => {
-                this.setState({
-                    watchedFilms: res
+        // if (token === null) {
+        //     this.props.history.push('/signin');
+        // } else {
+            window.addEventListener('scroll', this.handleScroll);
+            fetch('http://127.0.0.1:8000/api/cabinet/all-watched-films', {
+                    method: 'POST',
+                    headers:{
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then((res) => res.json())
+                .then((res) => {
+                    this.setState({
+                        watchedFilms: res
+                    });
                 });
-            });
-        this.loadItems();
+            this.loadItems();
+        // }
     }
 
     handleScroll() {

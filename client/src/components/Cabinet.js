@@ -5,8 +5,8 @@ import { Image, Icon, Input, List, Button } from 'semantic-ui-react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class Cabinet extends Component {
 
@@ -23,7 +23,7 @@ class Cabinet extends Component {
         // this.closeModal = this.closeModal.bind(this);
         this.confirmPhotoUpload = this.confirmPhotoUpload.bind(this);
         this.cancelPhotoUpload = this.cancelPhotoUpload.bind(this);
-        this.changeInfo = this.changeInfo.bind(this);
+        // this.changeInfo = this.changeInfo.bind(this);
         this.fileInput = React.createRef();
     }
 
@@ -95,24 +95,24 @@ class Cabinet extends Component {
         );
     }
 
-    changeInfo() {
-        const data = {
-            name: this.state.login,
-            password: this.state.pass,
-            password_confirmation: this.state.pass,
-            firstname: this.state.fname,
-            lastname: this.state.lname,
-            email: this.state.email,
-        };
-        axios.post('http://localhost:8000/api/cabinet/change-info', {
-            headers: {
-                'Authorization': 'Bearer ' + token,
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-            },
+    // changeInfo() {
+    //     const data = {
+    //         name: this.state.login,
+    //         password: this.state.pass,
+    //         password_confirmation: this.state.pass,
+    //         firstname: this.state.fname,
+    //         lastname: this.state.lname,
+    //         email: this.state.email,
+    //     };
+    //     axios.post('http://localhost:8000/api/cabinet/change-info', {
+    //         headers: {
+    //             'Authorization': 'Bearer ' + token,
+    //             'Content-Type': 'application/json',
+    //             'X-Requested-With': 'XMLHttpRequest'
+    //         },
 
-        })
-    }
+    //     })
+    // }
 
     imgFileToBase64 = (file) => {
         return new Promise((resolve, reject) => {
@@ -144,19 +144,25 @@ class Cabinet extends Component {
                         tmpPhoto: tmpPhoto
                     });
                 } else {
-                    iziToast.error({
-                        title: 'Error',
-                        message: this.props.componentState.intl.locale === "en" ? 'To big file size. Please choose up to 3 MB.' : 'Слишком большой размер файла. Пожалуйста, выберите другой файл, размером до 3 МБ.',
-                        position: 'topCenter',
-                        progressBar: false
+                    const msg = this.props.componentState.intl.locale === "en" ? 'To big file size. Please choose up to 3 MB.' : 'Слишком большой размер файла. Пожалуйста, выберите другой файл, размером до 3 МБ.';
+                    toast.error(msg, {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true
                     });
                 }
             } else {
-                iziToast.error({
-                    title: 'Error',
-                    message: this.props.componentState.intl.locale === "en" ? 'You have uploaded an unsupported file type. Please select another one.' : 'Вы загрузили неподдерживаемый тип файла. Пожалуйста, выберите другой файл.',
-                    position: 'topCenter',
-                    progressBar: false
+                const msg = this.props.componentState.intl.locale === "en" ? 'You have uploaded an unsupported file type. Please select another one.' : 'Вы загрузили неподдерживаемый тип файла. Пожалуйста, выберите другой файл.';
+                toast.error(msg, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true
                 });
             }
         } else {
@@ -165,12 +171,9 @@ class Cabinet extends Component {
     }
 
     confirmPhotoUpload() {
-        console.log("confirm", this.state.uploadedPhoto);
         const data = {
             avatar: this.state.tmpPhoto.replace("+", " ")
         };
-        // console.log("data", data);
-
         const token = localStorage.getItem('token');
         fetch('http://127.0.0.1:8000/api/cabinet/change-avatar', {
                 method: 'POST',
@@ -214,7 +217,8 @@ class Cabinet extends Component {
         // this.state.watchedFilms.map((mov, i) => console.log(mov));
         console.log("state", this.state);
         return (
-            <div className="Cabinet container" >        
+            <div className="Cabinet container" >
+                <ToastContainer autoClose={5000} position="top-center" hideProgressBar={true}/>
                 <div className="avatar row" >
                     <div className="col-6 col-md-4">
                         <input
