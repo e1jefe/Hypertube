@@ -460,7 +460,7 @@ class Library extends Component {
 
     pushMovie(e){
         e.preventDefault();
-        const movId = e.target.getAttribute('movnbr');
+        const movId = e.currentTarget.getAttribute('movnbr');
         this.props.history.push('/movie/' + movId);
     }
 
