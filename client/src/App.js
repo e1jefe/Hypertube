@@ -10,6 +10,7 @@ import Reset from './components/Reset';
 import ResetConfirm from './components/ResetConfirm';
 import SignupConfirm from './components/SignupConfirm';
 import { IntlProvider } from 'react-intl';
+import SocialRedirect from "./components/SocialRedirect";
 
 class App extends Component {
   render() {
@@ -19,6 +20,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/signin" component={Signin}/>
             <Route path="/signup" component={Signup}/>
+            <Route path="/social/:token" component={SocialRedirect}/>
             <Route path="/signupConfirm/:token" component={SignupConfirm}/>
             <Route path="/resetpass" component={Reset}/>
             <Route path="/resetConfirm/:token" component={ResetConfirm}/>

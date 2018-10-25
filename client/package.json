@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.0",
     "izitoast": "^1.4.0",
     "lodash.throttle": "^4.1.1",
     "rc-slider": "^8.6.3",
