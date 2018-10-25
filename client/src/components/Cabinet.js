@@ -23,6 +23,7 @@ class Cabinet extends Component {
         // this.closeModal = this.closeModal.bind(this);
         this.confirmPhotoUpload = this.confirmPhotoUpload.bind(this);
         this.cancelPhotoUpload = this.cancelPhotoUpload.bind(this);
+        this.changeInfo = this.changeInfo.bind(this);
         this.fileInput = React.createRef();
     }
 
@@ -92,6 +93,25 @@ class Cabinet extends Component {
                 }
             </ div>
         );
+    }
+
+    changeInfo() {
+        const data = {
+            name: this.state.login,
+            password: this.state.pass,
+            password_confirmation: this.state.pass,
+            firstname: this.state.fname,
+            lastname: this.state.lname,
+            email: this.state.email,
+        };
+        axios.post('http://localhost:8000/api/cabinet/change-info', {
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+
+        })
     }
 
     imgFileToBase64 = (file) => {

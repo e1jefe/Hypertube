@@ -14,31 +14,10 @@ class SignupConfirm extends Component {
         };
         this.redirectSignin = this.redirectSignin.bind(this);
     }
-    
+
     componentDidMount() {
-        // console.log("token", this.props.match.params.token);
-        fetch('http://127.0.0.1:8000/api/auth/signup/activate/' + this.props.match.params.token, {
-            method: 'GET',
-            headers:{
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        }).then((res) => res.json())
-        .then((responce) => {
-            if (!responce.hasOwnProperty("message")) {
-                this.redirectSignin();
-            } else {
-                if (this.state.lang === 'en') {
-                    this.setState({
-                        errors: responce.message
-                    });
-                } else {
-                    this.setState({
-                        errors: 'Вы уже подтвердили свой аккаунт'
-                    });
-                }
-            }
-        });
+        localStorage.setItem('token', this.props.match.params.token);
+        this.redirectSignin();
     }
 
     redirectSignin() {
@@ -76,7 +55,7 @@ class SignupConfirm extends Component {
                 </header>
                 <div>
                     {
-                        this.state.errors.length !== 0 ? 
+                        this.state.errors.length !== 0 ?
                             (
                                 <div>
                                     <p style={{textAlign: "center"}}>

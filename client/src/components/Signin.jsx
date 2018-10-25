@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import '../interface/style/signin.css';
-import { NavLink } from 'react-router-dom';
-import { connect } from 'react-redux';
-import FacebookAuth from 'react-facebook-auth';
-import { FormattedMessage } from 'react-intl';
-import { updateIntl } from 'react-intl-redux';
-import { Button, Header, Image, Modal, Dimmer, Loader } from 'semantic-ui-react';
+import {NavLink} from 'react-router-dom';
+import {connect} from 'react-redux';
+// import FacebookAuth from 'react-facebook-auth';
+import {FormattedMessage} from 'react-intl';
+import {updateIntl} from 'react-intl-redux';
+import {Button, Header, Image, Modal, Dimmer, Loader} from 'semantic-ui-react';
 
-const MyFacebookButton = ({ onClick }) => (
-    <button onClick={onClick}>
-        <i className="fab fa-facebook-square"></i>
-    </button>
-);
+// const MyFacebookButton = ({ onClick }) => (
+//     <button onClick={onClick}>
+//         <i className="fab fa-github-square"></i>
+//     </button>
+// );
 
 class Signin extends Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -26,7 +26,7 @@ class Signin extends Component {
             processing: false
         };
         this.changeLanguage = this.changeLanguage.bind(this);
-        this.onChange = this.onChange.bind(this);        
+        this.onChange = this.onChange.bind(this);
         this.signinRequest = this.signinRequest.bind(this);
         this.signinFacebook = this.signinFacebook.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -101,7 +101,7 @@ class Signin extends Component {
         })
     }
 
-    signinRequest(event) {      
+    signinRequest(event) {
         event.preventDefault();
         const data = {
             email: this.state.email,
@@ -114,32 +114,32 @@ class Signin extends Component {
         fetch('http://127.0.0.1:8000/api/auth/login', {
             method: 'POST',
             body: JSON.stringify(data),
-            headers:{
+            headers: {
                 'Content-Type': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest'
             }
         }).then((res) => res.json())
-        .then((responce) => {
-            if (responce.message === "Unauthorized") {
-                if (this.state.lang === 'en') {
-                    this.setState({
-                        errors: "Something wrong with email or password",
-                        processing: false
-                    });
+            .then((responce) => {
+                if (responce.message === "Unauthorized") {
+                    if (this.state.lang === 'en') {
+                        this.setState({
+                            errors: "Something wrong with email or password",
+                            processing: false
+                        });
+                    } else {
+                        this.setState({
+                            errors: "Проверьте email или пароль",
+                            processing: false
+                        });
+                    }
                 } else {
                     this.setState({
-                        errors: "Проверьте email или пароль",
                         processing: false
                     });
+                    localStorage.setItem('token', responce.access_token);
+                    this.props.history.push('/');
                 }
-            } else {
-                this.setState({
-                    processing: false
-                })
-                localStorage.setItem('token', responce.access_token);
-                this.props.history.push('/');
-            }
-        });
+            });
     }
 
     signinFacebook(responce) {
@@ -156,44 +156,47 @@ class Signin extends Component {
         // console.log("history signin", this.props);
         console.log("props login", this.props);
 
-        return(
+        return (
             <main className="signin-page">
                 <header className="main-head">
                     <div className="main-head-logo">
                         <NavLink to="signin">
-                            <img src="./pics/logo.png" alt="our logo" />
+                            <img src="./pics/logo.png" alt="our logo"/>
                             <p>hypertube</p>
                         </NavLink>
                     </div>
                     <div className="language-holder">
                         <span className="language-option">
-                            <button onClick={() => this.changeLanguage('ru')} className={this.state.lang !== 'ru' ? "disabled" : null}>
+                            <button onClick={() => this.changeLanguage('ru')}
+                                    className={this.state.lang !== 'ru' ? "disabled" : null}>
                                 RU
                             </button>
                         </span>
-                        <button onClick={() => this.changeLanguage('en')} className={this.state.lang !== 'en' ? "disabled" : null}>
+                        <button onClick={() => this.changeLanguage('en')}
+                                className={this.state.lang !== 'en' ? "disabled" : null}>
                             EN
                         </button>
                     </div>
                     <div className="main-head-btn-holder">
                         <p className="main-head-btn-description">
-                            <FormattedMessage id="signin.account" defaultMessage="Need an account?" />
+                            <FormattedMessage id="signin.account" defaultMessage="Need an account?"/>
                         </p>
                         <NavLink role="button" to="signup" className="main-head-btn">
-                            <FormattedMessage id="signin.signup" defaultMessage="Sign up" />
+                            <FormattedMessage id="signin.signup" defaultMessage="Sign up"/>
                         </NavLink>
                     </div>
                 </header>
                 <section className="signin-page-content">
                     <div className="back-s-u"></div>
                     <h1>
-                        <FormattedMessage id="signin.greeting" defaultMessage="Hello. " />
+                        <FormattedMessage id="signin.greeting" defaultMessage="Hello. "/>
                         <NavLink to="signup" style={{marginLeft: "15px"}}>
-                            <FormattedMessage id="signin.try" defaultMessage=" Try Hypertube." />
+                            <FormattedMessage id="signin.try" defaultMessage=" Try Hypertube."/>
                         </NavLink>
                     </h1>
-                    <h3 >
-                        <FormattedMessage id="signin.legal" defaultMessage="The only legal online movie theatre in Unit Factory" />
+                    <h3>
+                        <FormattedMessage id="signin.legal"
+                                          defaultMessage="The only legal online movie theatre in Unit Factory"/>
                     </h3>
                     <div className="signin-form-holder">
                         <aside>
@@ -202,17 +205,18 @@ class Signin extends Component {
                         <div className="signin-form">
                             <form onSubmit={this.signinRequest}>
                                 <div className="form-foreword">
-                                    <FormattedMessage id="signin.title" defaultMessage="Sign in with email" />
+                                    <FormattedMessage id="signin.title" defaultMessage="Sign in with email"/>
                                 </div>
                                 {
-                                    this.state.errors.length !== 0 && 
-                                        <div className="form-error">
-                                            {this.state.lang === 'en' ? this.state.errors : 'Проверь email или пароль'}
-                                        </div>
+                                    this.state.errors.length !== 0 &&
+                                    <div className="form-error">
+                                        {this.state.lang === 'en' ? this.state.errors : 'Проверь email или пароль'}
+                                    </div>
                                 }
                                 <div className="my-row">
                                     <div className="input-holder">
-                                        <input type="text" placeholder="Email" required id="email" name="email" onChange={this.onChange}/>
+                                        <input type="text" placeholder="Email" required id="email" name="email"
+                                               onChange={this.onChange}/>
                                         <label htmlFor="email">
                                             <i className="fa fa-envelope"></i>
                                         </label>
@@ -220,47 +224,46 @@ class Signin extends Component {
                                 </div>
                                 <div className="my-row">
                                     <div className="input-holder">
-                                        <input type="password" placeholder={this.state.lang === 'en' ? "Password" : "Пароль"} required id="pass" name="pass" onChange={this.onChange}/>
+                                        <input type="password"
+                                               placeholder={this.state.lang === 'en' ? "Password" : "Пароль"} required
+                                               id="pass" name="pass" onChange={this.onChange}/>
                                         <label className="input-icon" htmlFor="pass">
                                             <i className="fa fa-key"></i>
                                         </label>
                                         <NavLink to="resetpass" className="reset-pass">
-                                            <FormattedMessage id="signin.reset" defaultMessage="Forgot?" />
+                                            <FormattedMessage id="signin.reset" defaultMessage="Forgot?"/>
                                         </NavLink>
                                     </div>
                                 </div>
                                 <div className="my-row">
                                     <div className="input-holder form-button">
                                         <button className="form-btn-submit">
-                                            <FormattedMessage id="signin.btn" defaultMessage="Sign in" />
+                                            <FormattedMessage id="signin.btn" defaultMessage="Sign in"/>
                                         </button>
                                     </div>
                                 </div>
                                 <div className="my-row">
                                     <div className="alternatieve">
                                         <h4>
-                                            <FormattedMessage id="signin.or" defaultMessage="OR" />
+                                            <FormattedMessage id="signin.or" defaultMessage="OR"/>
                                         </h4>
                                     </div>
                                 </div>
                                 <div className="my-row">
                                     <h4>
-                                        <FormattedMessage id="signin.social" defaultMessage="Sign in with social network" />
+                                        <FormattedMessage id="signin.social"
+                                                          defaultMessage="Sign in with social network"/>
                                     </h4>
                                 </div>
                                 <div className="my-row">
                                     <div className="social-media">
-                                        <div>
-                                            <FacebookAuth
-                                                appId="292030674968220"
-                                                callback={(res) => this.signinFacebook(res)}
-                                                component={MyFacebookButton}
-                                                />
-                                        </div>
-                                        <div>
-                                            <i className="fab fa-twitter-square"></i>
-                                        </div>
-                                        <div className="fortytwo"></div>
+                                        <a href="http://localhost:8000/api/auth/login/github">
+                                            <i className="fab fa-github-square"></i>
+                                        </a>
+                                        <a href="http://localhost:8000/api/auth/login/google">
+                                            <i className="fab fa-google"></i>
+                                        </a>
+                                        <a className="fortytwo" href="http://localhost:8000/api/auth/login/intra"></a>
                                     </div>
                                 </div>
                             </form>
@@ -269,32 +272,33 @@ class Signin extends Component {
                 </section>
                 <div>
                     <Modal dimmer="blurring" open={this.state.showModal} onClose={this.closeModal}>
-                    <Modal.Header>
-                        {this.state.lang === 'en' ? "Success" : "Успех"}
-                    </Modal.Header>
-                    <Modal.Content image>
-                        <Image wrapped size={window.innerWidth < 416 ? 'small' : 'medium'} src='./pics/projector-camera.png' />
-                        <Modal.Description>
-                        <Header>
-                            {this.state.lang === 'en' ? "Your account was registered" : "Ваш аккаунт зарегестрирован"}
-                        </Header>
-                        <p>
-                            {this.state.lang === 'en' ? "We sent you an activation link to given email." : "Мы отправили ссылку для активации аккаунта на указаный email."}
-                        </p>
-                        <p>
-                            {this.state.lang === 'en' ? "Please, follow it to activate your account." : "Пожалуйста, перейдите по ней"}
-                        </p>
-                        </Modal.Description>
-                    </Modal.Content>
-                    <Modal.Actions>
-                        <Button
-                            positive
-                            icon='checkmark'
-                            labelPosition='right'
-                            content={this.state.lang === 'en' ? "Got it" : "Понял"}
-                            onClick={this.closeModal}
-                        />
-                    </Modal.Actions>
+                        <Modal.Header>
+                            {this.state.lang === 'en' ? "Success" : "Успех"}
+                        </Modal.Header>
+                        <Modal.Content image>
+                            <Image wrapped size={window.innerWidth < 416 ? 'small' : 'medium'}
+                                   src='./pics/projector-camera.png'/>
+                            <Modal.Description>
+                                <Header>
+                                    {this.state.lang === 'en' ? "Your account was registered" : "Ваш аккаунт зарегестрирован"}
+                                </Header>
+                                <p>
+                                    {this.state.lang === 'en' ? "We sent you an activation link to given email." : "Мы отправили ссылку для активации аккаунта на указаный email."}
+                                </p>
+                                <p>
+                                    {this.state.lang === 'en' ? "Please, follow it to activate your account." : "Пожалуйста, перейдите по ней"}
+                                </p>
+                            </Modal.Description>
+                        </Modal.Content>
+                        <Modal.Actions>
+                            <Button
+                                positive
+                                icon='checkmark'
+                                labelPosition='right'
+                                content={this.state.lang === 'en' ? "Got it" : "Понял"}
+                                onClick={this.closeModal}
+                            />
+                        </Modal.Actions>
                     </Modal>
                 </div>
                 <div>
