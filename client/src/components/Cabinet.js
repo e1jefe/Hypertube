@@ -116,8 +116,8 @@ class Cabinet extends Component {
             }
         }).then((res) => res.json())
             .then((responce) => {
-                console.log(responce.errors)
-                if (responce.errors !== undefined) {
+                console.log(responce)
+                if (responce.errors === undefined) {
                     this.setState({
                         userData: responce
                     })

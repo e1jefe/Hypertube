@@ -113,13 +113,12 @@
       -webkit-transition: background-color .25 linear;
       -o-transition: background-color .25 linear;
       transition: background-color .25 linear;
-      cursor: pointer; }
+      cursor: pointer;
+      text-transform: uppercase; }
       .header .header-items .logout:hover {
         background-color: #f5edf7; }
-      .header .header-items .logout button {
-        cursor: pointer;
-        font-family: inherit;
-        text-transform: uppercase; }
+      .header .header-items .logout:focus {
+        outline: none; }
 
 .header-mob {
   display: none; }

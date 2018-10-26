@@ -360,6 +360,9 @@ button {
               color: #2f1736;
               background: #ebdaf1;
               cursor: pointer; }
+            .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder .form-btn-submit:focus {
+              outline: none;
+            }
         .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .reset-reset-pass {
           text-decoration: none;
           color: #a55dbb; }

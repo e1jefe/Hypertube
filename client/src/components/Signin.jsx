@@ -21,7 +21,6 @@ class Signin extends Component {
         this.changeLanguage = this.changeLanguage.bind(this);
         this.onChange = this.onChange.bind(this);
         this.signinRequest = this.signinRequest.bind(this);
-        this.signinFacebook = this.signinFacebook.bind(this);
         this.closeModal = this.closeModal.bind(this);
     }
 
@@ -113,7 +112,8 @@ class Signin extends Component {
             }
         }).then((res) => res.json())
             .then((responce) => {
-                if (responce.message === "Unauthorized") {
+                console.log("res", responce);
+                if (responce.message === "Unauthorized" || responce.message === "The given data was invalid.") {
                     if (this.state.lang === 'en') {
                         this.setState({
                             errors: "Something wrong with email or password",
@@ -133,10 +133,6 @@ class Signin extends Component {
                     this.props.history.push('/');
                 }
             });
-    }
-
-    signinFacebook(responce) {
-        console.log("from FB: ", responce);
     }
 
     onChange(event) {

@@ -197,7 +197,7 @@ class Signup extends Component {
                         <div className="signup-form">
                             <form onSubmit={this.signupRequest}>
                                 <div className="form-foreword">
-                                    <FormattedMessage id="signup.title" defaultMessage="Register accoutn" />
+                                    <FormattedMessage id="signup.title" defaultMessage="Register account" />
                                 </div>
                                 {
                                     this.state.errors.length !== 0 && 

@@ -15,6 +15,7 @@ class Reset extends Component {
         super(props);
         this.state = {
             newPass: "",
+            newPass2: "",
             email: "",
             errors: {},
             showModal: false,
@@ -83,10 +84,22 @@ class Reset extends Component {
 
     setNewPass(event) {
         event.preventDefault();
+        if (this.state.newPass !== this.state.newPass2) {
+            const msg = this.props.componentState.intl.locale === "en" ? 'Password confirmation does not match password' : 'Пароли не совпадают';
+            toast.error(msg, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+            });
+            return false;
+        }
         const data = {
             email: this.state.email,
             password: this.state.newPass,
-            password_confirmation: this.state.newPass,
+            password_confirmation: this.state.newPass2,
             token: this.props.match.params.token
         };
         this.setState({
@@ -103,25 +116,29 @@ class Reset extends Component {
         .then((responce) => {
             console.log("res:", responce)
             if (responce.errors !== undefined) {
-                if (this.state.lang === 'en') {
-                    this.setState({
-                        errors: "Something wrong with email",
-                        processing: false
-                    });
-                } else {
-                    this.setState({
-                        errors: "Проверьте email или пароль",
-                        processing: false
-                    });
-                }
+                this.setState({
+                    processing: false
+                });
+                const msg = this.state.lang === 'en' ? 'The given data was invalid' : 'Некорректные данные';
+                toast.error(msg, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true
+                });
             } else {
                 if (responce.message !== "This password reset token is invalid.") {
                     this.setState({
                         showModal: true,
                         processing: false
                     })
-                } else {
-                    const msg = this.props.componentState.intl.locale === "en" ? 'You have already changed your password' : 'Вы уже изменили свой пароль';
+                } else if (responce.message === "This password reset token is invalid.") {
+                    this.setState({
+                        processing: false
+                    })
+                    const msg = this.props.componentState.intl.locale === "en" ? 'You have already changed your password or entered wrong email' : 'Вы уже изменили свой пароль или некорректно введен email';
                     toast.error(msg, {
                         position: "top-center",
                         autoClose: 5000,
@@ -211,8 +228,16 @@ class Reset extends Component {
                                     </div>
                                 </div>
                                 <div className="my-row">
+                                    <div className="input-holder tooltip-castom">
+                                        <input type="password" placeholder={this.state.lang === 'en' ? "Password confirmation" : "Подтвердить пароль"} required id="pass2" onChange={this.onChange} name="newPass2"/>
+                                        <label className="input-icon" htmlFor="pass2">
+                                            <i className="fa fa-key"></i>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div className="my-row">
                                     <div className="input-holder form-button">
-                                        <button className="form-btn-submit" onClick={this.setNewPass}>
+                                        <button className="form-btn-submit" onClick={this.setNewPass} disabled={this.state.email === "" || this.state.newPass === "" || this.state.newPass2 === ""}>
                                             <FormattedMessage id="reset.btn" defaultMessage="Reset" />
                                         </button>
                                     </div>

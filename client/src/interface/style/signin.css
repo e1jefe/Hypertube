@@ -190,8 +190,10 @@ button {
     .signin-page .signin-page-content h3 {
       font-weight: 400;
       margin-top: 0;
-      margin-bottom: 0.3em;
-      font-size: 1.5em; }
+      margin-bottom: 0.3em; }
+    .signin-page .signin-page-content h3 {
+      font-size: 1.2em;
+    }
       .signin-page .signin-page-content h1 a,
       .signin-page .signin-page-content h3 a {
         text-decoration: none;
@@ -437,11 +439,16 @@ button {
   .signin-page .main-head {
     padding: 0.2em; }
     .signin-page .main-head .main-head-btn-holder {
-      width: 35%; }
+      width: 25%; }
   .signin-page .signin-page-content {
     max-width: 540px; }
     .signin-page .signin-page-content .signin-form-holder {
-      margin-top: 4em; } }
+      margin-top: 4em; } 
+      .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-holder input + label {
+        font-size: 1.5em; }
+        .signin-page .signin-page-content .signin-form-holder .signin-form .my-row .input-holder .reset-pass {
+          font-size: 1.2em;
+        }}
 
 @media screen and (max-width: 415px) {
   .signin-page {
