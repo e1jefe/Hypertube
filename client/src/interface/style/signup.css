@@ -127,7 +127,7 @@ button {
           -ms-flex-pack: justify;
               justify-content: space-between;
       color: inherit;
-      width: 30%; }
+      width: 20%; }
       .signup-page .main-head .main-head-btn-holder p,
       .signup-page .main-head .main-head-btn-holder p.main-head-btn-description {
         margin: 0; }
@@ -279,7 +279,9 @@ button {
             background-color: #f9f9f9;
             border: none;
             -webkit-border-radius: 3px;
-                    border-radius: 3px; }
+                    border-radius: 3px;
+            overflow: hidden;
+            text-overflow: ellipsis; }
             .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder input:focus {
               outline: none; }
             .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder input:focus + label {
@@ -451,11 +453,18 @@ button {
   .signup-page .main-head {
     padding: 0.2em; }
     .signup-page .main-head .main-head-btn-holder {
-      width: 35%; }
+      width: 25%; }
   .signup-page .signup-page-content {
     max-width: 540px; }
     .signup-page .signup-page-content .signup-form-holder {
-      margin-top: 4em; } }
+      margin-top: 4em; } 
+    .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder input + label {
+      font-size: 1.5em; }
+    .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder .form-btn-submit {
+      font-size: 1.5em; }
+    .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .social-media{
+      font-size: 2em;
+    }}
 
 @media screen and (max-width: 415px) {
   .signup-page {
@@ -570,19 +579,20 @@ button {
               margin: 0 0 5px 0; }
               .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder input {
                 font-size: 14px;
-                line-height: 1; }
+                line-height: 1; 
+                overflow: hidden;
+                text-overflow: ellipsis; }
             .signup-page .signup-page-content .signup-form-holder .signup-form .my-row:first-child {
               margin-bottom: 10px; }
             .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .tooltip-castom .tooltiptext {
-              top: 100%; }
+              top: 100%;
+              font-size: 1em; }
             .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-email input {
               padding-left: 45px; }
             .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-email input + label {
               left: 4%; }
               .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-email input + label:after {
                 right: -1px; }
-  .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder input + label i {
-    font-size: 2.2em; }
   .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .input-holder .form-btn-submit {
     font-size: 2em; }
   .signup-page .signup-page-content .signup-form-holder .signup-form .my-row .social-media {

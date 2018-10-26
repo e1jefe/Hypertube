@@ -4,6 +4,8 @@ import { Dropdown, Button, Input } from 'semantic-ui-react';
 import axios from 'axios';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class Library extends Component {
 
@@ -11,6 +13,10 @@ class Library extends Component {
         super(props);
         this.state = {
             yearGap: {
+                min: 1910,
+                max: 2018
+            },
+            prevYearGap: {
                 min: 1910,
                 max: 2018
             },
@@ -246,7 +252,11 @@ class Library extends Component {
     changeMinYear(e, data) {
         let yearGap = this.state.yearGap;
         if (data.value.match("[0-9]+") !== null) {
-            yearGap.min = data.value.length < 5 ? data.value.match("[0-9]+")[0] : yearGap.min;
+            if (data.value.length < 5) {
+                yearGap.min = data.value.match("[0-9]+")[0];
+            } else {
+                yearGap.min = yearGap.min
+            }
         } else {
             yearGap.min = "";
         }
@@ -278,14 +288,60 @@ class Library extends Component {
             yearGap.min = this.state.yearGap.min === "" ? this.state.yearGap.max : this.state.yearGap.min;
             yearGap.max = this.state.yearGap.max === "" ? this.state.yearGap.min : this.state.yearGap.max;
         }
-        this.setState({
-            pageStart: 1,
-            movies: [],
-            currentSortParam: "title",
-            order: "asc",
-            yearGap: yearGap,
-            hasMore: true
-        }, () => this.loadItems());
+
+        if (parseInt(yearGap.min, 10) < 1910 || parseInt(yearGap.min, 10) > 2018) {
+            yearGap.min = 1910;
+            const msg = this.props.componentState.intl.locale === "en" ? 'Invalid year from' : 'Некорректный минимальный год';
+            toast.error(msg, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+            });
+        }
+
+        if (parseInt(yearGap.max, 10) < 1910 || parseInt(yearGap.max, 10) > 2018) {
+            yearGap.max = 2018;
+            const msg = this.props.componentState.intl.locale === "en" ? 'Invalid maximum year production' : 'Некорректный максимальный год';
+            toast.error(msg, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+            });
+        }
+
+        if (parseInt(yearGap.min, 10) > parseInt(yearGap.max, 10) || parseInt(yearGap.max, 10) < parseInt(yearGap.min, 10)) {
+            const tmpMin = yearGap.min;
+            yearGap.min = yearGap.max;
+            yearGap.max = tmpMin;
+        }
+        console.log("send", this.state.yearGap)
+        console.log("prev", this.state.prevYearGap)
+
+        console.log("compare", JSON.stringify(this.state.yearGap) !== JSON.stringify(this.state.prevYearGap))
+
+        if (JSON.stringify(this.state.yearGap) !== JSON.stringify(this.state.prevYearGap)) {
+            this.setState({
+                pageStart: 1,
+                movies: [],
+                currentSortParam: "title",
+                order: "asc",
+                yearGap: yearGap,
+                hasMore: true,
+                prevYearGap: JSON.parse(JSON.stringify(yearGap))
+            }, () => this.loadItems());
+        } 
+        // else {
+        //     this.setState({
+        //         yearGap: yearGap,
+        //         prevYearGap: JSON.parse(JSON.stringify(yearGap))
+        //     })
+        // }
     }
 
     changeRate(event, data) {
@@ -343,7 +399,7 @@ class Library extends Component {
 
     loadItems = () => {
         // console.log("yearGap ", this.state.yearGap);
-        console.log("has More ", this.state.hasMore);
+        // console.log("has More ", this.state.hasMore);
 
         if (this.state.hasMore) {
             const baseUrl = "https://yts.am/api/v2/list_movies.json?";
@@ -373,7 +429,7 @@ class Library extends Component {
             this.setState({ isLoading: true }, () => {
                 axios.get(requestUrl)
                     .then((response) => {
-            // console.log("response ", response);
+            console.log("response ", response);
                         if (response.data.data.movie_count !== 0 && response.data.data.hasOwnProperty('movies')) {
                             let nextMovPack = response.data.data.movies.map((mov) => {
                                 if (yearGap.min <= mov.year && mov.year <= yearGap.max) {
@@ -413,10 +469,10 @@ class Library extends Component {
                             // if (filteredMovies.length < 20 && (this.state.movies.length % 4 !== 0)) {
                             //     this.loadItems();
                             // }
-                            console.log("prevMovRes", prevMovRes)
+                            // console.log("prevMovRes", prevMovRes)
 
                             if (prevMovRes < 20 && this.state.hasMore) {
-                                console.log("call more")
+                                // console.log("call more")
                                 this.loadItems();
                             } else {
                                 this.setState({
@@ -434,6 +490,7 @@ class Library extends Component {
                         this.setState({
                             error: err.message,
                             isLoading: false,
+                            hasMore: false
                         });
                     })
             });
@@ -468,6 +525,7 @@ class Library extends Component {
 
         return (
             <div className="library-container">
+                <ToastContainer autoClose={5000} position="top-center" hideProgressBar={true}/>
                 <h1>
                     <FormattedMessage id="library.title" defaultMessage="Library" />
                 </h1>

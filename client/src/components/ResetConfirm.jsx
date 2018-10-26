@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { Button, Header, Icon, Modal, Dimmer, Loader } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import { updateIntl } from 'react-intl-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import '../interface/style/reset.css';
 
@@ -99,6 +101,7 @@ class Reset extends Component {
             }
         }).then((res) => res.json())
         .then((responce) => {
+            console.log("res:", responce)
             if (responce.errors !== undefined) {
                 if (this.state.lang === 'en') {
                     this.setState({
@@ -112,10 +115,22 @@ class Reset extends Component {
                     });
                 }
             } else {
-                this.setState({
-                    showModal: true,
-                    processing: false
-                })
+                if (responce.message !== "This password reset token is invalid.") {
+                    this.setState({
+                        showModal: true,
+                        processing: false
+                    })
+                } else {
+                    const msg = this.props.componentState.intl.locale === "en" ? 'You have already changed your password' : 'Вы уже изменили свой пароль';
+                    toast.error(msg, {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true
+                    });
+                }
             }
         });
     }
@@ -140,6 +155,7 @@ class Reset extends Component {
     render() {
         return (
             <main className="reset-page">
+                <ToastContainer autoClose={5000} position="top-center" hideProgressBar={true}/>
                 <header className="main-head">
                     <div className="main-head-logo">
                         <NavLink to="signin">
@@ -212,7 +228,7 @@ class Reset extends Component {
                         </Dimmer>
                     </div>
                     <div>
-                        <Modal open={this.state.showModal} onClose={this.closeModal} basic size='small'>
+                        <Modal open={this.state.showModal} onClose={this.closeModal} basic size='small' className="myResetModal">
                         <Header icon='unlock alternate' content={this.state.lang === 'en' ? "Success" : "Успех"} />
                             <Modal.Content>
                                 <h3>

@@ -468,7 +468,10 @@ button {
         .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder input + label i {
           font-size: 1em; }
       .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-holder .form-btn-submit {
-        font-size: 1.2em; } }
+        font-size: 1.2em; }
+        .ui.small.basic.modal.transition.visible.active.myResetModal {
+          transform: translate(35%, 50%);
+        }}
 
 @media screen and (max-width: 415px) {
   .reset-page {
@@ -606,4 +609,10 @@ button {
               .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-email input + label i {
                 font-size: 1.5em; }
               .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .input-email input + label:after {
-                right: -1px; } }
+                right: -1px; } 
+        .ui.small.basic.modal.transition.visible.active.myResetModal {
+          transform: translate(5%, 50%);
+        }
+        .reset-page .reset-page-content .reset-form-holder .reset-form .my-row .tooltip-castom:hover .tooltiptext {
+          font-size: 1em;
+        }}
