@@ -8,9 +8,9 @@ const OpenSubtitles = new OS({
 
 module.exports = {
     getEnglishSubtitles: function (res, imdb, id) {
-        console.log("english subtitles")
-        console.log('imdb = ', imdb)
-        console.log('id = ', id)
+        console.log("english subtitles");
+        console.log('imdb = ', imdb);
+        console.log('id = ', id);
         OpenSubtitles.search({
             sublanguageid: 'all',
             imdbid: imdb,
@@ -39,10 +39,10 @@ module.exports = {
 function convertSubtitles(res, subtitleInfo, id, language) {
     if (language === 'en') {
 
-        console.log('downloading...')
+        console.log('downloading...');
         fs.exists('./srt/en_' + id + '.srt', (exists) => {
             if (exists) {
-                console.log("exists")
+                console.log("exists");
                 fs.createReadStream('./srt/en_' + id + '.srt')
                     .pipe(srt2vtt())
                     .pipe(res);
@@ -55,7 +55,8 @@ function convertSubtitles(res, subtitleInfo, id, language) {
                     filename: filename,
                     extensions: ['srt']
                 };
-                console.log(downloadUrl)
+                console.log(downloadUrl);
+                console.log(filename);
                 downloadSubFromUrl(downloadUrl, options, function (err) {
                     if (err) console.log('error = ', err);
                     fs.createReadStream('./srt/' + filename)
@@ -66,7 +67,7 @@ function convertSubtitles(res, subtitleInfo, id, language) {
         });
     }
     if (language === 'ru') {
-        console.log('downloading...')
+        console.log('downloading...');
         fs.exists('./srt/ru_' + id + '.srt', (exists) => {
             if (exists) {
                 fs.createReadStream('./srt/ru_' + id + '.srt')
@@ -81,7 +82,8 @@ function convertSubtitles(res, subtitleInfo, id, language) {
                     filename: filename,
                     extensions: ['srt']
                 };
-                console.log(downloadUrl)
+                console.log(downloadUrl);
+                console.log(filename);
                 downloadSubFromUrl(downloadUrl, options, function (err) {
                     if (err) console.log('error = ', err);
                     fs.createReadStream('./srt/' + filename)
