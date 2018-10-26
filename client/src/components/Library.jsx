@@ -327,14 +327,14 @@ class Library extends Component {
 
         if (JSON.stringify(this.state.yearGap) !== JSON.stringify(this.state.prevYearGap)) {
             this.setState({
-                pageStart: 1,
-                movies: [],
-                currentSortParam: "title",
-                order: "asc",
-                yearGap: yearGap,
-                hasMore: true,
-                prevYearGap: JSON.parse(JSON.stringify(yearGap))
-            }, () => this.loadItems());
+                // pageStart: 1,
+                // movies: [],
+                // currentSortParam: "title",
+                // order: "asc",
+                // yearGap: yearGap,
+                // hasMore: true,
+                // prevYearGap: JSON.parse(JSON.stringify(yearGap))
+            });
         } 
         // else {
         //     this.setState({
@@ -345,16 +345,16 @@ class Library extends Component {
     }
 
     changeRate(event, data) {
-        if (data.value !== this.state.imdbMin) {
-            this.setState({
-                currentSortParam: "title",
-                order: "asc",
-                imdbMin: data.value,
-                pageStart: 1,
-                movies: [],
-                hasMore: true
-            }, () => this.loadItems());
-        }
+        // if (data.value !== this.state.imdbMin) {
+        //     this.setState({
+        //         currentSortParam: "title",
+        //         order: "asc",
+        //         imdbMin: data.value,
+        //         pageStart: 1,
+        //         movies: [],
+        //         hasMore: true
+        //     });
+        // }
     }
 
     changeGenre(event, data) {
@@ -363,18 +363,18 @@ class Library extends Component {
             currentGenre: data.value,
         })
         if (currentLength > data.value.length) {
-            this.sendGenre();
+            // this.sendGenre();
         }
     }
 
     sendGenre() {
-        this.setState({
-            currentSortParam: "title",
-            order: "asc",
-            movies: [],
-            pageStart: 1,
-            hasMore: true
-        }, () => this.loadItems());
+        // this.setState({
+        //     currentSortParam: "title",
+        //     order: "asc",
+        //     movies: [],
+        //     pageStart: 1,
+        //     hasMore: true
+        // });
     }
 
     changeSort(event, data){
@@ -393,7 +393,7 @@ class Library extends Component {
                 movies: [],
                 pageStart: 1,
                 hasMore: true
-            }, () => this.loadItems());
+            });
         }
     }
 
@@ -402,11 +402,20 @@ class Library extends Component {
         // console.log("has More ", this.state.hasMore);
 
         if (this.state.hasMore) {
-            const baseUrl = "https://yts.am/api/v2/list_movies.json?";
-            const page = 'page=' + this.state.pageStart;
-            const sortParam = "&sort_by=" + this.state.currentSortParam;
-            const orderParam = "&order_by=" + this.state.order;
-            const rate = this.state.imdbMin !== "" ? "&minimum_rating=" + this.state.imdbMin : "";
+            // const baseUrl = "https://yts.am/api/v2/list_movies.json?";
+            const baseUrl = "https://tv-v2.api-fetch.website/movies/";
+
+            // const page = 'page=' + this.state.pageStart;
+            const page = this.state.pageStart + '?';
+
+            // const sortParam = "&sort_by=" + this.state.currentSortParam;
+            const sortParam = "sort=" + this.state.currentSortParam;
+
+            // const orderParam = "&order_by=" + this.state.order;
+            const orderParam = this.state.order === 'asc' ? "&order=1" : + "&order=-1";
+
+            // const rate = this.state.imdbMin !== "" ? "&minimum_rating=" + this.state.imdbMin : "";
+
             const title = this.state.movieTitle !== "" ? "&query_term=" + this.state.movieTitle : "";
             let allGenres = "";
             if (this.state.currentGenre.length !== 0) {
@@ -414,7 +423,9 @@ class Library extends Component {
                     allGenres = allGenres.concat("&genre=" + genre);
                 })
             }
-            let requestUrl = baseUrl + page + rate + sortParam + orderParam + allGenres + title;
+            // let requestUrl = baseUrl + page + rate + sortParam + orderParam + allGenres + title;
+            let requestUrl = baseUrl + page + sortParam + orderParam;
+
             let yearGap = this.state.yearGap;
             if (this.state.yearGap.min === "" && this.state.yearGap.max === "") {
                 yearGap = {
@@ -430,26 +441,78 @@ class Library extends Component {
                 axios.get(requestUrl)
                     .then((response) => {
             console.log("response ", response);
-                        if (response.data.data.movie_count !== 0 && response.data.data.hasOwnProperty('movies')) {
-                            let nextMovPack = response.data.data.movies.map((mov) => {
+                        // if (response.data.data.movie_count !== 0 && response.data.data.hasOwnProperty('movies')) {
+                        //     let nextMovPack = response.data.data.movies.map((mov) => {
+                        //         if (yearGap.min <= mov.year && mov.year <= yearGap.max) {
+                        //             return ({
+                        //                 poster: mov.large_cover_image !== "" ? mov.large_cover_image : mov.medium_cover_image !== "" ? mov.medium_cover_image : mov.small_cover_image,
+                        //                 country: mov.language,
+                        //                 year: mov.year,
+                        //                 id: mov.id,
+                        //                 name: mov.title_english,
+                        //                 genre: mov.genres,
+                        //                 seen: this.state.watchedFilms.some((item) => item === mov.id)
+                        //             })
+                        //         } else {
+                        //             return false
+                        //         }
+                        //     });
+                        //     let filteredMovies = nextMovPack.filter(function(el) { return el; });
+                        //     let newPage = this.state.pageStart + 1;
+                        //     // this.state.pageStart * 20 < response.data.data.movie_count
+                        //     // console.log("state", this.state);
+                        //     // console.log("response", response.data.data);
+                        //     // console.log("length", this.state.movies.length);
+                        //     // console.log("отфильтровано < 20", filteredMovies.length < 20);
+                        //     // console.log("кратно 4", (this.state.movies.length + filteredMovies.length) % 4 !== 0);
+                        //     // console.log("новый результат кратно 20", (this.state.movies.length) % 20);
+                        //     const prevMovRes = this.state.rememberPrevRes + filteredMovies.length;
+                        //     this.setState({
+                        //         hasMore: (this.state.movies.length + filteredMovies.length < response.data.data.movie_count),
+                        //         isLoading: false,
+                        //         movies: [
+                        //         ...this.state.movies,
+                        //         ...filteredMovies,
+                        //         ],
+                        //         pageStart: newPage,
+                        //         rememberPrevRes: prevMovRes
+                        //     });
+                        //     // if (filteredMovies.length < 20 && (this.state.movies.length % 4 !== 0)) {
+                        //     //     this.loadItems();
+                        //     // }
+                        //     // console.log("prevMovRes", prevMovRes)
+
+                        //     if (prevMovRes < 20 && this.state.hasMore) {
+                        //         // console.log("call more")
+                        //         this.loadItems();
+                        //     } else {
+                        //         this.setState({
+                        //             rememberPrevRes: 0
+                        //         })
+                        //     }
+                        if (response.data.length !== 0) {
+                            let nextMovPack = response.data.map((mov) => {
+                                // console.log("tut", mov);
                                 if (yearGap.min <= mov.year && mov.year <= yearGap.max) {
                                     return ({
-                                        poster: mov.large_cover_image !== "" ? mov.large_cover_image : mov.medium_cover_image !== "" ? mov.medium_cover_image : mov.small_cover_image,
-                                        country: mov.language,
+                                        poster: mov.images.length !== 0 ? mov.images.poster : "",
+                                        country: mov.certification,
                                         year: mov.year,
-                                        id: mov.id,
-                                        name: mov.title_english,
+                                        id: mov.imdb_id,
+                                        name: mov.title,
                                         genre: mov.genres,
-                                        seen: this.state.watchedFilms.some((item) => item === mov.id)
                                     })
                                 } else {
                                     return false
                                 }
+                                
                             });
+console.log("filteredMovies", nextMovPack);
+
                             let filteredMovies = nextMovPack.filter(function(el) { return el; });
                             let newPage = this.state.pageStart + 1;
                             // this.state.pageStart * 20 < response.data.data.movie_count
-                            // console.log("state", this.state);
+                            // console.log("filteredMovies", filteredMovies);
                             // console.log("response", response.data.data);
                             // console.log("length", this.state.movies.length);
                             // console.log("отфильтровано < 20", filteredMovies.length < 20);
@@ -457,7 +520,7 @@ class Library extends Component {
                             // console.log("новый результат кратно 20", (this.state.movies.length) % 20);
                             const prevMovRes = this.state.rememberPrevRes + filteredMovies.length;
                             this.setState({
-                                hasMore: (this.state.movies.length + filteredMovies.length < response.data.data.movie_count),
+                                hasMore: newPage < 182,
                                 isLoading: false,
                                 movies: [
                                 ...this.state.movies,
@@ -471,8 +534,8 @@ class Library extends Component {
                             // }
                             // console.log("prevMovRes", prevMovRes)
 
-                            if (prevMovRes < 20 && this.state.hasMore) {
-                                // console.log("call more")
+                            if (prevMovRes < 49 && this.state.hasMore) {
+                                console.log("call more")
                                 this.loadItems();
                             } else {
                                 this.setState({
