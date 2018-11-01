@@ -54,7 +54,7 @@
     font-family: inherit;
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
-    padding: 10px 20px;
+    padding: 10px 0px;
     position: relative; }
     .single-movie-container .comments .comment-action-box {
       z-index: 1000;

@@ -80,33 +80,50 @@ class SingleMovie extends Component {
                     trailerUrl: response.data.url
                 })
             });
-        axios.get('https://yts.am/api/v2/movie_details.json?movie_id=' + this.props.match.params.id)
-            .then(function (response) {
+        // axios.get('https://yts.am/api/v2/movie_details.json?movie_id=' + this.props.match.params.id)
+        //     .then(function (response) {
 
-                // handle success
-                if (response.data.data.movie !== undefined) {
-                    let imdb = response.data.data.movie.imdb_code;
-                    axios.get('http://www.omdbapi.com/?i=' + imdb + "&apikey=1b966a3b").then((res) => {
-                        self.setState({
-                            data: {
-                                title: response.data.data.movie.title_english,
-                                year: response.data.data.movie.year,
-                                runtime: response.data.data.movie.runtime,
-                                rating: response.data.data.movie.rating,
-                                plot: response.data.data.movie.description_full,
-                                poster: response.data.data.movie.large_cover_image,
-                                director: res.data.Director,
-                                actors: res.data.Actors,
-                                country: res.data.Country
-                            }
-                        })
-                    });
-                }
-              })
-              .catch(function (error) {
-                // handle error
-                console.log(error);
-              });
+        //         // handle success
+        //         if (response.data.data.movie !== undefined) {
+        //             let imdb = response.data.data.movie.imdb_code;
+        //             axios.get('http://www.omdbapi.com/?i=' + imdb + "&apikey=1b966a3b").then((res) => {
+        //                 self.setState({
+        //                     data: {
+        //                         title: response.data.data.movie.title_english,
+        //                         year: response.data.data.movie.year,
+        //                         runtime: response.data.data.movie.runtime,
+        //                         rating: response.data.data.movie.rating,
+        //                         plot: response.data.data.movie.description_full,
+        //                         poster: response.data.data.movie.large_cover_image,
+        //                         director: res.data.Director,
+        //                         actors: res.data.Actors,
+        //                         country: res.data.Country
+        //                     }
+        //                 })
+        //             });
+        //         }
+        //       })
+        //       .catch(function (error) {
+        //         // handle error
+        //         console.log(error);
+        //       });
+        axios.get('http://www.omdbapi.com/?apikey=1b966a3b&i=' + this.props.match.params.id)
+            .then((response) => {
+                this.setState({
+                    data: {
+                        title: response.data.Title,
+                        year: response.data.Year,
+                        runtime: response.data.Runtime,
+                        rating: response.data.imdbRating,
+                        plot: response.data.Plot,
+                        poster: response.data.Poster,
+                        director: response.data.Director,
+                        actors: response.data.Actors,
+                        country: response.data.Country
+                    }
+                })
+            })
+        
     }
 
     render() {

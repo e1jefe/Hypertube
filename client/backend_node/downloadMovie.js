@@ -8,7 +8,7 @@ module.exports = {
             let currentStream = file.createReadStream();
             currentStream.pipe(fs.createWriteStream(fullPath));
 
-            const pathToVideo = '/tmp/' + file.name;
+            const pathToVideo = fullPath;
             let fileSize = file.length;
             const range = req.headers.range;
             let start = 0;

@@ -17,112 +17,24 @@ app.use(function (req, res, next) {
     next();
 });
 
-let savedVideos = './videos';
 let torrentHash = {};
 let currentMovieUrl = '';
 let currentIMDB = '';
 
-fs.exists(savedVideos, (exists) => {
-    if (!exists) fs.mkdirSync(savedVideos);
-});
-
-app.get('/', function (req, res) {
-    let torrentInfo = [];
-    request('https://yts.am/api/v2/list_movies.json?sort_by=rating', function (movie_count, limit, movies, page_number) {
-        let message = JSON.parse(movies);
-        let films = '';
-        message.data.movies.forEach(function (item) {
-            if (films.length > 0) {
-                torrentHash[item.id] = {
-                    'url': item.torrents[0].url.split('/')[5],
-                    'imdb': item.imdb_code
-                };
-                torrentInfo.push(
-                    {
-                        'href': 'http://localhost:3000/movie/' + item.id,
-                        'id': item.id,
-                        'src': item.medium_cover_image,
-                        'year': item.year,
-                        'imdb_rating': item.rating,
-                        'genres': item.genres,
-                        'name': item.title_english
-                    }
-                );
-            }
-            else {
-                torrentHash[item.id] = {
-                    'url': item.torrents[0].url.split('/')[5],
-                    'imdb': item.imdb_code
-                };
-                torrentInfo.push(
-                    {
-                        'href': 'http://localhost:3000/movie/' + item.id,
-                        'id': item.id,
-                        'src': item.medium_cover_image,
-                        'year': item.year,
-                        'imdb_rating': item.rating,
-                        'genres': item.genres,
-                        'name': item.title_english
-                    }
-                );
-            }
-        });
-        res.send(torrentInfo);
-    });
-});
-
-app.get('/movie/:id', function (req, res) {
-    if (!torrentHash[req.params.id]) {
-        request('https://yts.am/api/v2/movie_details.json?movie_id=' + req.params.id, function (req, res) {
-            if (res.body) {
-                let movieInfo = JSON.parse(res.body);
-                if (movieInfo.data.movie.torrents) {
-                    currentMovieUrl = movieInfo.data.movie.torrents[0].url.split('/')[5];
-                    currentIMDB = movieInfo.data.movie.imdb_code;
-
-                    torrentHash[movieInfo.data.movie.id] = {
-                        'url': movieInfo.data.movie.torrents[0].url.split('/')[5],
-                        'imdb': movieInfo.data.movie.imdb_code
-                    };
-                }
-            }
-        });
-        setTimeout(function () {
-            if (torrentHash[req.params.id]) {
-                currentMovieUrl = torrentHash[req.params.id].url;
-                currentIMDB = torrentHash[req.params.id].imdb;
-                stream.magnetUrl(req, res, currentMovieUrl);
-            }
-            else {
-                res.send("error");
-            }
-        }, 1000);
-    }
-    else {
-        currentMovieUrl = torrentHash[req.params.id].url;
-        currentIMDB = torrentHash[req.params.id].imdb;
-        stream.magnetUrl(req, res, currentMovieUrl);
-    }
-});
 
 app.get('/movie/:id/:quality', function (req, res) {
-    let quality = 0;
-    if (req.params.quality === "720") {
-        quality = 0;
-    }
-    else {
-        quality = 1;
-    }
-    request('https://yts.am/api/v2/movie_details.json?movie_id=' + req.params.id, function (req, res) {
+    let tmpReq = req;
+    let quality = req.params.quality + 'p';
+
+    request('https://tv-v2.api-fetch.website/movie/' + req.params.id, function (req, res) {
         if (res.body) {
             let movieInfo = JSON.parse(res.body);
-            if (movieInfo.data.movie.torrents) {
-                currentMovieUrl = movieInfo.data.movie.torrents[quality].url.split('/')[5];
-                currentIMDB = movieInfo.data.movie.imdb_code;
-
-                torrentHash[movieInfo.data.movie.id] = {
-                    'url': movieInfo.data.movie.torrents[quality].url.split('/')[5],
-                    'imdb': movieInfo.data.movie.imdb_code
+            if (movieInfo.torrents.en) {
+                currentMovieUrl = movieInfo.torrents.en[quality].url;
+                currentIMDB = movieInfo.imdb_id;
+                torrentHash[tmpReq.params.id] = {
+                    'url':movieInfo.torrents.en[quality].url,
+                    'imdb': movieInfo.imdb_id
                 };
             }
         }
@@ -141,11 +53,16 @@ app.get('/movie/:id/:quality', function (req, res) {
 
 app.get('/youtube/:id', function (req, res) {
     let tmpRes = res;
-    request('https://yts.am/api/v2/movie_details.json?movie_id=' + req.params.id, function (req, res) {
+    request('https://tv-v2.api-fetch.website/movie/' + req.params.id, function (req, res) {
         if (res.body) {
             let movieInfo = JSON.parse(res.body);
-            if (movieInfo.data.movie.yt_trailer_code) {
-                let response = {url: movieInfo.data.movie.yt_trailer_code};
+            if (movieInfo.trailer) {
+                let trailer = movieInfo.trailer.split("=");
+                let response = {url: trailer[1]};
+                tmpRes.send(response)
+            }
+            else {
+                let response = {url: 'OUMvvYSCnMQ'};
                 tmpRes.send(response)
             }
         }
@@ -153,17 +70,36 @@ app.get('/youtube/:id', function (req, res) {
 });
 
 app.get('/subtitles/en/:id', function (req, res) {
-    subtitles.getEnglishSubtitles(res, currentIMDB, req.params.id);
+    let tmpReq = req;
+    request('https://tv-v2.api-fetch.website/movie/' + req.params.id, function (req, res) {
+        if (res.body) {
+            let movieInfo = JSON.parse(res.body);
+            currentIMDB = movieInfo.imdb_id;
+        }
+    });
+    setTimeout(function() {
+        subtitles.getEnglishSubtitles(res, currentIMDB, tmpReq.params.id);
+    }, 2000);
 });
 
 app.get('/subtitles/ru/:id', function (req, res) {
-    subtitles.getRussianSubtitles(res, currentIMDB, req.params.id);
+    let tmpReq = req;
+    let currentIMDB = '';
+    request('https://tv-v2.api-fetch.website/movie/' + req.params.id, function (req, res) {
+        if (res.body) {
+            let movieInfo = JSON.parse(res.body);
+            currentIMDB = movieInfo.imdb_id;
+        }
+    });
+    setTimeout(function() {
+        subtitles.getRussianSubtitles(res, currentIMDB, tmpReq.params.id);
+    }, 2000);
 });
 
-schedule.scheduleJob('*/1 * * * *', function() {
+schedule.scheduleJob('*/1 * * * *', function () {
     request('http://localhost:8000/api/films/return-films', function (req, res) {
         let arr = JSON.parse(res.body);
-        arr.forEach(function(i) {
+        arr.forEach(function (i) {
             fs.exists('/tmp/' + i.id_film, (exists) => {
                 if (exists) {
                     fs.unlinkSync('/tmp/' + i.id_film)
