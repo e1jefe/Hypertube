@@ -31,7 +31,6 @@ class CabinetController extends Controller
     public function changeInfo(Request $request)
     {
         $user = auth()->guard('api')->user();
-//        return response()->json($user);
         if (strcmp($request->email, $user->email) === 0) {
             $request->validate([
                 'name' => 'string',
@@ -102,7 +101,18 @@ class CabinetController extends Controller
     {
         $user = auth()->guard('api')->user();
         $filmsArray = WatchedFilmsUser::where('id_user', $user->id)->orderBy('updated_at', 'desc')->get();
-        return response()->json($filmsArray);
+
+        $ids = [];
+        $posters = [];
+        foreach($filmsArray as $item) {
+            array_push($ids, $item['id_film']);
+        }
+        foreach($ids as $movie) {
+            $details = json_decode(file_get_contents('https://api.themoviedb.org/3/movie/' . $movie . "?api_key=1dc667ca439220e3356ddd92cdee3e5e"));
+            $currentPoster = $details->poster_path !== null ? 'https://image.tmdb.org/t/p/w500' . $details->poster_path : './pics/No_image_poster.png';
+            array_push($posters, $currentPoster);
+        }
+        return response()->json($posters);
     }
 
     public function watchedFilmsUsersCreate(Request $request)

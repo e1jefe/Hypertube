@@ -66,6 +66,10 @@ app.get('/youtube/:id', function (req, res) {
                 tmpRes.send(response)
             }
         }
+        else {
+            let response = {url: 'OUMvvYSCnMQ'};
+            tmpRes.send(response)
+        }
     });
 });
 

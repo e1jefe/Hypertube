@@ -3,79 +3,179 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\WatchedFilmsUser;
 
 class Library extends Controller
 {
-    public function loadItems(Request $request)
-    {
-        /* have 
-        page: int 0 - infinity
-        sort: name/raiting/year
-        order: asc/desc,
-        filter: {
-            imdb: null/1-9,
-            genres: []/['action', 'drama', etc],
-            yearGap: { min: 1910/'1910', max: 2018/'2018'}
+    public function loadItems(Request $request) {
+        $language = $request->lang === "en" ? "&language=en-US" : "&language=ru-RU";
+
+        $genresLegend = json_decode(file_get_contents("https://api.themoviedb.org/3/genre/movie/list?api_key=1dc667ca439220e3356ddd92cdee3e5e" . $language));
+        $genresToFilter = '&with_genres=';
+        $filterGenres = $request->filter["genres"];
+
+        if (count($filterGenres) !== 0 && ($filterGenres[0] !== "all" && $filterGenres[0] !== "все")) {
+            foreach($genresLegend->genres as $item) {
+                foreach($filterGenres as $search) {
+                    if ($item->name === ucfirst($search)) {
+                        $genresToFilter = $genresToFilter . $item->id . '|';
+                    }
+                }
+            }
         }
-        */
-        $baseUrl = "https://tv-v2.api-fetch.website/movies/" . $request->page . '?';
-        $sortType = "sort=" . $request->sort;
-        $orderParam = $request->order === 'asc' ? "&order=1" : "&order=-1";
-        if ($request->filter['genres'] !== 'all') {
-            $genres = '&genre=all';
+
+        if ($request->sort === 'name') {
+            $sort = '&sort_by=original_title.asc';
+        } else if ($request->sort === 'rating') {
+            $sort = '&sort_by=popularity.desc';
         } else {
-            $genres = '&genre=' . $request->filter['genres'];
+            $sort = '&sort_by=release_date.asc';
         }
-        $url = $baseUrl . $sortType . $orderParam . $genres;
+
+        $page = '&page=' . $request->page;
+
+        if ($request->filter['imdb'] !== null && $request->filter['imdb'] !== 'any') {
+            $rating = '&vote_average.gte=' . $request->filter['imdb'];
+        } else {
+            $rating = '&vote_average.gte=1';
+        }
+
+        $yearmin = '&release_date.gte=' . $request->filter['yearGap']['min']; //need to check if appropriate arr
+        $yearmax = '&release_date.lte=' . $request->filter['yearGap']['max']; //need to check if appropriate arr
+
+        $url = "https://api.themoviedb.org/3/discover/movie/?api_key=1dc667ca439220e3356ddd92cdee3e5e" . $language . $sort . $genresToFilter . $yearmin . $yearmax . $rating . $page;
         $contents = json_decode(file_get_contents($url));
         $result = [];
-        foreach ($contents as $key => $value) {
-            // $imdbRait = json_decode(file_get_contents('http://www.omdbapi.com/?apikey=1b966a3b&i='.$value->imdb_id));
-            if ($value->year !== null) {
-                $year = $value->year;
-            } else {
-                if ($request->lang === 'en') {
-                    $year = 'No info';
-                } else {
-                    $year = 'Нет данных';
+        foreach ($contents->results as $movie) {
+            //to convert genres from int values to words
+            $currentGenres = [];
+            if (count($movie->genre_ids) !== 0) {
+                foreach($movie->genre_ids as $genre_id) {
+                    foreach($genresLegend->genres as $item) {
+                        if ($item->id === intval($genre_id, 10)) {
+                            array_push($currentGenres, $item->name);
+                        }
+                    }
                 }
-            }
-            if (count($value->genres) !== 0) {
-                $genres = $value->genres;
             } else {
-                if ($request->lang === 'en') {
-                    $genres = 'No info';
-                } else {
-                    $genres = 'Нет данных';
+                $currentGenres = $request->lang === 'en' ? 'No info' : 'Нет данных';
+            }
+            //to get all watched movies by this user
+            $user = auth()->guard('api')->user();
+            $filmsArray = WatchedFilmsUser::select('id_film')->where('id_user', $user->id)->get();
+            $watched = [];
+            foreach ($filmsArray as $val) {
+                array_push($watched, $val["id_film"]);
+            }
+            array_push($result, [
+                'poster' => $movie->poster_path !== null ? 'https://image.tmdb.org/t/p/w500' . $movie->poster_path : './pics/No_image_poster.png',
+                'year' => substr($movie->release_date, 0, 4),
+                'id' => $movie->id,
+                'name' => $movie->title,
+                'genre' => $currentGenres,
+                'imdb' => $movie->vote_average,
+                'seen' => in_array($movie->id, $watched)
+            ]);
+        }
+
+        return response()->json([
+            'data' => $result,
+            'hasMore' => $request->page < $contents->total_pages,
+            'url' => $url
+        ], 200);
+    }
+
+    public function loadMovieDetails(Request $request) {
+        $language = $request->lang === "en" ? "&language=en-US" : "&language=ru-RU";
+        $details = json_decode(file_get_contents('https://api.themoviedb.org/3/movie/' . $request->id . "?api_key=1dc667ca439220e3356ddd92cdee3e5e" . $language));
+        $countries = [];
+        foreach($details->production_countries as $country){
+            array_push($countries, $country->name);
+        }
+        $imdb_details = json_decode(file_get_contents('http://www.omdbapi.com/?apikey=1b966a3b&i=' . $details->imdb_id));
+        
+        $result = [
+            'imdb_id' => $details->imdb_id,
+            'title' => $details->title,
+            'year' => substr($details->release_date, 0, 4),
+            'runtime' => $details->runtime,
+            'rating' => $details->vote_average,
+            'plot' => $details->overview,
+            'poster' => $details->poster_path !== null ? 'https://image.tmdb.org/t/p/w500' . $details->poster_path : './pics/No_image_poster.png',
+            'country' => $countries,
+            'director' => $imdb_details->Director,
+            'actors' => $imdb_details->Actors,
+        ];           
+
+        return response()->json([
+            'data' => $result,
+        ], 200);
+    }
+
+    public function getPosters(Request $request) {
+        $language = $request->lang === "en" ? "&language=en-US" : "&language=ru-RU";
+        $movies = $request->movies;
+        $ids = [];
+        $posters = [];
+        foreach($movies as $item) {
+            array_push($ids, $item['id_film']);
+        }
+        foreach($ids as $movie) {
+            $details = json_decode(file_get_contents('https://api.themoviedb.org/3/movie/' . $movie . "?api_key=1dc667ca439220e3356ddd92cdee3e5e" . $language));
+            $currentPoster = $details->poster_path !== null ? 'https://image.tmdb.org/t/p/w500' . $details->poster_path : './pics/No_image_poster.png';
+            array_push($posters, $currentPoster);
+        }
+        return response()->json([
+            'data' => $posters,
+        ], 200);
+    }
+
+    public function loadItemsByTitle(Request $request) {
+        $language = $request->lang === "en" ? "&language=en-US" : "&language=ru-RU";
+
+        $genresLegend = json_decode(file_get_contents("https://api.themoviedb.org/3/genre/movie/list?api_key=1dc667ca439220e3356ddd92cdee3e5e" . $language));
+
+        $page = '&page=' . $request->page;
+
+        $url = "https://api.themoviedb.org/3/search/movie/?api_key=1dc667ca439220e3356ddd92cdee3e5e" . $language . "&query=" . $request->title . $page;
+        $contents = json_decode(file_get_contents($url));
+        $result = [];
+        foreach ($contents->results as $movie) {
+            //to convert genres from int values to words
+            $currentGenres = [];
+            if (count($movie->genre_ids) !== 0) {
+                foreach($movie->genre_ids as $genre_id) {
+                    foreach($genresLegend->genres as $item) {
+                        if ($item->id === intval($genre_id, 10)) {
+                            array_push($currentGenres, $item->name);
+                        }
+                    }
                 }
-            }
-            if (!array_key_exists('images', (array)$value) || empty((array)$value->images)) {
-                $poster = './pics/No_image_poster.png';
             } else {
-                $poster = $value->images->poster;
+                $currentGenres = $request->lang === 'en' ? 'No info' : 'Нет данных';
             }
-            array_push($result, 
-                [
-                    'poster' => $poster,
-                    'year' => $year,
-                    'id' => $value->imdb_id,
-                    'name' => $value->title,
-                    'genre' => $genres,
-                    'imdb' => 100500,
-                ]
-                // array_key_exists('images', (array)$value)
-            );
+            //to get all watched movies by this user
+            $user = auth()->guard('api')->user();
+            $filmsArray = WatchedFilmsUser::select('id_film')->where('id_user', $user->id)->get();
+            $watched = [];
+            foreach ($filmsArray as $val) {
+                array_push($watched, $val["id_film"]);
+            }
+            array_push($result, [
+                'poster' => $movie->poster_path !== null ? 'https://image.tmdb.org/t/p/w500' . $movie->poster_path : './pics/No_image_poster.png',
+                'year' => substr($movie->release_date, 0, 4),
+                'id' => $movie->id,
+                'name' => $movie->title,
+                'genre' => $currentGenres,
+                'imdb' => $movie->vote_average,
+                'seen' => in_array($movie->id, $watched)
+            ]);
         }
-        $total = json_decode(file_get_contents("https://tv-v2.api-fetch.website/movies"));
-        $length = count($total);
-        $totalLength = explode('/', $total[$length - 1]);
-        $totalRes = intval($totalLength[1]);
-        if($contents !== false){
-            return response()->json([
-                'data' => $result,
-                'totalPages' => $totalRes,
-                'filterParam' => $url
-            ], 200);
-        }
+
+        return response()->json([
+            'data' => $result,
+            'hasMore' => $request->page < $contents->total_pages,
+            'url' => $url
+        ], 200);
     }
 }

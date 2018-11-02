@@ -6,6 +6,7 @@ import axios from 'axios';
 import { FormattedMessage } from 'react-intl';
 import Trailer from "./Trailer";
 import { Button } from 'semantic-ui-react';
+import { connect } from 'react-redux';
 
 class SingleMovie extends Component {
     constructor(props) {
@@ -16,7 +17,8 @@ class SingleMovie extends Component {
             quality: null,
             trailerUrl: null,
             userId: "",
-            watched: false
+            watched: false,
+            lang: props.componentState.intl.locale
         };
     }
 
@@ -68,62 +70,78 @@ class SingleMovie extends Component {
                         userId: res.id,
                         userAvatar: res.avatar
                     });
-                    // console.log("user info", res);
                 })
         } else {
             this.props.history.push('/signin');
         }
         let self = this;
-        axios.get('http://localhost:3001/youtube/' + this.props.match.params.id)
+        const data = {
+            lang: this.props.componentState.intl.locale,
+            id: this.props.match.params.id
+        };
+        fetch('http://localhost:8000/api/library/load-mov-details', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        }).then((res) => res.json())
+            .then((responce) => {   
+                this.setState({
+                    data: {
+                        title: responce.data.title,
+                        year: responce.data.year,
+                        runtime: responce.data.runtime,
+                        rating: responce.data.rating,
+                        plot: responce.data.plot,
+                        poster: responce.data.poster,
+                        director: responce.data.director,
+                        actors: responce.data.actors,
+                        country: responce.data.country.join(", ")
+                    },
+                    imdb_id: responce.data.imdb_id
+                })
+                return axios.get('http://localhost:3001/youtube/' + responce.data.imdb_id)
+            })
             .then((response) => {
                 this.setState({
                     trailerUrl: response.data.url
                 })
             });
-        // axios.get('https://yts.am/api/v2/movie_details.json?movie_id=' + this.props.match.params.id)
-        //     .then(function (response) {
+    }
 
-        //         // handle success
-        //         if (response.data.data.movie !== undefined) {
-        //             let imdb = response.data.data.movie.imdb_code;
-        //             axios.get('http://www.omdbapi.com/?i=' + imdb + "&apikey=1b966a3b").then((res) => {
-        //                 self.setState({
-        //                     data: {
-        //                         title: response.data.data.movie.title_english,
-        //                         year: response.data.data.movie.year,
-        //                         runtime: response.data.data.movie.runtime,
-        //                         rating: response.data.data.movie.rating,
-        //                         plot: response.data.data.movie.description_full,
-        //                         poster: response.data.data.movie.large_cover_image,
-        //                         director: res.data.Director,
-        //                         actors: res.data.Actors,
-        //                         country: res.data.Country
-        //                     }
-        //                 })
-        //             });
-        //         }
-        //       })
-        //       .catch(function (error) {
-        //         // handle error
-        //         console.log(error);
-        //       });
-        axios.get('http://www.omdbapi.com/?apikey=1b966a3b&i=' + this.props.match.params.id)
-            .then((response) => {
-                this.setState({
-                    data: {
-                        title: response.data.Title,
-                        year: response.data.Year,
-                        runtime: response.data.Runtime,
-                        rating: response.data.imdbRating,
-                        plot: response.data.Plot,
-                        poster: response.data.Poster,
-                        director: response.data.Director,
-                        actors: response.data.Actors,
-                        country: response.data.Country
-                    }
-                })
-            })
-        
+    componentWillReceiveProps(nextProps) {
+        if (this.state.lang !== nextProps.componentState.intl.locale) {
+            const data = {
+                lang: nextProps.componentState.intl.locale,
+                id: this.props.match.params.id
+            };
+            fetch('http://localhost:8000/api/library/load-mov-details', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            }).then((res) => res.json())
+                .then((responce) => {   
+                    this.setState({
+                        data: {
+                            title: responce.data.title,
+                            year: responce.data.year,
+                            runtime: responce.data.runtime,
+                            rating: responce.data.rating,
+                            plot: responce.data.plot,
+                            poster: responce.data.poster,
+                            director: responce.data.director,
+                            actors: responce.data.actors,
+                            country: responce.data.country.join(", ")
+                        },
+                        imdb_id: responce.data.imdb_id
+                    })
+                });     
+        }
     }
 
     render() {
@@ -159,7 +177,6 @@ class SingleMovie extends Component {
                         <div className="my-row">
                             <div className="characteristic">
                                 <FormattedMessage id="movie.imdb" defaultMessage="IMDb grade: " />
-                                
                             </div>
                             <div className="txt">
                                 {this.state.data.rating} 
@@ -208,10 +225,10 @@ class SingleMovie extends Component {
                 </div>
                 {
                     this.state.quality ? 
-                        <MyPlayer id={this.props.match.params.id} quality={this.state.quality}/> 
+                        <MyPlayer id={this.state.imdb_id} quality={this.state.quality}/> 
                         :
                         this.state.trailerUrl !== null ?
-                            <Trailer id={this.props.match.params.id} url={this.state.trailerUrl}/>
+                            <Trailer id={this.state.imdb_id} url={this.state.trailerUrl}/>
                             :
                             null
                 }
@@ -221,4 +238,10 @@ class SingleMovie extends Component {
     }
 }
 
-export default SingleMovie;
+const mapStateToProps = state => {
+    return {
+        componentState: state
+    };
+};
+
+export default connect(mapStateToProps, null)(SingleMovie);

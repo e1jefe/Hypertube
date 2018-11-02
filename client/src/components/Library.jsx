@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../interface/style/library.css';
 import { Dropdown, Button, Input } from 'semantic-ui-react';
-import axios from 'axios';
+// import axios from 'axios';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
@@ -161,15 +161,62 @@ class Library extends Component {
                     text: 'Thriller'
                 }
             ],
+            genreRU: [
+                {
+                    key: 'animation',
+                    value: 'мультфильм',
+                    text: 'Мультфильм'
+                },
+                {
+                    key: 'action',
+                    value: 'боевик',
+                    text: 'Боевик'
+                },
+                {
+                    key: 'comedy',
+                    value: 'комедия',
+                    text: 'Комедия'
+                },
+                {
+                    key: 'drama',
+                    value: 'драма',
+                    text: 'Драма'
+                },
+                {
+                    key: 'fantasy',
+                    value: 'фэнтези',
+                    text: 'Фэнтези'
+                },
+                {
+                    key: 'horror',
+                    value: 'ужасы',
+                    text: 'Ужасы'
+                },
+                {
+                    key: 'love',
+                    value: 'мелодрама',
+                    text: 'Мелодрама'
+                },
+                {
+                    key: 'mystery',
+                    value: 'детектив',
+                    text: 'Детектив'
+                },   
+                {
+                    key: 'thriller',
+                    value: 'триллер',
+                    text: 'Триллер'
+                }
+            ],
             sortParam: [
                 {
                     key: 'name',
                     value: 'name',
-                    text: 'Name'
+                    text: 'Original name'
                 },
                 {
                     key: 'pop',
-                    value: 'pop',
+                    value: 'rating',
                     text: 'Popularity'
                 },
                 {
@@ -182,16 +229,16 @@ class Library extends Component {
                 {
                     key: 'name',
                     value: 'name',
-                    text: 'По названию'
+                    text: 'По оригинальному названию'
                 },
                 {
                     key: 'year',
                     value: 'year',
-                    text: 'По год'
+                    text: 'По году'
                 },
                 {
                     key: 'pop',
-                    value: 'pop',
+                    value: 'rating',
                     text: 'По популярности'
                 }
             ],
@@ -199,13 +246,16 @@ class Library extends Component {
             hasMore: true,
             isLoading: false,
             currentSortParam: "rating",
+            sortWasChanged: false,
             order: "desc",
             imdbMin: "",
-            currentGenre: "all",
+            currentGenre: props.componentState.intl.locale === "en" ? ["all"] : ["все"],
             pageStart: 1,
             error: "",
             movieTitle: "",
-            rememberPrevRes: 0
+            rememberPrevRes: 0,
+            lang: props.componentState.intl.locale,
+            searchTitle: false
         };
         this.changeSort = this.changeSort.bind(this);
         this.changeRate = this.changeRate.bind(this);
@@ -220,36 +270,39 @@ class Library extends Component {
         this.handleScroll = this.handleScroll.bind(this);
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (this.state.lang !== nextProps.componentState.intl.locale) {
+            const needToChangeSort = this.state.sortWasChanged;
+            const sortParam = this.state.currentSortParam;
+            this.setState({
+                currentSortParam: needToChangeSort === false ? "name" : sortParam,
+                order: "asc",
+                movies: [],
+                pageStart: 1,
+                hasMore: true
+            }, () => this.loadItems());
+        }
+    }
+
     componentWillUnmount() {
+        // console.log("in will unmount");
         window.removeEventListener('scroll', this.handleScroll, false);
     }
 
     componentDidMount() {
+        // console.log("in did mount");
         const token = localStorage.getItem('token');
         if (token === null) {
             this.props.history.push('/signin');
         } else {
             window.addEventListener('scroll', this.handleScroll);
-            fetch('http://127.0.0.1:8000/api/cabinet/all-watched-films', {
-                    method: 'POST',
-                    headers:{
-                        'Authorization': 'Bearer ' + token,
-                        'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                .then((res) => res.json())
-                .then((res) => {
-                    this.setState({
-                        watchedFilms: res
-                    });
-                });
-            // this.loadItems();
+            this.loadItems();
         }
     }
 
     handleScroll() {
-        if ( window.innerHeight + document.documentElement.scrollTop === document.documentElement.scrollHeight ) {
+        if ( window.innerHeight + document.documentElement.scrollTop === document.documentElement.scrollHeight && !this.state.isLoading) {
+        // console.log("in handle Scroll");
             this.loadItems();
         }
     }
@@ -279,7 +332,7 @@ class Library extends Component {
         }
         this.setState({
             yearGap
-        })
+        });
     }
 
     sendYear(){
@@ -325,108 +378,108 @@ class Library extends Component {
             yearGap.min = yearGap.max;
             yearGap.max = tmpMin;
         }
-        console.log("send", this.state.yearGap)
-        console.log("prev", this.state.prevYearGap)
-
-        console.log("compare", JSON.stringify(this.state.yearGap) !== JSON.stringify(this.state.prevYearGap))
-
+        // console.log("send", this.state.yearGap)
+        // console.log("prev", this.state.prevYearGap)
+        // console.log("compare", JSON.stringify(this.state.yearGap) !== JSON.stringify(this.state.prevYearGap))
         if (JSON.stringify(this.state.yearGap) !== JSON.stringify(this.state.prevYearGap)) {
+            const needToChangeSort = this.state.sortWasChanged;
+            const sortParam = this.state.currentSortParam;
             this.setState({
-                // pageStart: 1,
-                // movies: [],
-                // currentSortParam: "title",
-                // order: "asc",
-                // yearGap: yearGap,
-                // hasMore: true,
-                // prevYearGap: JSON.parse(JSON.stringify(yearGap))
-            });
+                pageStart: 1,
+                movies: [],
+                currentSortParam: needToChangeSort === false ? "name" : sortParam,
+                order: "asc",
+                yearGap: yearGap,
+                hasMore: true,
+                prevYearGap: JSON.parse(JSON.stringify(yearGap))
+            }, () => this.loadItems());
         } 
-        // else {
-        //     this.setState({
-        //         yearGap: yearGap,
-        //         prevYearGap: JSON.parse(JSON.stringify(yearGap))
-        //     })
-        // }
+        else {
+            this.setState({
+                yearGap: yearGap,
+                prevYearGap: JSON.parse(JSON.stringify(yearGap))
+            })
+        }
     }
 
     changeRate(event, data) {
-        // if (data.value !== this.state.imdbMin) {
-        //     this.setState({
-        //         currentSortParam: "title",
-        //         order: "asc",
-        //         imdbMin: data.value,
-        //         pageStart: 1,
-        //         movies: [],
-        //         hasMore: true
-        //     });
-        // }
+        if (data.value !== this.state.imdbMin) {
+            const needToChangeSort = this.state.sortWasChanged;
+            const sortParam = this.state.currentSortParam;
+            this.setState({
+                currentSortParam: needToChangeSort === false ? "name" : sortParam,
+                order: "asc",
+                imdbMin: data.value,
+                pageStart: 1,
+                movies: [],
+                hasMore: true
+            }, () => this.loadItems());
+        }
     }
 
     changeGenre(event, data) {
         const currentLength = this.state.currentGenre.length;
         this.setState({
             currentGenre: data.value,
-        })
+        });
         if (currentLength > data.value.length) {
-            // this.sendGenre();
+            this.sendGenre();
         }
     }
 
     sendGenre() {
-        // this.setState({
-        //     currentSortParam: "title",
-        //     order: "asc",
-        //     movies: [],
-        //     pageStart: 1,
-        //     hasMore: true
-        // });
+        const needToChangeSort = this.state.sortWasChanged;
+        const sortParam = this.state.currentSortParam;
+        this.setState({
+            currentSortParam: needToChangeSort === false ? "name" : sortParam,
+            order: "asc",
+            movies: [],
+            pageStart: 1,
+            hasMore: true
+        }, () => this.loadItems());
     }
 
     changeSort(event, data){
-        if (data.value === 'pop') {
-            this.setState({
-                currentSortParam: "rating",
-                order: "desc",
-                movies: [],
-                pageStart: 1,
-                hasMore: true
-            }, () => this.loadItems());
-        } else if (data.value === 'name'){
-            this.setState({
-                currentSortParam: "name",
-                order: "asc",
-                movies: [],
-                pageStart: 1,
-                hasMore: true
-            }, () => this.loadItems());
-        } else if (data.value === 'year'){
-            this.setState({
-                currentSortParam: "year",
-                order: "asc",
-                movies: [],
-                pageStart: 1,
-                hasMore: true
-            }, () => this.loadItems());
+        // console.log("in change sort");
+        // console.log("in state", this.state.currentSortParam);
+        // console.log("came", data.value);
+
+        if (this.state.currentSortParam !== data.value) {
+            if (data.value === 'rating') {
+                this.setState({
+                    sortWasChanged: true,
+                    currentSortParam: "rating",
+                    order: "desc",
+                    movies: [],
+                    pageStart: 1,
+                    hasMore: true
+                }, () => this.loadItems());
+            } else if (data.value === 'name'){
+                this.setState({
+                    sortWasChanged: true,
+                    currentSortParam: "name",
+                    order: "asc",
+                    movies: [],
+                    pageStart: 1,
+                    hasMore: true
+                }, () => this.loadItems());
+            } else if (data.value === 'year'){
+                this.setState({
+                    sortWasChanged: true,
+                    currentSortParam: "year",
+                    order: "asc",
+                    movies: [],
+                    pageStart: 1,
+                    hasMore: true
+                }, () => this.loadItems());
+            }
         }
     }
 
     loadItems = () => {
-        console.log("call load ");
+        console.log("load");
         // console.log("has More ", this.state.hasMore);
-
         if (this.state.hasMore) {
-            // const baseUrl = "https://yts.am/api/v2/list_movies.json?";
-            // const page = 'page=' + this.state.pageStart;
-            // const sortParam = "&sort_by=" + this.state.currentSortParam;
-            // const orderParam = "&order_by=" + this.state.order;
-            // const rate = this.state.imdbMin !== "" ? "&minimum_rating=" + this.state.imdbMin : "";
-            // let allGenres = "";
-            // if (this.state.currentGenre.length !== 0) {
-            //     this.state.currentGenre.forEach((genre) => {
-            //         allGenres = allGenres.concat("&genre=" + genre);
-            //     })
-            // }
-            // let requestUrl = baseUrl + page + rate + sortParam + orderParam + allGenres + title;
             let yearGap = this.state.yearGap;
             if (this.state.yearGap.min === "" && this.state.yearGap.max === "") {
                 yearGap = {
@@ -437,177 +490,102 @@ class Library extends Component {
                 yearGap.min = this.state.yearGap.min === "" ? this.state.yearGap.max : this.state.yearGap.min;
                 yearGap.max = this.state.yearGap.max === "" ? this.state.yearGap.min : this.state.yearGap.max;
             }
-            const data = {
-                lang: this.props.componentState.intl.locale,
-                page: this.state.pageStart,
-                sort: this.state.currentSortParam,
-                order: this.state.order,
-                filter: {
-                    imdb: this.state.imdbMin,
-                    genres: this.state.currentGenre,
-                    yearGap: this.state.yearGap
-                }
-            }
+            
             // console.log("request ", data);
 
             this.setState({ isLoading: true }, () => {
-                fetch('http://localhost:8000/api/library/load-items', {
-                    method: 'POST',
-                    body: JSON.stringify(data),
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
+                    const token = localStorage.getItem('token');
+                    if (this.state.searchTitle === false) {
+                        const data = {
+                            lang: this.props.componentState.intl.locale,
+                            page: this.state.pageStart,
+                            sort: this.state.currentSortParam,
+                            order: this.state.order,
+                            filter: {
+                                imdb: this.state.imdbMin,
+                                genres: this.state.currentGenre,
+                                yearGap: this.state.yearGap
+                            }
+                        }
+                        fetch('http://localhost:8000/api/library/load-items', {
+                            method: 'POST',
+                            body: JSON.stringify(data),
+                            headers: {
+                                'Authorization': 'Bearer ' + token,
+                                'Content-Type': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        }).then((res) => res.json())
+                            .then((responce) => {   
+                                this.setState({
+                                    isLoading: false,
+                                    pageStart: data.page + 1,
+                                    hasMore: responce.hasMore,
+                                    movies: [
+                                        ...this.state.movies,
+                                        ...responce.data
+                                    ]
+                                })
+                                console.log("res general", responce);
+                            });
+                    } else {
+                        const data = {
+                            lang: this.props.componentState.intl.locale,
+                            page: this.state.pageStart,
+                            title: this.state.movieTitle
+                        }
+                        fetch('http://localhost:8000/api/library/load-items-by-title', {
+                            method: 'POST',
+                            body: JSON.stringify(data),
+                            headers: {
+                                'Authorization': 'Bearer ' + token,
+                                'Content-Type': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        }).then((res) => res.json())
+                            .then((responce) => {   
+                                this.setState({
+                                    isLoading: false,
+                                    pageStart: data.page + 1,
+                                    hasMore: responce.hasMore,
+                                    movies: [
+                                        ...this.state.movies,
+                                        ...responce.data
+                                    ]
+                                })
+                                console.log("res query", responce);
+                            });
                     }
-                }).then((res) => res.json())
-                    .then((responce) => {   
-                        this.setState({
-                            isLoading: false,
-                            pageStart: data.page + 1,
-                            hasMore: parseInt(data.page, 10) < responce.totalPages,
-                            movies: [
-                                ...this.state.movies,
-                                ...responce.data
-                            ]
-                        })
-                        console.log("res", responce);
-                    });
-            //     axios.get(requestUrl)
-            //         .then((response) => {
-            // console.log("response ", response);
-                        // if (response.data.data.movie_count !== 0 && response.data.data.hasOwnProperty('movies')) {
-                        //     let nextMovPack = response.data.data.movies.map((mov) => {
-                        //         if (yearGap.min <= mov.year && mov.year <= yearGap.max) {
-                        //             return ({
-                        //                 poster: mov.large_cover_image !== "" ? mov.large_cover_image : mov.medium_cover_image !== "" ? mov.medium_cover_image : mov.small_cover_image,
-                        //                 country: mov.language,
-                        //                 year: mov.year,
-                        //                 id: mov.id,
-                        //                 name: mov.title_english,
-                        //                 genre: mov.genres,
-                        //                 seen: this.state.watchedFilms.some((item) => item === mov.id)
-                        //             })
-                        //         } else {
-                        //             return false
-                        //         }
-                        //     });
-                        //     let filteredMovies = nextMovPack.filter(function(el) { return el; });
-                        //     let newPage = this.state.pageStart + 1;
-                        //     // this.state.pageStart * 20 < response.data.data.movie_count
-                        //     // console.log("state", this.state);
-                        //     // console.log("response", response.data.data);
-                        //     // console.log("length", this.state.movies.length);
-                        //     // console.log("отфильтровано < 20", filteredMovies.length < 20);
-                        //     // console.log("кратно 4", (this.state.movies.length + filteredMovies.length) % 4 !== 0);
-                        //     // console.log("новый результат кратно 20", (this.state.movies.length) % 20);
-                        //     const prevMovRes = this.state.rememberPrevRes + filteredMovies.length;
-                        //     this.setState({
-                        //         hasMore: (this.state.movies.length + filteredMovies.length < response.data.data.movie_count),
-                        //         isLoading: false,
-                        //         movies: [
-                        //         ...this.state.movies,
-                        //         ...filteredMovies,
-                        //         ],
-                        //         pageStart: newPage,
-                        //         rememberPrevRes: prevMovRes
-                        //     });
-                        //     // if (filteredMovies.length < 20 && (this.state.movies.length % 4 !== 0)) {
-                        //     //     this.loadItems();
-                        //     // }
-                        //     // console.log("prevMovRes", prevMovRes)
-
-                        //     if (prevMovRes < 20 && this.state.hasMore) {
-                        //         // console.log("call more")
-                        //         this.loadItems();
-                        //     } else {
-                        //         this.setState({
-                        //             rememberPrevRes: 0
-                        //         })
-                        //     }
-//                         if (response.data.length !== 0) {
-//                             let i = -1;
-//                             let nextMovPack = response.data.map((mov) => {
-//                                 // console.log("tut", mov.images.length);
-//                                 if (yearGap.min <= mov.year && mov.year <= yearGap.max) {       
-//                                     return ({
-//                                         poster: Object.keys(mov.images).length !== 0 ? mov.images.poster : './pics/No_image_poster.png',
-//                                         year: mov.year !== null ? mov.year : this.props.componentState.intl.locale === 'en' ? "No info" : "Нет данных",
-//                                         id: mov.imdb_id,
-//                                         name: mov.title,
-//                                         genre: mov.genres.length !== 0 ? mov.genres : this.props.componentState.intl.locale === 'en' ? "No info" : "Нет данных",
-//                                         imdb: ''
-//                                     })
-//                                 } else {
-//                                     return false
-//                                 }
-                                
-//                             });
-// console.log("filteredMovies", nextMovPack);
-
-                            // let filteredMovies = nextMovPack.filter(function(el) { return el; });
-                            // let newPage = this.state.pageStart + 1;
-                            // this.state.pageStart * 20 < response.data.data.movie_count
-                            // console.log("filteredMovies", filteredMovies);
-                            // console.log("response", response.data.data);
-                            // console.log("length", this.state.movies.length);
-                            // console.log("отфильтровано < 20", filteredMovies.length < 20);
-                            // console.log("кратно 4", (this.state.movies.length + filteredMovies.length) % 4 !== 0);
-                            // console.log("новый результат кратно 20", (this.state.movies.length) % 20);
-                            // const prevMovRes = this.state.rememberPrevRes + filteredMovies.length;
-                            // this.setState({
-                            //     hasMore: newPage < 182,
-                            //     isLoading: false,
-                            //     movies: [
-                            //     ...this.state.movies,
-                            //     ...filteredMovies,
-                            //     ],
-                            //     pageStart: newPage,
-                            //     rememberPrevRes: prevMovRes
-                            // });
-                            // if (filteredMovies.length < 20 && (this.state.movies.length % 4 !== 0)) {
-                            //     this.loadItems();
-                            // }
-                            // console.log("prevMovRes", prevMovRes)
-
-                    //         if (prevMovRes < 49 && this.state.hasMore) {
-                    //             console.log("call more")
-                    //             this.loadItems();
-                    //         } else {
-                    //             this.setState({
-                    //                 rememberPrevRes: 0
-                    //             })
-                    //         }
-                    //     } else {
-                    //         this.setState({
-                    //             hasMore: false,
-                    //             isLoading: false
-                    //         })
-                    //     }
-                    // })
-                    // .catch((err) => {
-                    //     this.setState({
-                    //         error: err.message,
-                    //         isLoading: false,
-                    //         hasMore: false
-                    //     });
-                    // })
             });
         }
     }
 
     recordSearchTitle(e){
-        this.setState({
-            movieTitle: e.target.value
-        })
+        console.log("value ", e.target.value)
+        if (e.target.value !== "") {
+            this.setState({
+                movieTitle: e.target.value
+            })
+        } else {
+            this.setState({
+                movieTitle: e.target.value,
+                searchTitle: false
+            })
+        }
     }
 
     sendMovTitle(){
+        console.log("in sendMovTitle");
+        const needToChangeSort = this.state.sortWasChanged;
+        const sortParam = this.state.currentSortParam;
         this.setState({
-            currentSortParam: "name",
+            currentSortParam: needToChangeSort === false ? "name" : sortParam,
             hasMore: true,
             order: "asc",
             movies: [],
             pageStart: 1,
-            currentGenre: "all"
+            currentGenre: ["all"],
+            searchTitle: true
         }, () => this.loadItems());
     }
 
@@ -618,7 +596,7 @@ class Library extends Component {
     }
 
     render() {
-        // console.log("lib", this.state.movies);
+        console.log("state", this.state);
 
         return (
             <div className="library-container">
@@ -638,22 +616,22 @@ class Library extends Component {
                     </div>
                     <div className="year-select">
                         <FormattedMessage id="library.year" defaultMessage="Select year" />
-                        <Input className="year-select-input-ru" pattern="[0-9]*" placeholder={this.props.componentState.intl.locale === 'en' ? 'From...' : 'С...'} onChange={this.changeMinYear} style={{margin: "0 5px"}} value={this.state.yearGap.min}/>
-                        <Input className="year-select-input-ru" pattern="[0-9]*" placeholder={this.props.componentState.intl.locale === 'en' ? 'To...' : 'По...'} onChange={this.changeMaxYear} value={this.state.yearGap.max}/>
-                        <Button  color='purple' onClick={() => this.sendYear()} style={{marginLeft: "5px"}}>
+                        <Input disabled={this.state.isLoading || this.state.searchTitle} className="year-select-input-ru" pattern="[0-9]*" placeholder={this.props.componentState.intl.locale === 'en' ? 'From...' : 'С...'} onChange={this.changeMinYear} style={{margin: "0 5px"}} value={this.state.yearGap.min}/>
+                        <Input disabled={this.state.isLoading || this.state.searchTitle} className="year-select-input-ru" pattern="[0-9]*" placeholder={this.props.componentState.intl.locale === 'en' ? 'To...' : 'По...'} onChange={this.changeMaxYear} value={this.state.yearGap.max}/>
+                        <Button disabled={this.state.isLoading || this.state.searchTitle} color='purple' onClick={() => this.sendYear()} style={{marginLeft: "5px"}}>
                             <Button.Content visible>{this.props.componentState.intl.locale === 'en' ? "Go" : "Вперед"}</Button.Content>
                         </Button>
                     </div>
                 </div>
                 <div className="control column">
                     <div className="param">                    
-                        <Dropdown placeholder={this.props.componentState.intl.locale === 'en' ? 'IMDB RATING' : 'IMDB рейтинг'} fluid search selection options={this.props.componentState.intl.locale === 'en' ? this.state.imdb : this.state.imdbRU} onChange={this.changeRate}/>
+                        <Dropdown disabled={this.state.isLoading || this.state.searchTitle} placeholder={this.props.componentState.intl.locale === 'en' ? 'IMDB RATING' : 'IMDB рейтинг'} fluid search selection options={this.props.componentState.intl.locale === 'en' ? this.state.imdb : this.state.imdbRU} onChange={this.changeRate}/>
                     </div>
                     <div className="param">                    
-                        <Dropdown placeholder={this.props.componentState.intl.locale === 'en' ? 'GENRE' : 'Жанр'} fluid search multiple selection options={this.state.genre} onChange={this.changeGenre} onClose={this.sendGenre} />
+                        <Dropdown disabled={this.state.isLoading || this.state.searchTitle} placeholder={this.props.componentState.intl.locale === 'en' ? 'GENRE' : 'Жанр'} fluid search multiple selection options={this.props.componentState.intl.locale === 'en' ? this.state.genre : this.state.genreRU} onChange={this.changeGenre} onClose={this.sendGenre} />
                     </div>
                     <div className="param">                    
-                        <Dropdown placeholder={this.props.componentState.intl.locale === 'en' ? 'SORT BY' : 'Сортировать'} fluid selection options={this.props.componentState.intl.locale === 'en' ? this.state.sortParam : this.state.sortParamRU} onChange={this.changeSort}/>
+                        <Dropdown disabled={this.state.isLoading || this.state.searchTitle} placeholder={this.props.componentState.intl.locale === 'en' ? 'SORT BY' : 'Сортировать'} fluid selection options={this.props.componentState.intl.locale === 'en' ? this.state.sortParam : this.state.sortParamRU} onChange={this.changeSort}/>
                     </div>
                 </div>
                 <div className="movies-all container">
