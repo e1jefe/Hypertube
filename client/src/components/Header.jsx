@@ -11,7 +11,6 @@ import { logout } from "../redux/actions";
 
 addLocaleData([...ruLocaleData]);
 
-
 class Header extends Component {
 
     constructor(props){
@@ -137,11 +136,9 @@ class Header extends Component {
                                 EN
                             </button>
                         </div>
-                        {/* <div className="logout"> */}
-                            <button onClick={this.logout} className="logout">
-                                <FormattedMessage id="header.logout" defaultMessage="Log out" />
-                            </button>
-                        {/* </div> */}
+                        <button onClick={this.logout} className="logout">
+                            <FormattedMessage id="header.logout" defaultMessage="Log out" />
+                        </button>
                     </div>
                 </div>
                 <header className="header-mob">

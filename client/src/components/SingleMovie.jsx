@@ -54,9 +54,7 @@ class SingleMovie extends Component {
     }
 
     componentDidMount() {
-        // console.log("token", token);
         const token = localStorage.getItem('token');
-        // console.log("token", token);
         if (token !== null) {
             fetch('http://127.0.0.1:8000/api/auth/user', {
                 method: 'GET',
@@ -74,7 +72,6 @@ class SingleMovie extends Component {
         } else {
             this.props.history.push('/signin');
         }
-        let self = this;
         const data = {
             lang: this.props.componentState.intl.locale,
             id: this.props.match.params.id
@@ -137,17 +134,13 @@ class SingleMovie extends Component {
                             director: responce.data.director,
                             actors: responce.data.actors,
                             country: responce.data.country.join(", ")
-                        },
-                        imdb_id: responce.data.imdb_id
+                        }
                     })
                 });     
         }
     }
 
     render() {
-        // console.log("history", this.state.movieId)
-        // console.log("state", this.state);
-        // console.log("history", this.props.history);
         return (
             <section className="single-movie-container">
                 <div className="description">

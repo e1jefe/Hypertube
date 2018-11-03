@@ -4,11 +4,6 @@ import { FormattedMessage } from 'react-intl';
 
 class OtherUserProfile extends Component {
 
-    componentDidMount() {
-        //make request to bd for getting user info
-        console.log("in modal", this.props.propfile);
-    }
-
     close(){
         this.props.closeModal();
     }

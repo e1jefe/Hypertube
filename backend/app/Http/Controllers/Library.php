@@ -40,8 +40,8 @@ class Library extends Controller
             $rating = '&vote_average.gte=1';
         }
 
-        $yearmin = '&release_date.gte=' . $request->filter['yearGap']['min']; //need to check if appropriate arr
-        $yearmax = '&release_date.lte=' . $request->filter['yearGap']['max']; //need to check if appropriate arr
+        $yearmin = '&release_date.gte=' . $request->filter['yearGap']['min'];
+        $yearmax = '&release_date.lte=' . $request->filter['yearGap']['max'];
 
         $url = "https://api.themoviedb.org/3/discover/movie/?api_key=1dc667ca439220e3356ddd92cdee3e5e" . $language . $sort . $genresToFilter . $yearmin . $yearmax . $rating . $page;
         $contents = json_decode(file_get_contents($url));
@@ -81,7 +81,6 @@ class Library extends Controller
         return response()->json([
             'data' => $result,
             'hasMore' => $request->page < $contents->total_pages,
-            'url' => $url
         ], 200);
     }
 
@@ -175,7 +174,6 @@ class Library extends Controller
         return response()->json([
             'data' => $result,
             'hasMore' => $request->page < $contents->total_pages,
-            'url' => $url
         ], 200);
     }
 }

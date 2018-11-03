@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import '../interface/style/library.css';
 import { Dropdown, Button, Input } from 'semantic-ui-react';
-// import axios from 'axios';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
@@ -163,39 +162,9 @@ class Library extends Component {
             ],
             genreRU: [
                 {
-                    key: 'animation',
-                    value: 'мультфильм',
-                    text: 'Мультфильм'
-                },
-                {
                     key: 'action',
                     value: 'боевик',
                     text: 'Боевик'
-                },
-                {
-                    key: 'comedy',
-                    value: 'комедия',
-                    text: 'Комедия'
-                },
-                {
-                    key: 'drama',
-                    value: 'драма',
-                    text: 'Драма'
-                },
-                {
-                    key: 'fantasy',
-                    value: 'фэнтези',
-                    text: 'Фэнтези'
-                },
-                {
-                    key: 'horror',
-                    value: 'ужасы',
-                    text: 'Ужасы'
-                },
-                {
-                    key: 'love',
-                    value: 'мелодрама',
-                    text: 'Мелодрама'
                 },
                 {
                     key: 'mystery',
@@ -203,9 +172,39 @@ class Library extends Component {
                     text: 'Детектив'
                 },   
                 {
+                    key: 'drama',
+                    value: 'драма',
+                    text: 'Драма'
+                },
+                {
+                    key: 'comedy',
+                    value: 'комедия',
+                    text: 'Комедия'
+                },
+                {
+                    key: 'love',
+                    value: 'мелодрама',
+                    text: 'Мелодрама'
+                },
+                {
+                    key: 'animation',
+                    value: 'мультфильм',
+                    text: 'Мультфильм'
+                },
+                {
                     key: 'thriller',
                     value: 'триллер',
                     text: 'Триллер'
+                },
+                {
+                    key: 'horror',
+                    value: 'ужасы',
+                    text: 'Ужасы'
+                },
+                {
+                    key: 'fantasy',
+                    value: 'фэнтези',
+                    text: 'Фэнтези'
                 }
             ],
             sortParam: [
@@ -227,14 +226,14 @@ class Library extends Component {
             ],
             sortParamRU: [
                 {
-                    key: 'name',
-                    value: 'name',
-                    text: 'По оригинальному названию'
-                },
-                {
                     key: 'year',
                     value: 'year',
                     text: 'По году'
+                },
+                {
+                    key: 'name',
+                    value: 'name',
+                    text: 'По оригинальному названию'
                 },
                 {
                     key: 'pop',
@@ -253,7 +252,6 @@ class Library extends Component {
             pageStart: 1,
             error: "",
             movieTitle: "",
-            rememberPrevRes: 0,
             lang: props.componentState.intl.locale,
             searchTitle: false
         };
@@ -285,12 +283,10 @@ class Library extends Component {
     }
 
     componentWillUnmount() {
-        // console.log("in will unmount");
         window.removeEventListener('scroll', this.handleScroll, false);
     }
 
     componentDidMount() {
-        // console.log("in did mount");
         const token = localStorage.getItem('token');
         if (token === null) {
             this.props.history.push('/signin');
@@ -302,7 +298,6 @@ class Library extends Component {
 
     handleScroll() {
         if ( window.innerHeight + document.documentElement.scrollTop === document.documentElement.scrollHeight && !this.state.isLoading) {
-        // console.log("in handle Scroll");
             this.loadItems();
         }
     }
@@ -372,15 +367,11 @@ class Library extends Component {
                 draggable: true
             });
         }
-
         if (parseInt(yearGap.min, 10) > parseInt(yearGap.max, 10) || parseInt(yearGap.max, 10) < parseInt(yearGap.min, 10)) {
             const tmpMin = yearGap.min;
             yearGap.min = yearGap.max;
             yearGap.max = tmpMin;
         }
-        // console.log("send", this.state.yearGap)
-        // console.log("prev", this.state.prevYearGap)
-        // console.log("compare", JSON.stringify(this.state.yearGap) !== JSON.stringify(this.state.prevYearGap))
         if (JSON.stringify(this.state.yearGap) !== JSON.stringify(this.state.prevYearGap)) {
             const needToChangeSort = this.state.sortWasChanged;
             const sortParam = this.state.currentSortParam;
@@ -440,10 +431,6 @@ class Library extends Component {
     }
 
     changeSort(event, data){
-        // console.log("in change sort");
-        // console.log("in state", this.state.currentSortParam);
-        // console.log("came", data.value);
-
         if (this.state.currentSortParam !== data.value) {
             if (data.value === 'rating') {
                 this.setState({
@@ -477,8 +464,6 @@ class Library extends Component {
     }
 
     loadItems = () => {
-        console.log("load");
-        // console.log("has More ", this.state.hasMore);
         if (this.state.hasMore) {
             let yearGap = this.state.yearGap;
             if (this.state.yearGap.min === "" && this.state.yearGap.max === "") {
@@ -490,9 +475,6 @@ class Library extends Component {
                 yearGap.min = this.state.yearGap.min === "" ? this.state.yearGap.max : this.state.yearGap.min;
                 yearGap.max = this.state.yearGap.max === "" ? this.state.yearGap.min : this.state.yearGap.max;
             }
-            
-            // console.log("request ", data);
-
             this.setState({ isLoading: true }, () => {
                     const token = localStorage.getItem('token');
                     if (this.state.searchTitle === false) {
@@ -526,7 +508,6 @@ class Library extends Component {
                                         ...responce.data
                                     ]
                                 })
-                                console.log("res general", responce);
                             });
                     } else {
                         const data = {
@@ -553,7 +534,6 @@ class Library extends Component {
                                         ...responce.data
                                     ]
                                 })
-                                console.log("res query", responce);
                             });
                     }
             });
@@ -561,7 +541,6 @@ class Library extends Component {
     }
 
     recordSearchTitle(e){
-        console.log("value ", e.target.value)
         if (e.target.value !== "") {
             this.setState({
                 movieTitle: e.target.value
@@ -575,7 +554,6 @@ class Library extends Component {
     }
 
     sendMovTitle(){
-        console.log("in sendMovTitle");
         const needToChangeSort = this.state.sortWasChanged;
         const sortParam = this.state.currentSortParam;
         this.setState({
@@ -596,8 +574,6 @@ class Library extends Component {
     }
 
     render() {
-        console.log("state", this.state);
-
         return (
             <div className="library-container">
                 <ToastContainer autoClose={5000} position="top-center" hideProgressBar={true}/>

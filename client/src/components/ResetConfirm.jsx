@@ -33,7 +33,6 @@ class Reset extends Component {
         if (localStorage.getItem('token') !== null) {
             this.props.history.push('/');
         }
-        console.log("token", this.props.match.params.token);
     }
 
     changeLanguage(str) {
@@ -114,7 +113,6 @@ class Reset extends Component {
             }
         }).then((res) => res.json())
         .then((responce) => {
-            console.log("res:", responce)
             if (responce.errors !== undefined) {
                 this.setState({
                     processing: false

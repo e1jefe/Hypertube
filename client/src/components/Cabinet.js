@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import 'semantic-ui-css/semantic.min.css';
 import '../interface/style/cabinet.css';
 import {Image, Icon, Input, List, Button, Modal, Header, Loader} from 'semantic-ui-react';
-import axios from 'axios';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { ToastContainer, toast } from 'react-toastify';
@@ -28,39 +27,6 @@ class Cabinet extends Component {
         this.fileInput = React.createRef();
         this.changeHandler = this.changeHandler.bind(this);
     }
-
-    // async getPosters(films) {
-    //     // const promises = [];
-    //     // films.forEach(element => {
-    //     //     promises.push(axios.get('https://yts.am/api/v2/movie_details.json?movie_id=' + element.id_film));
-    //     // });
-    //     // const responses = await Promise.all(promises);
-    //     // const posters = [];
-    //     // responses.forEach(response => {
-    //     //     posters.push(response.data.data.movie.large_cover_image);
-    //     // });
-    //     // let posters = [];
-    //     const data = {
-    //         movies: films,
-    //         lang: this.props.componentState.intl.locale
-    //     };
-    //     fetch('http://localhost:8000/api/library/get-posters', {
-    //         method: 'POST',
-    //         body: JSON.stringify(data),
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'X-Requested-With': 'XMLHttpRequest'
-    //         }
-    //     }).then((res) => res.json())
-    //         .then((responce) => {
-    //             this.setState({
-    //                 posters: responce.data
-    //             });
-    //             // console.log("res", responce);
-    //         });
-    //     return true;
-    // }
-
 
     componentDidMount() {
         const token = localStorage.getItem('token');
@@ -144,7 +110,6 @@ class Cabinet extends Component {
             }
         }).then((res) => res.json())
             .then((responce) => {
-                console.log(responce)
                 if (responce.errors === undefined) {
                     this.setState({
                         userData: responce
@@ -168,7 +133,6 @@ class Cabinet extends Component {
         const data = {
             password: this.state.pass,
             password_confirmation: this.state.pass_rep,
-
         };
         fetch('http://localhost:8000/api/cabinet/change-pass', {
             method: 'POST',
@@ -198,7 +162,6 @@ class Cabinet extends Component {
         this.setState({
             [e.target.name]: e.target.value
         });
-        console.log('this.state = ', this.state)
     }
 
     imgFileToBase64 = (file) => {
@@ -210,7 +173,6 @@ class Cabinet extends Component {
             }
 
             reader.onerror = e => {
-                console.error(e.target.error);
                 reject(e.target.error);
             }
 
@@ -219,7 +181,6 @@ class Cabinet extends Component {
     }
 
     fileSelectionHandler = async event => {
-        // console.log("file select");
         const upload = event.target.files[0];
         if (upload) {
             if (upload.type.includes('image')) {
@@ -285,18 +246,15 @@ class Cabinet extends Component {
     }
 
     cancelPhotoUpload() {
-        // console.log("cancel");
         this.setState({
             uploadedPhoto: "",
             tmpPhoto: "",
             chosePhotoStage: false
-            // showModal: false
         });
         this.fileInput.current.value = "";
     }
 
     donate() {
-        console.log("donate");
         this.setState({
             showModal: false
         })
@@ -309,8 +267,6 @@ class Cabinet extends Component {
     }
 
     render() {
-        // this.state.watchedFilms.map((mov, i) => console.log(mov));
-        console.log("state", this.state);
         let realName = "";
         realName = this.state.userData.firstname !== null ? realName + this.state.userData.firstname : realName;
         realName = this.state.userData.lastname !== null ? realName + " " + this.state.userData.lastname : realName;

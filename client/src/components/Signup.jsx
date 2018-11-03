@@ -114,7 +114,6 @@ class Signup extends Component {
             }
         }).then((res) => res.json())
         .then((responce) => {
-            console.log("res", responce);
             if (responce.errors !== undefined) {
                 let lang = this.state.lang;
                 if (lang === 'en') {
@@ -149,8 +148,6 @@ class Signup extends Component {
     }
 
     render() {
-        console.log("props signup", this.props);
-
         return(
             <main className="signup-page">
                 <header className="main-head">

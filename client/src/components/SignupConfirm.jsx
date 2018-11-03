@@ -16,7 +16,6 @@ class SignupConfirm extends Component {
     }
     
     componentDidMount() {
-        // console.log("token", this.props.match.params.token);
         fetch('http://127.0.0.1:8000/api/auth/signup/activate/' + this.props.match.params.token, {
             method: 'GET',
             headers:{

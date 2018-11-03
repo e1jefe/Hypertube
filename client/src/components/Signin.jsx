@@ -112,7 +112,6 @@ class Signin extends Component {
             }
         }).then((res) => res.json())
             .then((responce) => {
-                console.log("res", responce);
                 if (responce.message === "Unauthorized" || responce.message === "The given data was invalid.") {
                     if (this.state.lang === 'en') {
                         this.setState({
@@ -142,9 +141,6 @@ class Signin extends Component {
     }
 
     render() {
-        // console.log("history signin", this.props);
-        // console.log("props login", this.props);
-
         return (
             <main className="signin-page">
                 <header className="main-head">
