@@ -100,8 +100,7 @@ class CabinetController extends Controller
     public function watchedFilmsUsersReturn()
     {
         $user = auth()->guard('api')->user();
-        $filmsArray = WatchedFilmsUser::where('id_user', $user->id)->orderBy('updated_at', 'desc')->get();
-
+        $filmsArray = WatchedFilmsUser::where('id_user', $user->id)->orderBy('updated_at', 'desc')->take(6)->get();
         $ids = [];
         $posters = [];
         foreach($filmsArray as $item) {
@@ -119,14 +118,12 @@ class CabinetController extends Controller
     {
         if (empty($request->id_film))
             return response()->json(false);
-        $filmExist = WatchedFilmsUser::where('id_film', $request->id_film)->first();
         $user = auth()->guard('api')->user();
         $filmsArray = WatchedFilmsUser::where('id_user', $user->id)->get();
-        if (!empty($filmExist)) {
-            WatchedFilmsUser::where('id_film', $request->id_film)->update(['updated_at' => date("Y-m-d H:i:s")]);
+        $filmExist = WatchedFilmsUser::where('id_user', $user->id)->whereIn('id_film', [$request->id_film])->get();
+        if (count($filmExist) !== 0) {
+            WatchedFilmsUser::where([['id_user', '=', $user->id], ['id_film', '=', $request->id_film]])->update(['updated_at' => date("Y-m-d H:i:s")]);
         } else {
-            if (count($filmsArray) === 6)
-                WatchedFilmsUser::where('id_user', $user->id)->orderBy('updated_at', 'asc')->first()->delete();
             $filmNew = new WatchedFilmsUser;
             $filmNew->id_film = $request->id_film;
             $filmNew->id_user = $user->id;
@@ -134,16 +131,5 @@ class CabinetController extends Controller
         }
         $filmNew = true;
         return response()->json($filmNew);
-    }
-
-    public function returnAllWatchedFilms(Request $request)
-    {
-        $user = auth()->guard('api')->user();
-        $filmsArray = WatchedFilmsUser::select('id_film')->where('id_user', $user->id)->get();
-        $res = [];
-        foreach ($filmsArray as $val) {
-            array_push($res, intval($val["id_film"]));
-        }
-        return response()->json($res);
     }
 }

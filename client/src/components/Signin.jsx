@@ -27,7 +27,13 @@ class Signin extends Component {
     componentDidMount() {
         if (localStorage.getItem('token') !== null) {
             this.props.history.push('/');
+        } else {
+            this._mount = true;
         }
+    }
+
+    componentWillUnmount() {
+        this._mount = false;
     }
 
     closeModal() {
@@ -112,6 +118,9 @@ class Signin extends Component {
             }
         }).then((res) => res.json())
             .then((responce) => {
+                if (!this._mount) {
+                    return ;
+                }
                 if (responce.message === "Unauthorized" || responce.message === "The given data was invalid.") {
                     if (this.state.lang === 'en') {
                         this.setState({

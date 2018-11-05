@@ -7,14 +7,11 @@ import { FormattedMessage } from 'react-intl';
 import Trailer from "./Trailer";
 import { Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 class SingleMovie extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            didMount: false,
             error: "",
             data: {},
             quality: null,
@@ -26,6 +23,9 @@ class SingleMovie extends Component {
     }
 
     changeQuality(resolution) {
+        if (!this._mount) {
+            return ;
+        }
         this.setState({
             quality: resolution
         });
@@ -37,22 +37,25 @@ class SingleMovie extends Component {
             };
             const token = localStorage.getItem('token');
             fetch('http://127.0.0.1:8000/api/cabinet/watched-films_create', {
-                    method: 'POST',
-                    body: JSON.stringify(data),
-                    headers:{
-                        'Authorization': 'Bearer ' + token,
-                        'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                .then((res) => res.json())
-                .then((res) => {
-                    if (res === true) {
-                        this.setState({
-                            watched: true
-                        });
-                    }
-                });
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers:{
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then((res) => res.json())
+            .then((res) => {
+                if (!this._mount) {
+                    return ;
+                }
+                if (res === true) {
+                    this.setState({
+                        watched: true
+                    });
+                }
+            });
         }
     }
 
@@ -66,17 +69,15 @@ class SingleMovie extends Component {
                     'Authorization': 'Bearer ' + token
                 }
             })
-                .then((res) => res.json())
-                .then((res) => {
-                    if (!this._mount) {
-                        return ;
-                    }
+            .then((res) => res.json())
+            .then((res) => {
+                if (this._mount) {
                     this.setState({
-                        didMount: true,
                         userId: res.id,
                         userAvatar: res.avatar
                     });
-                })
+                }
+            })
         } else {
             this.props.history.push('/signin');
         }
@@ -91,55 +92,40 @@ class SingleMovie extends Component {
                 'Content-Type': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest'
             }
-        }).then((res) => res.json())
-            .then((responce) => {
-                if (!this._mount) {
-                    return ;
-                }
-                this.setState({
-                    data: {
-                        title: responce.data.title,
-                        year: responce.data.year,
-                        runtime: responce.data.runtime,
-                        rating: responce.data.rating,
-                        plot: responce.data.plot,
-                        poster: responce.data.poster,
-                        director: responce.data.director,
-                        actors: responce.data.actors,
-                        country: responce.data.country.length !== 0 ? responce.data.country.join(", ") : this.props.componentState.intl.locale === 'en' ? 'No info' : 'Нет данных'
-                    },
-                    imdb_id: responce.data.imdb_id
-                });
-                if (responce.data.imdb_id !== "") {
-                    return axios.get('http://localhost:3001/youtube/' + responce.data.imdb_id);
-                } else {
-                    return false;
-                }
-            })
-            .then((response) => {
-                if (response !== false) {
-                    if (!this._mount) {
-                        return ;
-                    }
-                    this.setState({
-                        trailerUrl: response.data.url
-                    });
-                } else {
-                    const msg = this.props.componentState.intl.locale === 'en' ? 'Sorry, this content currently is unavailable. Please try, later.' : 'К сожалению, этот контент в настоящее время недоступен. Пожалуйста, попробуйте позже.';
-                    toast.warn(msg, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: true,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true
-                    });
-                }
+        })
+        .then((res) => res.json())
+        .then((responce) => {
+            if (!this._mount) {
+                return ;
+            }
+            this.setState({
+                data: {
+                    title: responce.data.title,
+                    year: responce.data.year,
+                    runtime: responce.data.runtime,
+                    rating: responce.data.rating,
+                    plot: responce.data.plot,
+                    poster: responce.data.poster,
+                    director: responce.data.director,
+                    actors: responce.data.actors,
+                    country: responce.data.country.length !== 0 ? responce.data.country.join(", ") : this.props.componentState.intl.locale === 'en' ? 'No info' : 'Нет данных'
+                },
+                imdb_id: responce.data.imdb_id
             });
+            if (responce.data.imdb_id !== '') {
+                return axios.get('http://localhost:3001/youtube/' + responce.data.imdb_id);
+            } else {
+                return false;
+            }
+        })
+        .then((response) => {
+            if (this._mount && response !== false) {
+                this.setState({
+                    trailerUrl: response.data.url
+                });
+            }
+        });
     }
-    componentWillUnmount() {
-        this._mount = false;
-    }    
 
     componentWillReceiveProps(nextProps) {
         if (this._mount && this.state.lang !== nextProps.componentState.intl.locale) {
@@ -154,32 +140,36 @@ class SingleMovie extends Component {
                     'Content-Type': 'application/json',
                     'X-Requested-With': 'XMLHttpRequest'
                 }
-            }).then((res) => res.json())
-                .then((responce) => {
-                    if (!this._mount) {
-                        return ;
-                    }
-                    this.setState({
-                        data: {
-                            title: responce.data.title,
-                            year: responce.data.year,
-                            runtime: responce.data.runtime,
-                            rating: responce.data.rating,
-                            plot: responce.data.plot,
-                            poster: responce.data.poster,
-                            director: responce.data.director,
-                            actors: responce.data.actors,
-                            country: responce.data.country.length !== 0 ? responce.data.country.join(", ") : this.props.componentState.intl.locale === 'en' ? 'No info' : 'Нет данных'
-                        }
-                    })
-                });     
+            })
+            .then((res) => res.json())
+            .then((response) => {
+                if (!this._mount) {
+                    return ;
+                }
+                this.setState({
+                    data: {
+                        title: response.data.title,
+                        year: response.data.year,
+                        runtime: response.data.runtime,
+                        rating: response.data.rating,
+                        plot: response.data.plot,
+                        poster: response.data.poster,
+                        director: response.data.director,
+                        actors: response.data.actors,
+                        country: response.data.country.length !== 0 ? response.data.country.join(", ") : this.props.componentState.intl.locale === 'en' ? 'No info' : 'Нет данных'
+                    },
+                });
+            });     
         }
+    }
+
+    componentWillUnmount() {
+        this._mount = false;
     }
 
     render() {
         return (
             <section className="single-movie-container">
-                <ToastContainer autoClose={5000} position="top-center" hideProgressBar={true}/>
                 <div className="description">
                     <h1 className="title">
                         {this.state.data.title}

@@ -27,7 +27,13 @@ class Reset extends Component {
     componentDidMount() {
         if (localStorage.getItem('token') !== null) {
             this.props.history.push('/');
+        } else {
+            this._mount = true;
         }
+    }
+
+    componentWillUnmount() {
+        this._mount = false;
     }
 
     changeLanguage(str) {
@@ -93,6 +99,9 @@ class Reset extends Component {
             }
         }).then((res) => res.json())
         .then((responce) => {
+            if (!this._mount) {
+                return ;
+            }
             if (responce.message === "Unauthorized") {
                 if (this.state.lang === 'en') {
                     this.setState({

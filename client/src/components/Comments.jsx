@@ -60,14 +60,11 @@ class Comments extends Component {
         window.addEventListener('scroll', this.handleScroll);
     }
 
-    componentWillUnmount() {
-        window.removeEventListener('scroll', this.handleScroll, false);
-    }
-
     showOtherUser(event) {
         let otherUser = {};
         for (let i = 0; i < this.state.comments.length; i++ ) {
             if (this.state.comments[i].id_user === event.currentTarget.getAttribute('userid')) {
+
                 otherUser = this.state.comments[i];
                 break;
             }
@@ -209,6 +206,10 @@ class Comments extends Component {
         }
     }
 
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll, false);
+    }
+
     render() {
         return(
             <div className="comments">
@@ -275,6 +276,7 @@ class Comments extends Component {
             </div>
         )
     }
+
 }
 
 export default Comments;

@@ -162,19 +162,14 @@ class Library extends Component {
             ],
             genreRU: [
                 {
+                    key: 'animation',
+                    value: 'мультфильм',
+                    text: 'Мультфильм'
+                },
+                {
                     key: 'action',
                     value: 'боевик',
                     text: 'Боевик'
-                },
-                {
-                    key: 'mystery',
-                    value: 'детектив',
-                    text: 'Детектив'
-                },   
-                {
-                    key: 'drama',
-                    value: 'драма',
-                    text: 'Драма'
                 },
                 {
                     key: 'comedy',
@@ -182,19 +177,14 @@ class Library extends Component {
                     text: 'Комедия'
                 },
                 {
-                    key: 'love',
-                    value: 'мелодрама',
-                    text: 'Мелодрама'
+                    key: 'drama',
+                    value: 'драма',
+                    text: 'Драма'
                 },
                 {
-                    key: 'animation',
-                    value: 'мультфильм',
-                    text: 'Мультфильм'
-                },
-                {
-                    key: 'thriller',
-                    value: 'триллер',
-                    text: 'Триллер'
+                    key: 'fantasy',
+                    value: 'фэнтези',
+                    text: 'Фэнтези'
                 },
                 {
                     key: 'horror',
@@ -202,9 +192,19 @@ class Library extends Component {
                     text: 'Ужасы'
                 },
                 {
-                    key: 'fantasy',
-                    value: 'фэнтези',
-                    text: 'Фэнтези'
+                    key: 'love',
+                    value: 'мелодрама',
+                    text: 'Мелодрама'
+                },
+                {
+                    key: 'mystery',
+                    value: 'детектив',
+                    text: 'Детектив'
+                },   
+                {
+                    key: 'thriller',
+                    value: 'триллер',
+                    text: 'Триллер'
                 }
             ],
             sortParam: [
@@ -226,14 +226,14 @@ class Library extends Component {
             ],
             sortParamRU: [
                 {
-                    key: 'year',
-                    value: 'year',
-                    text: 'По году'
-                },
-                {
                     key: 'name',
                     value: 'name',
                     text: 'По оригинальному названию'
+                },
+                {
+                    key: 'year',
+                    value: 'year',
+                    text: 'По году'
                 },
                 {
                     key: 'pop',
@@ -252,6 +252,7 @@ class Library extends Component {
             pageStart: 1,
             error: "",
             movieTitle: "",
+            rememberPrevRes: 0,
             lang: props.componentState.intl.locale,
             searchTitle: false
         };
@@ -273,8 +274,8 @@ class Library extends Component {
             const needToChangeSort = this.state.sortWasChanged;
             const sortParam = this.state.currentSortParam;
             this.setState({
-                currentSortParam: needToChangeSort === false ? "name" : sortParam,
-                order: "asc",
+                currentSortParam: needToChangeSort === false ? "rating" : sortParam,
+                order: sortParam === "rating" ? "desc" : "asc",
                 movies: [],
                 pageStart: 1,
                 hasMore: true
@@ -292,8 +293,8 @@ class Library extends Component {
         if (token === null) {
             this.props.history.push('/signin');
         } else {
-            window.addEventListener('scroll', this.handleScroll);
             this._mount = true;
+            window.addEventListener('scroll', this.handleScroll);
             this.loadItems();
         }
     }
@@ -369,6 +370,7 @@ class Library extends Component {
                 draggable: true
             });
         }
+
         if (parseInt(yearGap.min, 10) > parseInt(yearGap.max, 10) || parseInt(yearGap.max, 10) < parseInt(yearGap.min, 10)) {
             const tmpMin = yearGap.min;
             yearGap.min = yearGap.max;
@@ -477,75 +479,75 @@ class Library extends Component {
                 yearGap.min = this.state.yearGap.min === "" ? this.state.yearGap.max : this.state.yearGap.min;
                 yearGap.max = this.state.yearGap.max === "" ? this.state.yearGap.min : this.state.yearGap.max;
             }
+
             this.setState({ isLoading: true }, () => {
-                    const token = localStorage.getItem('token');
-                    if (this.state.searchTitle === false) {
-                        const data = {
-                            lang: this.props.componentState.intl.locale,
-                            page: this.state.pageStart,
-                            sort: this.state.currentSortParam,
-                            order: this.state.order,
-                            filter: {
-                                imdb: this.state.imdbMin,
-                                genres: this.state.currentGenre,
-                                yearGap: this.state.yearGap
-                            }
-                        }
-                        fetch('http://localhost:8000/api/library/load-items', {
-                            method: 'POST',
-                            body: JSON.stringify(data),
-                            headers: {
-                                'Authorization': 'Bearer ' + token,
-                                'Content-Type': 'application/json',
-                                'X-Requested-With': 'XMLHttpRequest'
-                            }
-                        }).then((res) => res.json())
-                            .then((responce) => {
-                                if (!this._mount) {
-                                    return ;
-                                }
-                                this.setState({
-                                    isLoading: false,
-                                    pageStart: data.page + 1,
-                                    hasMore: responce.hasMore,
-                                    movies: [
-                                        ...this.state.movies,
-                                        ...responce.data
-                                    ]
-                                });
-                            });
-                        
-                    } else {
-                        const data = {
-                            lang: this.props.componentState.intl.locale,
-                            page: this.state.pageStart,
-                            title: encodeURIComponent(this.state.movieTitle)
-                        }
-                        if (this.state.didMount) {
-                            fetch('http://localhost:8000/api/library/load-items-by-title', {
-                                method: 'POST',
-                                body: JSON.stringify(data),
-                                headers: {
-                                    'Authorization': 'Bearer ' + token,
-                                    'Content-Type': 'application/json',
-                                    'X-Requested-With': 'XMLHttpRequest'
-                                }
-                            }).then((res) => res.json())
-                                .then((responce) => {
-                                    if (this.state.didMount) {
-                                        this.setState({
-                                            isLoading: false,
-                                            pageStart: data.page + 1,
-                                            hasMore: responce.hasMore,
-                                            movies: [
-                                                ...this.state.movies,
-                                                ...responce.data
-                                            ]
-                                        })
-                                    }
-                                });
+                const token = localStorage.getItem('token');
+                if (this.state.searchTitle === false) {
+                    const data = {
+                        lang: this.props.componentState.intl.locale,
+                        page: this.state.pageStart,
+                        sort: this.state.currentSortParam,
+                        order: this.state.order,
+                        filter: {
+                            imdb: this.state.imdbMin,
+                            genres: this.state.currentGenre,
+                            yearGap: this.state.yearGap
                         }
                     }
+                    fetch('http://localhost:8000/api/library/load-items', {
+                        method: 'POST',
+                        body: JSON.stringify(data),
+                        headers: {
+                            'Authorization': 'Bearer ' + token,
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    }).then((res) => res.json())
+                        .then((responce) => {
+                            if (!this._mount) {
+                                return ;
+                            }
+                            this.setState({
+                                isLoading: false,
+                                pageStart: data.page + 1,
+                                hasMore: responce.hasMore,
+                                movies: [
+                                    ...this.state.movies,
+                                    ...responce.data
+                                ]
+                            })
+                        });
+                } else {
+                    const data = {
+                        lang: this.props.componentState.intl.locale,
+                        page: this.state.pageStart,
+                        title: encodeURIComponent(this.state.movieTitle)
+                    }
+                    fetch('http://localhost:8000/api/library/load-items-by-title', {
+                        method: 'POST',
+                        body: JSON.stringify(data),
+                        headers: {
+                            'Authorization': 'Bearer ' + token,
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then((res) => res.json())
+                    .then((responce) => {
+                        if (!this._mount) {
+                            return ;
+                        }
+                        this.setState({
+                            isLoading: false,
+                            pageStart: data.page + 1,
+                            hasMore: responce.hasMore,
+                            movies: [
+                                ...this.state.movies,
+                                ...responce.data
+                            ]
+                        })
+                    });
+                }
             });
         }
     }
@@ -554,12 +556,12 @@ class Library extends Component {
         if (e.target.value !== "") {
             this.setState({
                 movieTitle: e.target.value
-            })
+            });
         } else {
             this.setState({
                 movieTitle: e.target.value,
                 searchTitle: false
-            })
+            });
         }
     }
 

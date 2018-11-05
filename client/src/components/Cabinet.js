@@ -42,12 +42,11 @@ class Cabinet extends Component {
             })
             .then((res) => res.json())
             .then((res) => {
-                if (!this._mount) {
-                    return ;
+                if (this._mount) {
+                    this.setState({
+                        userData: res
+                    });
                 }
-                this.setState({
-                    userData: res
-                });
             });
 
             fetch('http://127.0.0.1:8000/api/cabinet/watched-films_return', {
@@ -60,13 +59,12 @@ class Cabinet extends Component {
             })
                 .then((res) => res.json())
                 .then((res) => {
-                    if (!this._mount) {
-                        return ;
+                    if (this._mount) {
+                        this.setState({
+                            posters: res,
+                            isLoading: false
+                        });
                     }
-                    this.setState({
-                        posters: res,
-                        isLoading: false
-                    });
                 });
         } else {
             this.props.history.push('/signin');
@@ -121,23 +119,22 @@ class Cabinet extends Component {
             }
         }).then((res) => res.json())
             .then((responce) => {
-                if (responce.errors === undefined) {
-                    if (!this._mount) {
-                        return ;
+                if (this._mount) {
+                    if (responce.errors === undefined) {
+                        this.setState({
+                            userData: responce
+                        })
+                    } else {
+                        const msg = this.props.componentState.intl.locale === "en" ? 'Please check entered data' : 'Проверьте, пожалуйста, корректность введенных данных';
+                        toast.error(msg, {
+                            position: "top-center",
+                            autoClose: 5000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true
+                        });
                     }
-                    this.setState({
-                        userData: responce
-                    })
-                } else {
-                    const msg = this.props.componentState.intl.locale === "en" ? 'Please check entered data' : 'Проверьте, пожалуйста, корректность введенных данных';
-                    toast.error(msg, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: true,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true
-                    });
                 }
             });
     }
@@ -147,6 +144,7 @@ class Cabinet extends Component {
         const data = {
             password: this.state.pass,
             password_confirmation: this.state.pass_rep,
+
         };
         fetch('http://localhost:8000/api/cabinet/change-pass', {
             method: 'POST',
@@ -158,16 +156,18 @@ class Cabinet extends Component {
             }
         }).then((res) => res.json())
             .then((responce) => {
-                if (responce.errors) {
-                    const msg = this.props.componentState.intl.locale === "en" ? 'Please check entered data' : 'Проверьте, пожалуйста, корректность введенных данных';
-                    toast.error(msg, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: true,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true
-                    });
+                if (this._mount) {
+                    if (responce.errors) {
+                        const msg = this.props.componentState.intl.locale === "en" ? 'Please check entered data' : 'Проверьте, пожалуйста, корректность введенных данных';
+                        toast.error(msg, {
+                            position: "top-center",
+                            autoClose: 5000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true
+                        });
+                    }
                 }
             });
     }
@@ -187,6 +187,7 @@ class Cabinet extends Component {
             }
 
             reader.onerror = e => {
+                console.error(e.target.error);
                 reject(e.target.error);
             }
 
@@ -200,9 +201,6 @@ class Cabinet extends Component {
             if (upload.type.includes('image')) {
                 if (upload.size < 3190000) {
                     const tmpPhoto = await this.imgFileToBase64(upload);
-                    if (!this._mount) {
-                        return ;
-                    }
                     this.setState({
                         uploadedPhoto: upload,
                         chosePhotoStage: true,
@@ -220,7 +218,7 @@ class Cabinet extends Component {
                     });
                 }
             } else {
-                const msg = this.props.componentState.intl.locale === "en" ? 'You have uploaded an unsupported file type. Please select another one.' : 'Вы загрузили не поддерживаемый тип файла. Пожалуйста, выберите другой файл.';
+                const msg = this.props.componentState.intl.locale === "en" ? 'You have uploaded an unsupported file type. Please select another one.' : 'Вы загрузили неподдерживаемый тип файла. Пожалуйста, выберите другой файл.';
                 toast.error(msg, {
                     position: "top-center",
                     autoClose: 5000,
@@ -251,24 +249,20 @@ class Cabinet extends Component {
         })
             .then((res) => res.json())
             .then((res) => {
-                if (!this._mount) {
-                    return ;
+                if (this._mount) {
+                    this.setState({
+                        userData: res,
+                        uploadedPhoto: "",
+                        chosePhotoStage: false,
+                        tmpPhoto: "",
+                        showModal: true
+                    });
+                    this.fileInput.current.value = "";
                 }
-                this.setState({
-                    userData: res,
-                    uploadedPhoto: "",
-                    chosePhotoStage: false,
-                    tmpPhoto: "",
-                    showModal: true
-                });
-                this.fileInput.current.value = "";
             });
     }
 
     cancelPhotoUpload() {
-        if (!this._mount) {
-            return ;
-        }
         this.setState({
             uploadedPhoto: "",
             tmpPhoto: "",
@@ -299,12 +293,12 @@ class Cabinet extends Component {
                 <ToastContainer autoClose={5000} position="top-center" hideProgressBar={true}/>
                 <Modal basic open={this.state.showModal}>
                     <Header>
-                        <Icon name='archive' style={{display:'inline'}}/>
-                        <FormattedMessage id="cabinet.thanks" defaultMessage="Thankfulness" style={{display:'table-cell'}}/>
+                        <Icon name='archive' style={{display: "inline"}}/>
+                        <FormattedMessage id="cabinet.modal_title" defaultMessage="Thankfulness"/>
                     </Header>
                     <Modal.Content>
                         <p>
-                            <FormattedMessage id="cabinet.thanks_description" defaultMessage="Please consider some donation to our team if you enjoied our application. We will appreciate that." />
+                            <FormattedMessage id="cabinet.modal_description" defaultMessage="Please consider some donation to our team if you enjoied our application. We will application that."/>
                         </p>
                     </Modal.Content>
                     <Modal.Actions>
@@ -313,9 +307,9 @@ class Cabinet extends Component {
                             <FormattedMessage id="cabinet.modal_decline" defaultMessage="No"/>
                         </Button>
                         <Button color='green' inverted onClick={this.donate.bind(this)}>
-                            <Icon name='checkmark' /> 
                             <a href="https://send.monobank.ua/2DZdX7mZA" target="blank" style={{color: "#fff"}}>
-                                <FormattedMessage id="cabinet.modal_confirm" defaultMessage="Yes" />
+                                <Icon name='checkmark'/>
+                                <FormattedMessage id="cabinet.modal_confirm" defaultMessage="Yes"/>
                             </a>
                         </Button>
                     </Modal.Actions>

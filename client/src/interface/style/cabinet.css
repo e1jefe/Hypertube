@@ -49,3 +49,10 @@ i.icon.save:before {
 .ui.button.my-cabinet-btn {
   width: 100%;
 }
+
+.ui.inverted.green.button a i {
+  color: rgb(33, 186, 69);
+}
+.ui.inverted.green.button:hover a i {
+  color: #fff;
+}

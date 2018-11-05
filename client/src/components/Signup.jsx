@@ -31,7 +31,13 @@ class Signup extends Component {
     componentDidMount() {
         if (localStorage.getItem('token') !== null) {
             this.props.history.push('/');
+        } else {
+            this._mount = true;
         }
+    }
+
+    componentWillUnmount() {
+        this._mount = false;
     }
 
     changeLanguage(str) {
@@ -114,6 +120,9 @@ class Signup extends Component {
             }
         }).then((res) => res.json())
         .then((responce) => {
+            if (!this._mount) {
+                return ;
+            }
             if (responce.errors !== undefined) {
                 let lang = this.state.lang;
                 if (lang === 'en') {

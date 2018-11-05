@@ -16,6 +16,7 @@ class SignupConfirm extends Component {
     }
     
     componentDidMount() {
+        this._mount = true;
         fetch('http://127.0.0.1:8000/api/auth/signup/activate/' + this.props.match.params.token, {
             method: 'GET',
             headers:{
@@ -24,6 +25,9 @@ class SignupConfirm extends Component {
             }
         }).then((res) => res.json())
         .then((responce) => {
+            if (!this._mount) {
+                return ;
+            }
             if (!responce.hasOwnProperty("message")) {
                 this.redirectSignin();
             } else {
@@ -38,6 +42,10 @@ class SignupConfirm extends Component {
                 }
             }
         });
+    }
+
+    componentWillUnmount() {
+        this._mount = false;
     }
 
     redirectSignin() {
