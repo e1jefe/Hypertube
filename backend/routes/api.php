@@ -82,7 +82,6 @@ Route::group([
     function () {
         Route::post('load-items', 'Library@loadItems');
         Route::post('load-mov-details', 'Library@loadMovieDetails');
-        Route::post('get-posters', 'Library@getPosters');
         Route::post('load-items-by-title', 'Library@loadItemsByTitle');
 });
 

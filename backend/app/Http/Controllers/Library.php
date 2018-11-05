@@ -111,24 +111,6 @@ class Library extends Controller
         ], 200);
     }
 
-    public function getPosters(Request $request) {
-        $language = $request->lang === "en" ? "&language=en-US" : "&language=ru-RU";
-        $movies = $request->movies;
-        $ids = [];
-        $posters = [];
-        foreach($movies as $item) {
-            array_push($ids, $item['id_film']);
-        }
-        foreach($ids as $movie) {
-            $details = json_decode(file_get_contents('https://api.themoviedb.org/3/movie/' . $movie . "?api_key=1dc667ca439220e3356ddd92cdee3e5e" . $language));
-            $currentPoster = $details->poster_path !== null ? 'https://image.tmdb.org/t/p/w500' . $details->poster_path : './pics/No_image_poster.png';
-            array_push($posters, $currentPoster);
-        }
-        return response()->json([
-            'data' => $posters,
-        ], 200);
-    }
-
     public function loadItemsByTitle(Request $request) {
         $language = $request->lang === "en" ? "&language=en-US" : "&language=ru-RU";
 
