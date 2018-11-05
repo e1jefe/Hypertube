@@ -269,7 +269,7 @@ class Library extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.state.lang !== nextProps.componentState.intl.locale) {
+        if (this._mount && this.state.lang !== nextProps.componentState.intl.locale) {
             const needToChangeSort = this.state.sortWasChanged;
             const sortParam = this.state.currentSortParam;
             this.setState({
@@ -284,6 +284,7 @@ class Library extends Component {
 
     componentWillUnmount() {
         window.removeEventListener('scroll', this.handleScroll, false);
+        this._mount = false;
     }
 
     componentDidMount() {
@@ -292,6 +293,7 @@ class Library extends Component {
             this.props.history.push('/signin');
         } else {
             window.addEventListener('scroll', this.handleScroll);
+            this._mount = true;
             this.loadItems();
         }
     }
@@ -464,7 +466,7 @@ class Library extends Component {
     }
 
     loadItems = () => {
-        if (this.state.hasMore) {
+        if (this._mount && this.state.hasMore) {
             let yearGap = this.state.yearGap;
             if (this.state.yearGap.min === "" && this.state.yearGap.max === "") {
                 yearGap = {
@@ -498,7 +500,10 @@ class Library extends Component {
                                 'X-Requested-With': 'XMLHttpRequest'
                             }
                         }).then((res) => res.json())
-                            .then((responce) => {   
+                            .then((responce) => {
+                                if (!this._mount) {
+                                    return ;
+                                }
                                 this.setState({
                                     isLoading: false,
                                     pageStart: data.page + 1,
@@ -507,34 +512,39 @@ class Library extends Component {
                                         ...this.state.movies,
                                         ...responce.data
                                     ]
-                                })
+                                });
                             });
+                        
                     } else {
                         const data = {
                             lang: this.props.componentState.intl.locale,
                             page: this.state.pageStart,
-                            title: this.state.movieTitle
+                            title: encodeURIComponent(this.state.movieTitle)
                         }
-                        fetch('http://localhost:8000/api/library/load-items-by-title', {
-                            method: 'POST',
-                            body: JSON.stringify(data),
-                            headers: {
-                                'Authorization': 'Bearer ' + token,
-                                'Content-Type': 'application/json',
-                                'X-Requested-With': 'XMLHttpRequest'
-                            }
-                        }).then((res) => res.json())
-                            .then((responce) => {   
-                                this.setState({
-                                    isLoading: false,
-                                    pageStart: data.page + 1,
-                                    hasMore: responce.hasMore,
-                                    movies: [
-                                        ...this.state.movies,
-                                        ...responce.data
-                                    ]
-                                })
-                            });
+                        if (this.state.didMount) {
+                            fetch('http://localhost:8000/api/library/load-items-by-title', {
+                                method: 'POST',
+                                body: JSON.stringify(data),
+                                headers: {
+                                    'Authorization': 'Bearer ' + token,
+                                    'Content-Type': 'application/json',
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                }
+                            }).then((res) => res.json())
+                                .then((responce) => {
+                                    if (this.state.didMount) {
+                                        this.setState({
+                                            isLoading: false,
+                                            pageStart: data.page + 1,
+                                            hasMore: responce.hasMore,
+                                            movies: [
+                                                ...this.state.movies,
+                                                ...responce.data
+                                            ]
+                                        })
+                                    }
+                                });
+                        }
                     }
             });
         }
@@ -607,7 +617,7 @@ class Library extends Component {
                         <Dropdown disabled={this.state.isLoading || this.state.searchTitle} placeholder={this.props.componentState.intl.locale === 'en' ? 'GENRE' : 'Жанр'} fluid search multiple selection options={this.props.componentState.intl.locale === 'en' ? this.state.genre : this.state.genreRU} onChange={this.changeGenre} onClose={this.sendGenre} />
                     </div>
                     <div className="param">                    
-                        <Dropdown disabled={this.state.isLoading || this.state.searchTitle} placeholder={this.props.componentState.intl.locale === 'en' ? 'SORT BY' : 'Сортировать'} fluid selection options={this.props.componentState.intl.locale === 'en' ? this.state.sortParam : this.state.sortParamRU} onChange={this.changeSort}/>
+                        <Dropdown disabled={this.state.isLoading || this.state.searchTitle} placeholder={this.props.componentState.intl.locale === 'en' ? 'SORT BY' : 'Сортировать'} fluid selection options={this.props.componentState.intl.locale === 'en' ? this.state.sortParam : this.state.sortParamRU} onChange={this.changeSort} value={this.state.currentSortParam}/>
                     </div>
                 </div>
                 <div className="movies-all container">

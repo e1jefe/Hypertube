@@ -29,7 +29,7 @@ class Library extends Controller
         } else if ($request->sort === 'rating') {
             $sort = '&sort_by=popularity.desc';
         } else {
-            $sort = '&sort_by=release_date.asc';
+            $sort = '&sort_by=primary_release_date.asc';
         }
 
         $page = '&page=' . $request->page;
@@ -40,8 +40,8 @@ class Library extends Controller
             $rating = '&vote_average.gte=1';
         }
 
-        $yearmin = '&release_date.gte=' . $request->filter['yearGap']['min'];
-        $yearmax = '&release_date.lte=' . $request->filter['yearGap']['max'];
+        $yearmin = '&primary_release_date.gte=' . $request->filter['yearGap']['min'];
+        $yearmax = '&primary_release_date.lte=' . $request->filter['yearGap']['max'];
 
         $url = "https://api.themoviedb.org/3/discover/movie/?api_key=1dc667ca439220e3356ddd92cdee3e5e" . $language . $sort . $genresToFilter . $yearmin . $yearmax . $rating . $page;
         $contents = json_decode(file_get_contents($url));
@@ -81,6 +81,7 @@ class Library extends Controller
         return response()->json([
             'data' => $result,
             'hasMore' => $request->page < $contents->total_pages,
+            'url' => $url
         ], 200);
     }
 
@@ -92,27 +93,41 @@ class Library extends Controller
             array_push($countries, $country->name);
         }
         $imdb_details = json_decode(file_get_contents('http://www.omdbapi.com/?apikey=1b966a3b&i=' . $details->imdb_id));
-        
-        $result = [
-            'imdb_id' => $details->imdb_id,
-            'title' => $details->title,
-            'year' => substr($details->release_date, 0, 4),
-            'runtime' => $details->runtime,
-            'rating' => $details->vote_average,
-            'plot' => $details->overview,
-            'poster' => $details->poster_path !== null ? 'https://image.tmdb.org/t/p/w500' . $details->poster_path : './pics/No_image_poster.png',
-            'country' => $countries,
-            'director' => $imdb_details->Director,
-            'actors' => $imdb_details->Actors,
-        ];           
+        if (!property_exists($imdb_details, 'Response')) {
+            $result = [
+                'imdb_id' => $details->imdb_id,
+                'title' => $details->title,
+                'year' => substr($details->release_date, 0, 4),
+                'runtime' => $details->runtime !== null ? $details->runtime : $request->lang === 'en' ? 'No info' : 'Нет данных',
+                'rating' => $details->vote_average,
+                'plot' => $details->overview !== "" ? $details->overview : $request->lang === 'en' ? 'No info' : 'Нет данных',
+                'poster' => $details->poster_path !== null ? 'https://image.tmdb.org/t/p/w500' . $details->poster_path : './pics/No_image_poster.png',
+                'country' => $countries,
+                'director' => $imdb_details->Director,
+                'actors' => $imdb_details->Actors,
+            ];
+        } else {
+            $result = [
+                'imdb_id' => $details->imdb_id,
+                'title' => $details->title,
+                'year' => substr($details->release_date, 0, 4),
+                'runtime' => $details->runtime !== null ? $details->runtime : $request->lang === 'en' ? 'No info' : 'Нет данных',
+                'rating' => $details->vote_average,
+                'plot' => $details->overview !== "" ? $details->overview : $request->lang === 'en' ? 'No info' : 'Нет данных',
+                'poster' => $details->poster_path !== null ? 'https://image.tmdb.org/t/p/w500' . $details->poster_path : './pics/No_image_poster.png',
+                'country' => $countries,
+                'director' => $request->lang === 'en' ? 'No info' : 'Нет данных',
+                'actors' => $request->lang === 'en' ? 'No info' : 'Нет данных',
+            ];
+        }
 
         return response()->json([
-            'data' => $result,
+            'data' => $result
         ], 200);
     }
 
     public function loadItemsByTitle(Request $request) {
-        $language = $request->lang === "en" ? "&language=en-US" : "&language=ru-RU";
+        $language = $request->lang === 'en' ? '&language=en-US' : '&language=ru-RU';
 
         $genresLegend = json_decode(file_get_contents("https://api.themoviedb.org/3/genre/movie/list?api_key=1dc667ca439220e3356ddd92cdee3e5e" . $language));
 
@@ -156,6 +171,7 @@ class Library extends Controller
         return response()->json([
             'data' => $result,
             'hasMore' => $request->page < $contents->total_pages,
+            'url' => $url
         ], 200);
     }
 }

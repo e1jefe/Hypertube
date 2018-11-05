@@ -7,11 +7,14 @@ import { FormattedMessage } from 'react-intl';
 import Trailer from "./Trailer";
 import { Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class SingleMovie extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            didMount: false,
             error: "",
             data: {},
             quality: null,
@@ -56,6 +59,7 @@ class SingleMovie extends Component {
     componentDidMount() {
         const token = localStorage.getItem('token');
         if (token !== null) {
+            this._mount = true;
             fetch('http://127.0.0.1:8000/api/auth/user', {
                 method: 'GET',
                 headers:{
@@ -64,7 +68,11 @@ class SingleMovie extends Component {
             })
                 .then((res) => res.json())
                 .then((res) => {
+                    if (!this._mount) {
+                        return ;
+                    }
                     this.setState({
+                        didMount: true,
                         userId: res.id,
                         userAvatar: res.avatar
                     });
@@ -84,7 +92,10 @@ class SingleMovie extends Component {
                 'X-Requested-With': 'XMLHttpRequest'
             }
         }).then((res) => res.json())
-            .then((responce) => {   
+            .then((responce) => {
+                if (!this._mount) {
+                    return ;
+                }
                 this.setState({
                     data: {
                         title: responce.data.title,
@@ -95,21 +106,43 @@ class SingleMovie extends Component {
                         poster: responce.data.poster,
                         director: responce.data.director,
                         actors: responce.data.actors,
-                        country: responce.data.country.join(", ")
+                        country: responce.data.country.length !== 0 ? responce.data.country.join(", ") : this.props.componentState.intl.locale === 'en' ? 'No info' : 'Нет данных'
                     },
                     imdb_id: responce.data.imdb_id
-                })
-                return axios.get('http://localhost:3001/youtube/' + responce.data.imdb_id)
+                });
+                if (responce.data.imdb_id !== "") {
+                    return axios.get('http://localhost:3001/youtube/' + responce.data.imdb_id);
+                } else {
+                    return false;
+                }
             })
             .then((response) => {
-                this.setState({
-                    trailerUrl: response.data.url
-                })
+                if (response !== false) {
+                    if (!this._mount) {
+                        return ;
+                    }
+                    this.setState({
+                        trailerUrl: response.data.url
+                    });
+                } else {
+                    const msg = this.props.componentState.intl.locale === 'en' ? 'Sorry, this content currently is unavailable. Please try, later.' : 'К сожалению, этот контент в настоящее время недоступен. Пожалуйста, попробуйте позже.';
+                    toast.warn(msg, {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true
+                    });
+                }
             });
     }
+    componentWillUnmount() {
+        this._mount = false;
+    }    
 
     componentWillReceiveProps(nextProps) {
-        if (this.state.lang !== nextProps.componentState.intl.locale) {
+        if (this._mount && this.state.lang !== nextProps.componentState.intl.locale) {
             const data = {
                 lang: nextProps.componentState.intl.locale,
                 id: this.props.match.params.id
@@ -122,7 +155,10 @@ class SingleMovie extends Component {
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             }).then((res) => res.json())
-                .then((responce) => {   
+                .then((responce) => {
+                    if (!this._mount) {
+                        return ;
+                    }
                     this.setState({
                         data: {
                             title: responce.data.title,
@@ -133,7 +169,7 @@ class SingleMovie extends Component {
                             poster: responce.data.poster,
                             director: responce.data.director,
                             actors: responce.data.actors,
-                            country: responce.data.country.join(", ")
+                            country: responce.data.country.length !== 0 ? responce.data.country.join(", ") : this.props.componentState.intl.locale === 'en' ? 'No info' : 'Нет данных'
                         }
                     })
                 });     
@@ -143,6 +179,7 @@ class SingleMovie extends Component {
     render() {
         return (
             <section className="single-movie-container">
+                <ToastContainer autoClose={5000} position="top-center" hideProgressBar={true}/>
                 <div className="description">
                     <h1 className="title">
                         {this.state.data.title}

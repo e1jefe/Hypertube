@@ -68,6 +68,7 @@ app.get('/youtube/:id', function (req, res) {
         }
         else {
             let response = {url: 'OUMvvYSCnMQ'};
+            console.log("no trailer" , response);
             tmpRes.send(response)
         }
     });

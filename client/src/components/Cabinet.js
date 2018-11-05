@@ -33,6 +33,7 @@ class Cabinet extends Component {
 
         if (token !== null) {
             this.setState({isLoading: true});
+            this._mount = true;
             fetch('http://127.0.0.1:8000/api/auth/user', {
                 method: 'GET',
                 headers: {
@@ -41,9 +42,12 @@ class Cabinet extends Component {
             })
             .then((res) => res.json())
             .then((res) => {
+                if (!this._mount) {
+                    return ;
+                }
                 this.setState({
                     userData: res
-                })
+                });
             });
 
             fetch('http://127.0.0.1:8000/api/cabinet/watched-films_return', {
@@ -56,6 +60,9 @@ class Cabinet extends Component {
             })
                 .then((res) => res.json())
                 .then((res) => {
+                    if (!this._mount) {
+                        return ;
+                    }
                     this.setState({
                         posters: res,
                         isLoading: false
@@ -64,6 +71,10 @@ class Cabinet extends Component {
         } else {
             this.props.history.push('/signin');
         }
+    }
+
+    componentWillUnmount() {
+        this._mount = false;
     }
 
     renderLastSeen(posters) {
@@ -111,6 +122,9 @@ class Cabinet extends Component {
         }).then((res) => res.json())
             .then((responce) => {
                 if (responce.errors === undefined) {
+                    if (!this._mount) {
+                        return ;
+                    }
                     this.setState({
                         userData: responce
                     })
@@ -186,6 +200,9 @@ class Cabinet extends Component {
             if (upload.type.includes('image')) {
                 if (upload.size < 3190000) {
                     const tmpPhoto = await this.imgFileToBase64(upload);
+                    if (!this._mount) {
+                        return ;
+                    }
                     this.setState({
                         uploadedPhoto: upload,
                         chosePhotoStage: true,
@@ -203,7 +220,7 @@ class Cabinet extends Component {
                     });
                 }
             } else {
-                const msg = this.props.componentState.intl.locale === "en" ? 'You have uploaded an unsupported file type. Please select another one.' : 'Вы загрузили неподдерживаемый тип файла. Пожалуйста, выберите другой файл.';
+                const msg = this.props.componentState.intl.locale === "en" ? 'You have uploaded an unsupported file type. Please select another one.' : 'Вы загрузили не поддерживаемый тип файла. Пожалуйста, выберите другой файл.';
                 toast.error(msg, {
                     position: "top-center",
                     autoClose: 5000,
@@ -234,6 +251,9 @@ class Cabinet extends Component {
         })
             .then((res) => res.json())
             .then((res) => {
+                if (!this._mount) {
+                    return ;
+                }
                 this.setState({
                     userData: res,
                     uploadedPhoto: "",
@@ -246,6 +266,9 @@ class Cabinet extends Component {
     }
 
     cancelPhotoUpload() {
+        if (!this._mount) {
+            return ;
+        }
         this.setState({
             uploadedPhoto: "",
             tmpPhoto: "",
@@ -275,20 +298,24 @@ class Cabinet extends Component {
             <div className="Cabinet container" >
                 <ToastContainer autoClose={5000} position="top-center" hideProgressBar={true}/>
                 <Modal basic open={this.state.showModal}>
-                    <Header icon='archive' content='Thankfulness' />
+                    <Header>
+                        <Icon name='archive' style={{display:'inline'}}/>
+                        <FormattedMessage id="cabinet.thanks" defaultMessage="Thankfulness" style={{display:'table-cell'}}/>
+                    </Header>
                     <Modal.Content>
                         <p>
-                            Please consider some donation to our team if you enjoied our application. We will appretiate that.
+                            <FormattedMessage id="cabinet.thanks_description" defaultMessage="Please consider some donation to our team if you enjoied our application. We will appreciate that." />
                         </p>
                     </Modal.Content>
                     <Modal.Actions>
                         <Button basic color='red' inverted onClick={this.closeModal.bind(this)}>
-                            <Icon name='remove' /> No
+                            <Icon name='remove' />
+                            <FormattedMessage id="cabinet.modal_decline" defaultMessage="No"/>
                         </Button>
                         <Button color='green' inverted onClick={this.donate.bind(this)}>
                             <Icon name='checkmark' /> 
                             <a href="https://send.monobank.ua/2DZdX7mZA" target="blank" style={{color: "#fff"}}>
-                                Yes
+                                <FormattedMessage id="cabinet.modal_confirm" defaultMessage="Yes" />
                             </a>
                         </Button>
                     </Modal.Actions>
