@@ -109,6 +109,7 @@ class Cabinet extends Component {
             lastname: this.state.lastname === "" ? undefined : this.state.lastname,
             email: this.state.email === "" ? undefined : this.state.email,
         };
+        console.log("data", data);
         fetch('http://localhost:8000/api/cabinet/change-info', {
             method: 'POST',
             body: JSON.stringify(data),
@@ -133,15 +134,15 @@ class Cabinet extends Component {
                 return false;
             }
         })
-            .then((response) => {
-                if (this._mount) {
-                    if (response !== false) {
-                        this.setState({
-                            userData: response
-                        })
-                    } 
-                }
-            });
+        .then((response) => {
+            if (this._mount) {
+                if (response !== false) {
+                    this.setState({
+                        userData: response
+                    })
+                } 
+            }
+        });
     }
 
     changePass() {
@@ -361,7 +362,7 @@ class Cabinet extends Component {
                         {this.state.userData.provider === null &&
                             <Input iconPosition='left' placeholder='Email'>
                                 <Icon name='at'/>
-                                <input name="email" onChange={this.changeHandler}/>
+                                <input name="email" ref="email" onChange={this.changeHandler}/>
                             </Input>
                         }
                         <Input iconPosition='left'
