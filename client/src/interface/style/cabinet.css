@@ -46,6 +46,10 @@ i.icon.save:before {
   word-break: break-all;
 }
 
+.ui.list>.item {
+  word-break: break-all;
+}
+
 .ui.button.my-cabinet-btn {
   width: 100%;
 }

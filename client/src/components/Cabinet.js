@@ -362,7 +362,7 @@ class Cabinet extends Component {
                         {this.state.userData.provider === null &&
                             <Input iconPosition='left' placeholder='Email'>
                                 <Icon name='at'/>
-                                <input name="email" ref="email" onChange={this.changeHandler} maxLength="150"/>
+                                <input name="email" onChange={this.changeHandler} maxLength="150"/>
                             </Input>
                         }
                         <Input iconPosition='left'

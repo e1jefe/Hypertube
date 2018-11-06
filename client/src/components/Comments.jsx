@@ -18,7 +18,8 @@ class Comments extends Component {
             user: props.master,
             avatar: props.avatar,
             otherUser: {},
-            commentTxt: ""
+            commentTxt: "",
+            isLoading: false
         };
         this.showOtherUser = this.showOtherUser.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -103,6 +104,9 @@ class Comments extends Component {
 
     delComments(e) {
         e.preventDefault();
+        this.setState({
+            isLoading: true
+        });
         const commentId = e.currentTarget.getAttribute('commentid');
         const token = localStorage.getItem('token');
         const data = {
@@ -141,6 +145,7 @@ class Comments extends Component {
                 );
                 commentsToShowNew = commentsToShowNew.filter(function(el) { return el; });
                     this.setState({
+                        isLoading: false,
                         comments: commentsNew,
                         comCount: newComLength,
                         commentsToShow: commentsToShowNew
@@ -158,6 +163,9 @@ class Comments extends Component {
 
     postNewComment(e) {
         e.preventDefault();
+        this.setState({
+            isLoading: true
+        });
         const token = localStorage.getItem('token');
         const data = {
             id_film: this.props.movid,
@@ -188,12 +196,13 @@ class Comments extends Component {
                         check = false;
                     }
                     this.setState({
+                        isLoading: false,
                         comments: newComments,
                         comCount: newLength,
                         commentTxt: "",
                         hasMore: check,
                         commentsToShow: newCommentsToShow
-                    })
+                    });
                 }
             });
     }
@@ -213,7 +222,7 @@ class Comments extends Component {
                 commentsToShow: newPack,
                 start: start + 5,
                 hasMore: check
-            })
+            });
         }
     }
 
@@ -238,7 +247,7 @@ class Comments extends Component {
                     </div>
                     <div className="comment-content">
                         <textarea name="comment-txt" rows="3" placeholder={this.props.componentState.intl.locale === 'en' ? "Leave a comment" : "Оставить комментарий"} maxLength="240" onChange={this.recordComment} value={this.state.commentTxt}></textarea>
-                        <button type="submit" onClick={this.postNewComment} disabled={this.state.commentTxt === ""}>
+                        <button type="submit" onClick={this.postNewComment} disabled={this.state.commentTxt === "" || this.state.isLoading}>
                             <FormattedMessage id="сomments.sendbtn" defaultMessage="Send" />
                         </button>
                     </div>
@@ -269,7 +278,7 @@ class Comments extends Component {
                                         </div>
                                     </div>
                                     {this.state.user === parseInt(msg.id_user, 10) ? 
-                                        <button commentid={msg.id} onClick={this.delComments}>
+                                        <button commentid={msg.id} onClick={this.delComments} disabled={this.state.isLoading}>
                                             <p>
                                                 <i className="fas fa-trash-alt"></i>
                                             </p>

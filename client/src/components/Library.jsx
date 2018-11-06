@@ -601,7 +601,7 @@ class Library extends Component {
                             <i className="fas fa-search"></i>
                         </label>
                         <input type="text" placeholder={this.props.componentState.intl.locale === 'en' ? "Search" : "Поиск"} onChange={this.recordSearchTitle} maxLength="100"/>
-                        <Button color='purple' onClick={() => this.sendMovTitle()} disabled={this.state.movieTitle.length === 0}>
+                        <Button color='purple' onClick={() => this.sendMovTitle()} disabled={this.state.movieTitle.length === 0 || this.state.isLoading}>
                             <Button.Content visible>{this.props.componentState.intl.locale === 'en' ? "Go" : "Вперед"}</Button.Content>
                         </Button>       
                     </div>

@@ -196,7 +196,9 @@
               color: #BDC3C7; }
           .single-movie-container .comments .all-comments .my-row .details .content {
             color: #7F8C8D;
-            margin-top: 10px; }
+            margin-top: 10px;
+            word-break: break-all;
+            line-height: 1.1em; }
       .single-movie-container .comments .all-comments .my-row.my-comment {
         position: relative;
         -webkit-box-orient: horizontal;
