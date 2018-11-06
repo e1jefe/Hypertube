@@ -17,7 +17,7 @@ class CreateKeepCommentsToFilmsTable extends Migration
             $table->increments('id');
             $table->string('id_film');
             $table->string('id_user');
-            $table->string('comment');
+            $table->string('comment', 240);
             $table->timestamps();
         });
     }

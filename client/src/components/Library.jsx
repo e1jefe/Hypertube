@@ -567,17 +567,19 @@ class Library extends Component {
     }
 
     sendMovTitle(){
-        const needToChangeSort = this.state.sortWasChanged;
-        const sortParam = this.state.currentSortParam;
-        this.setState({
-            currentSortParam: needToChangeSort === false ? "name" : sortParam,
-            hasMore: true,
-            order: "asc",
-            movies: [],
-            pageStart: 1,
-            currentGenre: ["all"],
-            searchTitle: true
-        }, () => this.loadItems());
+        if (this.state.movieTitle.length < 101) {
+            const needToChangeSort = this.state.sortWasChanged;
+            const sortParam = this.state.currentSortParam;
+            this.setState({
+                currentSortParam: needToChangeSort === false ? "name" : sortParam,
+                hasMore: true,
+                order: "asc",
+                movies: [],
+                pageStart: 1,
+                currentGenre: ["all"],
+                searchTitle: true
+            }, () => this.loadItems());
+        }
     }
 
     pushMovie(e){
@@ -598,7 +600,7 @@ class Library extends Component {
                         <label>
                             <i className="fas fa-search"></i>
                         </label>
-                        <input type="text" placeholder={this.props.componentState.intl.locale === 'en' ? "Search" : "Поиск"} onChange={this.recordSearchTitle}/>
+                        <input type="text" placeholder={this.props.componentState.intl.locale === 'en' ? "Search" : "Поиск"} onChange={this.recordSearchTitle} maxLength="100"/>
                         <Button color='purple' onClick={() => this.sendMovTitle()} disabled={this.state.movieTitle.length === 0}>
                             <Button.Content visible>{this.props.componentState.intl.locale === 'en' ? "Go" : "Вперед"}</Button.Content>
                         </Button>       

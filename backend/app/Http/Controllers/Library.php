@@ -79,7 +79,18 @@ class Library extends Controller
 
     public function loadMovieDetails(Request $request) {
         $language = $request->lang === "en" ? "&language=en-US" : "&language=ru-RU";
-        $details = json_decode(file_get_contents('https://api.themoviedb.org/3/movie/' . $request->id . "?api_key=1dc667ca439220e3356ddd92cdee3e5e" . $language));
+        $URL = 'https://api.themoviedb.org/3/movie/' . $request->id . "?api_key=1dc667ca439220e3356ddd92cdee3e5e" . $language;
+        $c = curl_init();
+        curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($c, CURLOPT_URL, $URL);
+        $contents = curl_exec($c);
+        curl_close($c);
+        $details = json_decode($contents);
+        if (property_exists($details, 'status_code') && $details->status_code === 34) {
+            return response()->json([
+                'error' => $contents,
+            ], 404);
+        }
         $countries = [];
         foreach($details->production_countries as $country){
             array_push($countries, $country->name);

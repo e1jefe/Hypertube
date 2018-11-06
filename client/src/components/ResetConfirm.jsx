@@ -218,7 +218,7 @@ class Reset extends Component {
                                 </div>
                                 <div className="my-row">
                                     <div className="input-holder">
-                                        <input type="text" placeholder="Email" required id="email" name="email" onChange={this.onChange}/>
+                                        <input type="text" placeholder="Email" required id="email" name="email" onChange={this.onChange} maxLength="150"/>
                                         <label htmlFor="email">
                                             <i className="fa fa-envelope"></i>
                                         </label>
@@ -228,7 +228,7 @@ class Reset extends Component {
                                     <div className="input-holder tooltip-castom">
                                         <span className="tooltiptext pass">
                                             {this.state.lang === 'en' ? "Minimum 7 characters, at least 1 number, upper and lovercase letter" : "Минимум 7 символов, хотя бы 1 цифра, большая и маленькая буква" }</span>
-                                        <input type="password" placeholder={this.state.lang === 'en' ? "Password" : "Пароль"} required id="pass" onChange={this.onChange} name="newPass"/>
+                                        <input type="password" placeholder={this.state.lang === 'en' ? "Password" : "Пароль"} required id="pass" onChange={this.onChange} name="newPass" maxLength="150"/>
                                         <label className="input-icon" htmlFor="pass">
                                             <i className="fa fa-key"></i>
                                         </label>
@@ -236,7 +236,7 @@ class Reset extends Component {
                                 </div>
                                 <div className="my-row">
                                     <div className="input-holder tooltip-castom">
-                                        <input type="password" placeholder={this.state.lang === 'en' ? "Password confirmation" : "Подтвердить пароль"} required id="pass2" onChange={this.onChange} name="newPass2"/>
+                                        <input type="password" placeholder={this.state.lang === 'en' ? "Password confirmation" : "Подтвердить пароль"} required id="pass2" onChange={this.onChange} name="newPass2" maxLength="150"/>
                                         <label className="input-icon" htmlFor="pass2">
                                             <i className="fa fa-key"></i>
                                         </label>

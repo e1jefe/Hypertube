@@ -211,7 +211,7 @@ class Signin extends Component {
                                 <div className="my-row">
                                     <div className="input-holder">
                                         <input type="text" placeholder="Email" required id="email" name="email"
-                                               onChange={this.onChange}/>
+                                               onChange={this.onChange} maxLength="150"/>
                                         <label htmlFor="email">
                                             <i className="fa fa-envelope"></i>
                                         </label>
@@ -221,7 +221,7 @@ class Signin extends Component {
                                     <div className="input-holder">
                                         <input type="password"
                                                placeholder={this.state.lang === 'en' ? "Password" : "Пароль"} required
-                                               id="pass" name="pass" onChange={this.onChange}/>
+                                               id="pass" name="pass" onChange={this.onChange} maxLength="150"/>
                                         <label className="input-icon" htmlFor="pass">
                                             <i className="fa fa-key"></i>
                                         </label>

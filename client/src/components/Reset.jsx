@@ -176,7 +176,7 @@ class Reset extends Component {
                                 </div>
                                 <div className="my-row">
                                     <div className="input-holder">
-                                        <input type="text" placeholder="Email" required id="email" name="email" onChange={this.onChange}/>
+                                        <input type="text" placeholder="Email" required id="email" name="email" onChange={this.onChange} maxLength="150"/>
                                         <label htmlFor="email">
                                             <i className="fa fa-envelope"></i>
                                         </label>

@@ -108,40 +108,41 @@ class Cabinet extends Component {
             firstname: this.state.firstname === "" ? undefined : this.state.firstname,
             lastname: this.state.lastname === "" ? undefined : this.state.lastname,
             email: this.state.email === "" ? undefined : this.state.email,
-        };
-        fetch('http://localhost:8000/api/cabinet/change-info', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Authorization': 'Bearer ' + token,
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        }).then((res) => {
-            if (res.status !== 422) {
-                return res.json();
-            } else {
-                const msg = this.props.componentState.intl.locale === "en" ? 'Please check entered data' : 'Проверьте, пожалуйста, корректность введенных данных';
-                toast.error(msg, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true
-                });
-                return false;
-            }
-        })
-        .then((response) => {
-            if (this._mount) {
-                if (response !== false) {
-                    this.setState({
-                        userData: response
-                    })
-                } 
-            }
-        });
+        }
+            fetch('http://localhost:8000/api/cabinet/change-info', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            }) 
+            .then((res) => {
+                    if (res.status !== 422) {
+                        return res.json();
+                    } else {
+                        const msg = this.props.componentState.intl.locale === "en" ? 'Please check entered data' : 'Проверьте, пожалуйста, корректность введенных данных';
+                        toast.error(msg, {
+                            position: "top-center",
+                            autoClose: 5000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true
+                        });
+                        return false;
+                    }
+            })
+            .then((response) => {
+                if (this._mount) {
+                    if (response !== false) {
+                        this.setState({
+                            userData: response
+                        })
+                    } 
+                }
+            })
     }
 
     changePass() {
@@ -361,23 +362,23 @@ class Cabinet extends Component {
                         {this.state.userData.provider === null &&
                             <Input iconPosition='left' placeholder='Email'>
                                 <Icon name='at'/>
-                                <input name="email" ref="email" onChange={this.changeHandler}/>
+                                <input name="email" ref="email" onChange={this.changeHandler} maxLength="150"/>
                             </Input>
                         }
                         <Input iconPosition='left'
                                placeholder={this.props.componentState.intl.locale === "en" ? 'Username' : 'Имя пользователя'}>
                             <Icon name='user'/>
-                            <input name="name" onChange={this.changeHandler}/>
+                            <input name="name" onChange={this.changeHandler} maxLength="150"/>
                         </Input>
                         <Input iconPosition='left'
                                placeholder={this.props.componentState.intl.locale === "en" ? 'Firstname' : 'Имя'}>
                             <Icon name='address book'/>
-                            <input name="firstname" onChange={this.changeHandler}/>
+                            <input name="firstname" onChange={this.changeHandler} maxLength="150"/>
                         </Input>
                         <Input iconPosition='left'
                                placeholder={this.props.componentState.intl.locale === "en" ? 'Lastname' : 'Фамилия'}>
                             <Icon name='address book'/>
-                            <input name="lastname" onChange={this.changeHandler}/>
+                            <input name="lastname" onChange={this.changeHandler} maxLength="150"/>
                         </Input>
                         <Button onClick={this.changeInfo} className="my-cabinet-btn">
                             <FormattedMessage id="cabinet.changeInfoBtn" defaultMessage="Change info"/>
@@ -387,12 +388,12 @@ class Cabinet extends Component {
                                 <Input iconPosition='left'
                                     placeholder={this.props.componentState.intl.locale === "en" ? 'Password' : 'Пароль'}>
                                     <Icon name='privacy'/>
-                                    <input name="pass" onChange={this.changeHandler}/>
+                                    <input name="pass" onChange={this.changeHandler} maxLength="150"/>
                                 </Input>
                                 <Input iconPosition='left'
                                     placeholder={this.props.componentState.intl.locale === "en" ? 'Password confirmation' : 'Подтверждение пароля'}>
                                     <Icon name='privacy'/>
-                                    <input name="pass_rep" onChange={this.changeHandler}/>
+                                    <input name="pass_rep" onChange={this.changeHandler} maxLength="150"/>
                                 </Input>
                                 <Button onClick={this.changePass} className="my-cabinet-btn">
                                     <FormattedMessage id="cabinet.changePassBtn" defaultMessage="Change password"/>

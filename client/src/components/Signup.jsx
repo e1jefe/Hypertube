@@ -221,17 +221,17 @@ class Signup extends Component {
                                 }
                                 <div className="my-row">
                                     <div className="input-holder">
-                                        <input type="text" placeholder={this.state.lang === 'en' ? "First Name" : "Имя"} required id="fname" onChange={this.onChange} name="fname"/>
+                                        <input type="text" placeholder={this.state.lang === 'en' ? "First Name" : "Имя"} required id="fname" onChange={this.onChange} name="fname" maxLength="150"/>
                                     </div>
                                     <div className="input-holder">
-                                        <input type="text" placeholder={this.state.lang === 'en' ? "Last Name" : "Фамилия"} required id="lname" onChange={this.onChange} name="lname"/>
+                                        <input type="text" placeholder={this.state.lang === 'en' ? "Last Name" : "Фамилия"} required id="lname" onChange={this.onChange} name="lname" maxLength="150"/>
                                     </div>
                                 </div>
                                 <div className="my-row">
                                     <div className="input-holder tooltip-castom">
                                         <span className="tooltiptext">
                                             {this.state.lang === 'en' ? "Minimum 5 characters" : "Минимум 5 символов"}</span>
-                                        <input type="text" placeholder={this.state.lang === 'en' ? "Login" : "Имя пользователя"} required id="login" onChange={this.onChange} name="login"/>
+                                        <input type="text" placeholder={this.state.lang === 'en' ? "Login" : "Имя пользователя"} required id="login" onChange={this.onChange} name="login" maxLength="150"/>
                                         <label htmlFor="login">
                                             <i className="fa fa-user"></i>
                                         </label>
@@ -239,7 +239,7 @@ class Signup extends Component {
                                     <div className="input-holder tooltip-castom">
                                         <span className="tooltiptext pass">
                                             {this.state.lang === 'en' ? "Minimum 7 characters, at least 1 number, upper and lovercase letter" : "Минимум 7 символов, хотя бы 1 цифра, большая и маленькая буква" }</span>
-                                        <input type="password" placeholder={this.state.lang === 'en' ? "Password" : "Пароль"} required id="pass" onChange={this.onChange} name="pass"/>
+                                        <input type="password" placeholder={this.state.lang === 'en' ? "Password" : "Пароль"} required id="pass" onChange={this.onChange} name="pass" maxLength="150"/>
                                         <label className="input-icon" htmlFor="pass">
                                             <i className="fa fa-key"></i>
                                         </label>
@@ -249,7 +249,7 @@ class Signup extends Component {
                                     <div className="input-holder input-email tooltip-castom">
                                         <span className="tooltiptext email">
                                             {this.state.lang === 'en' ? "Please provide a real one, we will send you a confirmation link" : "Настоящий, пожалуйста, мы от правим ссылку для подтверждения аккаунта"}</span>
-                                        <input type="email" placeholder="Email" required id="email" onChange={this.onChange} name="email"/>
+                                        <input type="email" placeholder="Email" required id="email" onChange={this.onChange} name="email" maxLength="150"/>
                                         <label className="input-icon" htmlFor="email">
                                             <i className="fa fa-envelope"></i>
                                         </label>
