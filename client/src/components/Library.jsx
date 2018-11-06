@@ -278,7 +278,8 @@ class Library extends Component {
                 order: sortParam === "rating" ? "desc" : "asc",
                 movies: [],
                 pageStart: 1,
-                hasMore: true
+                hasMore: true,
+                lang: nextProps.componentState.intl.locale
             }, () => this.loadItems());
         }
     }

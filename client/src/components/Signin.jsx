@@ -74,6 +74,7 @@ class Signin extends Component {
                     'header.library': 'Фильмы',
                     'header.logout': 'Выход',
                     'library.title': 'Фильмы',
+                    'library.year': 'Выберите год',
                     'footer.msg': 'Запилили: ',
                 },
             });

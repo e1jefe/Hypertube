@@ -118,11 +118,11 @@ class Cabinet extends Component {
                 'X-Requested-With': 'XMLHttpRequest'
             }
         }).then((res) => res.json())
-            .then((responce) => {
+            .then((response) => {
                 if (this._mount) {
-                    if (responce.errors === undefined) {
+                    if (response.errors === undefined) {
                         this.setState({
-                            userData: responce
+                            userData: response
                         })
                     } else {
                         const msg = this.props.componentState.intl.locale === "en" ? 'Please check entered data' : 'Проверьте, пожалуйста, корректность введенных данных';

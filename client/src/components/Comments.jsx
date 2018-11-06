@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import OtherUserProfile from './OtherUserProfile';
 import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
 
 class Comments extends Component {
 
@@ -34,6 +35,7 @@ class Comments extends Component {
         };
         const token = localStorage.getItem('token');
         if (token !== null) {
+            this._mount = true;
             fetch('http://127.0.0.1:8000/api/comments/all-comments', {
                 method: 'POST',
                 body: JSON.stringify(data),
@@ -45,6 +47,9 @@ class Comments extends Component {
             })
                 .then((res) => res.json())
                 .then((res) => {
+                    if (!this._mount) {
+                        return ;
+                    }
                     const newState = {
                         user: this.props.master,
                         comments: res.slice(0, res.length),
@@ -114,6 +119,9 @@ class Comments extends Component {
             })
             .then((res) => res.json())
             .then((res) => {
+                if (!this._mount) {
+                    return ;
+                }
                 if (res === true) {
                     const newComLength = this.state.comCount - 1;
                     let commentsNew = this.state.comments.map((com) => {
@@ -166,6 +174,9 @@ class Comments extends Component {
             })
             .then((res) => res.json())
             .then((res) => {
+                if (!this._mount) {
+                    return ;
+                }
                 let newComments = this.state.comments;
                 let newCommentsToShow = this.state.commentsToShow;
                 if (res !== false) {
@@ -208,6 +219,7 @@ class Comments extends Component {
 
     componentWillUnmount() {
         window.removeEventListener('scroll', this.handleScroll, false);
+        this._mount = false;
     }
 
     render() {
@@ -225,7 +237,7 @@ class Comments extends Component {
                         <img src={this.state.avatar !== undefined && this.state.avatar !== null ? 'http://127.0.0.1:8000/' + this.state.avatar : "https://static.thenounproject.com/png/214280-200.png"} alt="my avatar"/>
                     </div>
                     <div className="comment-content">
-                        <textarea name="comment-txt" rows="3" placeholder="Leave a comment" maxLength="240" onChange={this.recordComment} value={this.state.commentTxt}></textarea>
+                        <textarea name="comment-txt" rows="3" placeholder={this.props.componentState.intl.locale === 'en' ? "Leave a comment" : "Оставить комментарий"} maxLength="240" onChange={this.recordComment} value={this.state.commentTxt}></textarea>
                         <button type="submit" onClick={this.postNewComment} disabled={this.state.commentTxt === ""}>
                             <FormattedMessage id="сomments.sendbtn" defaultMessage="Send" />
                         </button>
@@ -235,6 +247,9 @@ class Comments extends Component {
                     {
                         this.state.comCount !== 0 ?
                         this.state.commentsToShow.map((msg, i) => {
+                            const name = msg.firstname !== null ? msg.firstname : "";
+                            const surname = msg.lastname !== null ? msg.lastname : "";
+                            const finalName = /^\s+$/.test(name + " " + surname) ? msg.name : name + " " + surname;
                             return (
                                 <div key={i} className={parseInt(msg.id_user, 10) === this.state.user ? "my-row my-comment" : "my-row"}>
                                     <div className="avatar" userid={msg.id_user} onClick={parseInt(msg.id_user, 10) === this.state.user ? undefined : this.showOtherUser}>
@@ -243,7 +258,7 @@ class Comments extends Component {
                                     <div className="details">
                                         <div className="info">
                                             <div className="author" userid={msg.id_user} onClick={parseInt(msg.id_user, 10) === this.state.user ? undefined : this.showOtherUser}>
-                                                {msg.firstname + " " + msg.lastname}
+                                                {finalName}
                                             </div>
                                             <div className="time-stamp">
                                                 {msg.updated_at.substring(0, 16)}
@@ -279,4 +294,10 @@ class Comments extends Component {
 
 }
 
-export default Comments;
+const mapStateToProps = state => {
+    return {
+        componentState: state
+    };
+};
+
+export default connect(mapStateToProps, null)(Comments);
