@@ -104,10 +104,10 @@ class Cabinet extends Component {
     changeInfo() {
         const token = localStorage.getItem('token');
         const data = {
-            name: this.state.name,
-            firstname: this.state.firstname,
-            lastname: this.state.lastname,
-            email: this.state.email,
+            name: this.state.name === "" ? undefined : this.state.name,
+            firstname: this.state.firstname === "" ? undefined : this.state.firstname,
+            lastname: this.state.lastname === "" ? undefined : this.state.lastname,
+            email: this.state.email === "" ? undefined : this.state.email,
         };
         fetch('http://localhost:8000/api/cabinet/change-info', {
             method: 'POST',
@@ -117,24 +117,29 @@ class Cabinet extends Component {
                 'Content-Type': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest'
             }
-        }).then((res) => res.json())
+        }).then((res) => {
+            if (res.status !== 422) {
+                return res.json();
+            } else {
+                const msg = this.props.componentState.intl.locale === "en" ? 'Please check entered data' : 'Проверьте, пожалуйста, корректность введенных данных';
+                toast.error(msg, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true
+                });
+                return false;
+            }
+        })
             .then((response) => {
                 if (this._mount) {
-                    if (response.errors === undefined) {
+                    if (response !== false) {
                         this.setState({
                             userData: response
                         })
-                    } else {
-                        const msg = this.props.componentState.intl.locale === "en" ? 'Please check entered data' : 'Проверьте, пожалуйста, корректность введенных данных';
-                        toast.error(msg, {
-                            position: "top-center",
-                            autoClose: 5000,
-                            hideProgressBar: true,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true
-                        });
-                    }
+                    } 
                 }
             });
     }
@@ -144,7 +149,6 @@ class Cabinet extends Component {
         const data = {
             password: this.state.pass,
             password_confirmation: this.state.pass_rep,
-
         };
         fetch('http://localhost:8000/api/cabinet/change-pass', {
             method: 'POST',
