@@ -109,7 +109,6 @@ class Cabinet extends Component {
             lastname: this.state.lastname === "" ? undefined : this.state.lastname,
             email: this.state.email === "" ? undefined : this.state.email,
         };
-        console.log("data", data);
         fetch('http://localhost:8000/api/cabinet/change-info', {
             method: 'POST',
             body: JSON.stringify(data),
