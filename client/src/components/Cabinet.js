@@ -31,7 +31,7 @@ class Cabinet extends Component {
     componentDidMount() {
         const token = localStorage.getItem('token');
 
-        if (token !== null) {
+        if (token !== null && token !== "") {
             this.setState({isLoading: true});
             this._mount = true;
             fetch('http://127.0.0.1:8000/api/auth/user', {

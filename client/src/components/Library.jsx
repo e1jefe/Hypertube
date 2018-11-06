@@ -291,7 +291,7 @@ class Library extends Component {
 
     componentDidMount() {
         const token = localStorage.getItem('token');
-        if (token === null) {
+        if (token === null || token === "") {
             this.props.history.push('/signin');
         } else {
             this._mount = true;

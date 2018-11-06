@@ -24,17 +24,19 @@ class Header extends Component {
 
     logout() {
         const token = localStorage.getItem('token');
-        fetch('http://127.0.0.1:8000/api/auth/logout', {
-            method: 'GET',
-            headers:{
-                'Authorization': 'Bearer ' + token
-            }
-        }).then((res) => res.json())
-        .then((responce) => {
-            this.props.logout();
-            localStorage.removeItem('token');
-            this.props.history.push('/signin');
-        });
+        if (token !== null && token !== "") {
+            fetch('http://127.0.0.1:8000/api/auth/logout', {
+                method: 'GET',
+                headers:{
+                    'Authorization': 'Bearer ' + token
+                }
+            }).then((res) => res.json())
+            .then((responce) => {
+                this.props.logout();
+                localStorage.removeItem('token');
+                this.props.history.push('/signin');
+            });
+        }
     }
 
     changeLanguage(str) {

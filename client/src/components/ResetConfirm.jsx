@@ -30,7 +30,7 @@ class Reset extends Component {
     }
 
     componentDidMount() {
-        if (localStorage.getItem('token') !== null) {
+        if (localStorage.getItem('token') !== null && localStorage.getItem('token') !== "") {
             this.props.history.push('/');
         } else {
             this._mount = true;

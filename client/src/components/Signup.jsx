@@ -29,7 +29,7 @@ class Signup extends Component {
     }
 
     componentDidMount() {
-        if (localStorage.getItem('token') !== null) {
+        if (localStorage.getItem('token') !== null && localStorage.getItem('token') !== "") {
             this.props.history.push('/');
         } else {
             this._mount = true;
@@ -324,7 +324,7 @@ class Signup extends Component {
                 <div>
                     <Dimmer active={this.state.processing}>
                         <Loader active>
-                            {this.state.lang === 'en' ? "(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ Baiking coockies" : "Пожалуйста, подождите"}
+                            {this.state.lang === 'en' ? "(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ Baiking coockies" : "(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ Пожалуйста, подождите"}
                         </Loader>
                     </Dimmer>
                 </div>

@@ -34,7 +34,7 @@ class Comments extends Component {
             id_film: this.props.movid
         };
         const token = localStorage.getItem('token');
-        if (token !== null) {
+        if (token !== null && token !== "") {
             this._mount = true;
             fetch('http://127.0.0.1:8000/api/comments/all-comments', {
                 method: 'POST',
